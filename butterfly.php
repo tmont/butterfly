@@ -151,7 +151,7 @@
 			if (!$this->isInScopeStack('list_ordered', 'list_unordered')) {
 				//new list
 				if (strlen($text) > 1) {
-					throw new Exception('New lists cannot be nested');
+					$this->throwException(new Exception('New lists cannot be nested'));
 				}
 				
 				$this->openScope($listType);
@@ -165,12 +165,17 @@
 				}
 				
 				$this->closeScopeUntil('listitem');
-				if (strlen($text) < $nestedLists) {
-					//close previous list
-					$this->closeScopeUntil('list_ordered', 'list_unordered');
-				} else if (strlen($text) > $nestedLists) {
+				$difference = strlen($text) - $nestedLists;
+				if ($difference < 0) {
+					//close previous list(s)
+					for (; $difference; $difference++) {
+						$this->closeScopeUntil('list_ordered', 'list_unordered');
+					}
+				} else if ($difference === 1) {
 					//start new list
 					$this->openScope($listType);
+				} else if ($difference > 1) {
+					$this->throwException(new Exception('New lists cannot skip levels'));
 				}
 			}
 			
@@ -266,6 +271,11 @@
 		
 		private static function isIndentedType($type) {
 			return in_array($type, array('list_ordered', 'list_unordered'));
+		}
+		
+		private function throwException(Exception $e) {
+			ob_end_clean();
+			throw $e;
 		}
 		
 	}
