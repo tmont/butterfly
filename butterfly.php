@@ -22,6 +22,7 @@
 			'tablerow'       => array('<tr>',            '</tr>',             array('table')),
 			'tableheader'    => array('<th>',            '</th>',             array('tablerow')),
 			'preformatted'   => array('<pre>',           '</pre>',            array('paragraph', 'blockquote', 'listitem', 'tablecell', 'tableheader')),
+			'preformattedline'   => array('<pre>',           '</pre>',            array('paragraph', 'blockquote', 'listitem', 'tablecell', 'tableheader')),
 			'blockquote'     => array('<blockquote><div>', '</div></blockquote>', array('blockquote', 'paragraph', 'listitem', 'tablecell', 'tableheader')),
 			
 			//inline
@@ -135,6 +136,17 @@
 								$this->openScope('blockquote');
 							}
 							break;
+						case ' ':
+							$this->openScope('preformattedline');
+							break;
+						case '{':
+							if ($this->peek() === '{') {
+								$this->read();
+								//scope persister
+							} else {
+								$this->openScope('preformatted');
+							}
+							break;
 						default:
 							//if scope stack has no block elements, then start a new paragraph
 							if (!$this->isInScopeStack(self::$blockScopes)) {
@@ -172,6 +184,7 @@
 				$text .= $this->read();
 			}
 
+			
 			$this->closeScopes(strlen($text));
 			$this->isStartOfLine = true;
 		}
@@ -236,7 +249,11 @@
 						break;
 					case 'defterm':
 					case 'defdef':
+					case 'preformattedline':
 						$this->closeScope($this->scopePop());
+						break;
+					case 'preformatted':
+						$this->out("\n");
 						break;
 				}
 			}

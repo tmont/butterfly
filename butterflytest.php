@@ -212,8 +212,8 @@ WIKI;
 		public function testBlockquote1() {
 			$wikitext = <<<WIKI
 <<Hello there, this is 
-a blockquote that should be terminated
- by two line breaks.
+a blockquote that should be terminated 
+by two line breaks.
 
 <<Here is another.
 WIKI;
@@ -223,6 +223,34 @@ WIKI;
 Hello there, this is a blockquote that should be terminated by two line breaks.</div></blockquote>
 <blockquote><div>
 Here is another.</div></blockquote>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
+		
+		public function testPreformatted1() {
+			$wikitext = <<<WIKI
+ this line begins with a space
+WIKI;
+
+			$expected = <<<HTML
+<pre>this line begins with a space</pre>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
+		
+		public function testPreformatted2() {
+			$wikitext = <<<WIKI
+{this is some preformatted
+text
+WIKI;
+
+			$expected = <<<HTML
+<pre>this is some preformatted
+text</pre>
 
 HTML;
 			
