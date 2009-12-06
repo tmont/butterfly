@@ -175,12 +175,23 @@ HTML;
 			$wikitext = <<<WIKI
 ;foo
 :bar
+;baz
+:bat
+
+;boo
+:biz
 WIKI;
 
 			$expected = <<<HTML
 <dl>
   <dt>foo</dt>
   <dd>bar</dd>
+  <dt>baz</dt>
+  <dd>bat</dd>
+</dl>
+<dl>
+  <dt>boo</dt>
+  <dd>biz</dd>
 </dl>
 
 HTML;

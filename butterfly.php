@@ -83,17 +83,6 @@
 			echo ($indent ? str_repeat('  ', max(0, count($this->scopeStack) - (int)$opening)) : '') . $string;
 		}
 		
-		private function getChildren($parent) {
-			$children = array();
-			foreach (self::$scopes as $type => $scope) {
-				if (in_array($parent, $scope[2])) {
-					$children[] = $type;
-				}
-			}
-			
-			return $children;
-		}
-		
 		public function toHtml($wikitext, $return = false) {
 			$this->init($wikitext);
 			
@@ -274,21 +263,6 @@
 			}
 		}
 
-		private function readToEndOfLine() {
-			return $this->readToScopeCloserOrEof("\n");
-		}
-		
-		private function readToScopeCloserOrEof($closer) {
-			$text = '';
-			$peek = $this->peek();
-			while ($peek !== $closer && $peek !== null) {
-				$text .= $this->read();
-				$peek = $this->peek();
-			}
-			
-			return $text;
-		}
-		
 		private function peek() {
 			return isset($this->wikitext[$this->index + 1]) ? $this->wikitext[$this->index + 1] : null;
 		}
