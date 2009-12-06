@@ -40,6 +40,8 @@ HTML;
 			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
 		}
 		
+		
+		
 		public function testList1() {
 			$wikitext = <<<WIKI
 *foo
@@ -130,6 +132,41 @@ WIKI;
 
 			$this->setExpectedException('Exception', 'New lists cannot skip levels');
 			$this->butterfly->toHtml($wikitext, true);
+		}
+		
+		
+		
+		public function testParagraph1() {
+			$wikitext = <<<WIKI
+foo
+WIKI;
+
+			$expected = <<<HTML
+<p>foo</p>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
+		
+		public function testParagraph2() {
+			$wikitext = <<<WIKI
+foo
+
+bar
+baz
+
+bat
+WIKI;
+
+			$expected = <<<HTML
+<p>foo</p>
+<p>bar baz</p>
+<p>bat</p>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
 		}
 		
 		

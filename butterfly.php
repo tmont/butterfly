@@ -8,6 +8,7 @@
 		
 		private static $scopes = array(
 			//name                    opener             closer               containers
+			//block level
 			'paragraph'      => array('<p>',             '</p>',              array('listitem', 'tablecell', 'tableheader', 'blockquote')),
 			'list_unordered' => array('<ul>',            '</ul>',             array('paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem')),
 			'list_ordered'   => array('<ol>',            '</ol>',             array('paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem')),
@@ -17,8 +18,10 @@
 			'tablecell'      => array('<td>',            '</td>',             array('tablerow')),
 			'tablerow'       => array('<tr>',            '</tr>',             array('table')),
 			'tableheader'    => array('<th>',            '</th>',             array('tablerow')),
-			
 			'preformatted'   => array('<pre>',           '</pre>',            array('paragraph', 'blockquote', 'listitem', 'tablecell', 'tableheader')),
+			'blockquote'     => array('<blockquote><p>', '</p></blockquote>', array('blockquote', 'paragraph', 'listitem', 'tablecell', 'tableheader')),
+			
+			//inline
 			'strong'         => array('<strong>',        '</strong>',         array('link', 'paragraph', 'code', 'emphasis', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'teletype')),
 			'emphasis'       => array('<em>',            '</em>',             array('link', 'paragraph', 'strong', 'code', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'teletype')),
 			'strikethrough'  => array('<del>',           '</del>',            array('link', 'paragraph', 'strong', 'emphasis', 'preformatted', 'code', 'underline', 'small', 'big', 'teletype')),
@@ -27,11 +30,21 @@
 			'big'            => array('<big>',           '</big>',            array('link', 'paragraph', 'strong', 'emphasis', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'teletype', 'code')),
 			'teletype'       => array('<tt>',            '</tt>',             array('link', 'paragraph', 'strong', 'emphasis', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'code')),
 			'code'           => array('<code>',          '</code>',           array('link', 'paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem', 'link', 'strong', 'emphasis', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'teletype')),
-			'blockquote'     => array('<blockquote><p>', '</p></blockquote>', array('blockquote', 'paragraph', 'listitem', 'tablecell', 'tableheader')),
-			
 			'link'           => array('<a class="{class}" href="{href}">', '</a>', array('paragraph', 'listitem', 'header', 'tablecell', 'tableheader', 'preformatted', 'blockquote', 'strong', 'emphasis', 'strikethrough', 'underline', 'small', 'big', 'teletype', 'code')),
 			'image'          => array('<img alt="{alt}" src="{src}"/>', null, array('link', 'paragraph', 'listitem', 'header', 'tablecell', 'tableheader', 'preformatted', 'blockquote', 'strong', 'emphasis', 'strikethrough', 'underline', 'small', 'big', 'teletype', 'code')),
+			
 			'module'         => array(null, null, array())
+		);
+		
+		private static $blockScopes = array(
+			'paragraph', 'list_unordered', 'list_ordered', 'listitem', 
+			'header', 'table', 'tablecell', 'tablerow', 'tableheader', 
+			'preformatted', 'blockquote'
+		);
+		
+		private static $inlineScopes = array(
+			'strong', 'emphasis', 'strikethrough', 'unerline',
+			'small', 'big', 'teletype', 'code', 'link', 'image'
 		);
 		
 		private $isStartOfLine;
@@ -111,6 +124,11 @@
 							$this->handleListItem($text);
 							break;
 						default:
+							//if scope stack has no block elements, then start a new paragraph
+							if (!$this->isInScopeStack(self::$blockScopes)) {
+								$this->openScope('paragraph');
+							}
+							
 							$this->out($text);
 							break;
 					}
@@ -199,8 +217,13 @@
 			
 			if ($numNewLines > 1) {
 				$this->emptyScopeStack();
-			} else if ($numNewLines === 1 && $nextScope['type'] === 'header') {
-				$this->closeScope($this->scopePop(), $nextScope['nesting_level']);
+			} else if ($numNewLines === 1) {
+				if ($nextScope['type'] === 'header') {
+					$this->closeScope($this->scopePop(), $nextScope['nesting_level']);
+				} else if ($nextScope['type'] === 'paragraph') {
+					//a single newline is treated as a space (similar to HTML)
+					$this->out(' ');
+				}
 			}
 		}
 		
@@ -259,7 +282,7 @@
 		}
 		
 		private function isInScopeStack($type) {
-			$types = func_get_args();
+			$types = is_array($type) ? $type : func_get_args();
 			foreach ($this->scopeStack as $scope) {
 				if (in_array($scope['type'], $types)) {
 					return true;
