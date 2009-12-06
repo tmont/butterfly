@@ -33,7 +33,7 @@
 			'small'          => array('<small>',         '</small>',          array('link', 'paragraph', 'strong', 'emphasis', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'teletype', 'code')),
 			'big'            => array('<big>',           '</big>',            array('link', 'paragraph', 'strong', 'emphasis', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'teletype', 'code')),
 			'teletype'       => array('<tt>',            '</tt>',             array('link', 'paragraph', 'strong', 'emphasis', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'code')),
-			'code'           => array('<code>',          '</code>',           array('link', 'paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem', 'link', 'strong', 'emphasis', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'teletype')),
+			'source'         => array('<pre><code>',     '</code></pre>',     array('link', 'paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem', 'link', 'strong', 'emphasis', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'teletype')),
 			'link'           => array('<a class="{class}" href="{href}">', '</a>', array('paragraph', 'listitem', 'header', 'tablecell', 'tableheader', 'preformatted', 'blockquote', 'strong', 'emphasis', 'strikethrough', 'underline', 'small', 'big', 'teletype', 'code')),
 			'image'          => array('<img alt="{alt}" src="{src}"/>', null, array('link', 'paragraph', 'listitem', 'header', 'tablecell', 'tableheader', 'preformatted', 'blockquote', 'strong', 'emphasis', 'strikethrough', 'underline', 'small', 'big', 'teletype', 'code')),
 			
@@ -62,6 +62,12 @@
 			$this->wikitext = $wikitext;
 			$this->index = -1;
 			$this->isStartOfLine = true;
+		}
+		
+		public function __get($key) {
+			if ($key === 'nextScope') {
+				return $this->scopePeek();
+			}
 		}
 		
 		public function normalize($string) {
@@ -177,6 +183,46 @@
 						if ($this->peek() === '\'') {
 							$this->read();
 							$this->openOrCloseUnnestableScope('emphasis');
+						} else {
+							$this->printPlainText($text);
+						}
+						break;
+					case '-':
+						if ($this->peek() === '-') {
+							$this->read();
+							if ($this->peek() === '-') {
+								$this->read();
+								$this->openOrCloseUnnestableScope('strikethrough');
+							} else {
+								$this->openOrCloseUnnestableScope('underline');
+							}
+						} else {
+							$this->printPlainText($text);
+						}
+						break;
+					case '(':
+						if ($this->peek() === '(') {
+							$this->read();
+							$this->openScope('small');
+						} else if ($this->peek() === '+') {
+							$this->read();
+							$this->openScope('big');
+						} else {
+							$this->printPlainText($text);
+						}
+						break;
+					case '+':
+						if ($this->peek() === ')' && $this->nextScope['type'] === 'big') {
+							$this->read();
+							$this->closeScope($this->scopePop());
+						} else {
+							$this->printPlainText($text);
+						}
+						break;
+					case ')':
+						if ($this->peek() === ')' && $this->nextScope['type'] === 'small') {
+							$this->read();
+							$this->closeScope($this->scopePop());
 						} else {
 							$this->printPlainText($text);
 						}
