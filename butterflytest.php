@@ -209,6 +209,7 @@ WIKI;
 		}
 		
 		
+		
 		public function testBlockquote1() {
 			$wikitext = <<<WIKI
 <<Hello there, this is 
@@ -228,6 +229,8 @@ HTML;
 			
 			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
 		}
+		
+		
 		
 		public function testPreformatted1() {
 			$wikitext = <<<WIKI
@@ -256,6 +259,43 @@ HTML;
 			
 			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
 		}
+		
+		
+		
+		public function testBold1() {
+			$wikitext = <<<WIKI
+__foo__
+
+_foo and so__me fo__o.
+WIKI;
+
+			$expected = <<<HTML
+<p><strong>foo</strong></p>
+<p>_foo and so<strong>me fo</strong>o.</p>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
+		
+		
+		
+		public function testEmphasis1() {
+			$wikitext = <<<WIKI
+''foo''
+
+'foo and so''me fo''o.
+WIKI;
+
+			$expected = <<<HTML
+<p><em>foo</em></p>
+<p>'foo and so<em>me fo</em>o.</p>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
+		
 		
 	}
 

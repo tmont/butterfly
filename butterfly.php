@@ -91,10 +91,9 @@
 				ob_start();
 			}
 			
-			$text = $this->read();
-			while ($text !== null) {
+			while (($text = $this->read()) !== null) {
 				if ($this->isStartOfLine) {
-					$this->isStartOfLine = false;
+					$continue = true;
 					switch ($text) {
 						case '!':
 							while ($this->peek() === '!') {
@@ -102,9 +101,6 @@
 							}
 							
 							$this->openScope('header', min(6, strlen($text)));
-							break;
-						case "\n":
-							$this->handleNewLine();
 							break;
 						case '*':
 						case '#':
@@ -134,6 +130,8 @@
 							if ($this->peek() === '<') {
 								$this->read();
 								$this->openScope('blockquote');
+							} else {
+								$this->printPlainText($text);
 							}
 							break;
 						case ' ':
@@ -141,40 +139,72 @@
 							break;
 						case '{':
 							if ($this->peek() === '{') {
-								$this->read();
-								//scope persister
+								$text .= $this->read();
+								//TODO: scope persister
+								$this->printPlainText($text);
 							} else {
 								$this->openScope('preformatted');
 							}
 							break;
 						default:
-							//if scope stack has no block elements, then start a new paragraph
 							if (!$this->isInScopeStack(self::$blockScopes)) {
 								$this->openScope('paragraph');
 							}
-							
-							$this->out($text);
+							$continue = false;
 							break;
 					}
-				} else {
-					switch ($text) {
-						case "\n":
-							$this->handleNewLine();
-							break;
-						default:
-							$this->out($text);
-							break;
+					
+					$this->isStartOfLine = false;
+					
+					if ($continue) {
+						continue;
 					}
 				}
 				
-				$text = $this->read();
+				switch ($text) {
+					case "\n":
+						$this->handleNewLine();
+						break;
+					case '_':
+						if ($this->peek() === '_') {
+							$this->read();
+							$this->openOrCloseUnnestableScope('strong');
+						} else {
+							$this->printPlainText($text);
+						}
+						break;
+					case '\'':
+						if ($this->peek() === '\'') {
+							$this->read();
+							$this->openOrCloseUnnestableScope('emphasis');
+						} else {
+							$this->printPlainText($text);
+						}
+						break;
+					default:
+						$this->printPlainText($text);
+						break;
+				}
 			}
 			
 			//close orphaned scopes
-			$this->closeScopes(2);
+			$this->emptyScopeStack();
 			
 			if ($return) {
 				return ob_get_clean();
+			}
+		}
+		
+		private function printPlainText($text) {
+			$this->out($text);
+		}
+		
+		private function openOrCloseUnnestableScope($type) {
+			$nextScope = $this->scopePeek();
+			if ($nextScope['type'] === $type) {
+				$this->closeScope($this->scopePop());
+			} else {
+				$this->openScope($type);
 			}
 		}
 		
@@ -183,7 +213,6 @@
 			while ($this->peek() === "\n") {
 				$text .= $this->read();
 			}
-
 			
 			$this->closeScopes(strlen($text));
 			$this->isStartOfLine = true;
@@ -195,7 +224,9 @@
 				//new list
 				if (strlen($text) > 1) {
 					$this->throwException(new Exception('New lists cannot be nested'));
+				//@codeCoverageIgnoreStart
 				}
+				//@codeCoverageIgnoreEnd
 				
 				$this->openScope($listType);
 			} else {
@@ -219,7 +250,9 @@
 					$this->openScope($listType);
 				} else if ($difference > 1) {
 					$this->throwException(new Exception('New lists cannot skip levels'));
+				//@codeCoverageIgnoreStart
 				}
+				//@codeCoverageIgnoreEnd
 			}
 			
 			//open list item
@@ -231,7 +264,7 @@
 			$type = array_shift($args);
 			$this->scopePush($type, $nestingLevel);
 			$opener = preg_replace(array('/\{.*\}/'), $args, self::$scopes[$type][0]);
-			$this->out($opener . (self::isIndentedType($type) ? "\n" : ''), true);
+			$this->out($opener . (self::newlineOnOpen($type) ? "\n" : ''), self::indentOnOpen($type));
 		}
 		
 		private function closeScopes($numNewLines) {
@@ -270,7 +303,7 @@
 			$args = func_get_args();
 			$scope = array_shift($args);
 			$closer = preg_replace(array('/\{.*\}/'), $args, self::$scopes[$scope['type']][1]);
-			$this->out($closer . "\n", self::isIndentedType($scope['type']), false);
+			$this->out($closer . (self::newlineOnClose($scope['type']) ? "\n" : ''), self::indentOnClose($scope['type']), false);
 		}
 		
 		private function closeScopeUntil($scopeType) {
@@ -309,8 +342,27 @@
 			return false;
 		}
 		
-		private static function isIndentedType($type) {
+		private static function indentOnOpen($type) {
+			return in_array($type, array('orderedlist', 'unorderedlist', 'listitem', 'deflist', 'blockquote', 'defterm', 'defdef'));
+		}
+		
+		private static function indentOnClose($type) {
+			return self::newlineOnOpen($type);
+		}
+		
+		private static function newlineOnOpen($type) {
 			return in_array($type, array('orderedlist', 'unorderedlist', 'deflist', 'blockquote'));
+		}
+		
+		private static function newlineOnClose($type) {
+			return in_array(
+				$type,
+				array(
+					'orderedlist', 'unorderedlist', 'deflist', 'blockquote',
+					'paragraph', 'defterm', 'defdef', 'preformattedline', 
+					'preformatted', 'listitem', 'header'
+				)
+			);
 		}
 		
 		private function throwException(Exception $e) {
