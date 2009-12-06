@@ -22,7 +22,7 @@
 			'tablerow'       => array('<tr>',            '</tr>',             array('table')),
 			'tableheader'    => array('<th>',            '</th>',             array('tablerow')),
 			'preformatted'   => array('<pre>',           '</pre>',            array('paragraph', 'blockquote', 'listitem', 'tablecell', 'tableheader')),
-			'blockquote'     => array('<blockquote><p>', '</p></blockquote>', array('blockquote', 'paragraph', 'listitem', 'tablecell', 'tableheader')),
+			'blockquote'     => array('<blockquote><div>', '</div></blockquote>', array('blockquote', 'paragraph', 'listitem', 'tablecell', 'tableheader')),
 			
 			//inline
 			'strong'         => array('<strong>',        '</strong>',         array('link', 'paragraph', 'code', 'emphasis', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'teletype')),
@@ -128,6 +128,12 @@
 							}
 							
 							$this->openScope('defdef');
+							break;
+						case '<':
+							if ($this->peek() === '<') {
+								$this->read();
+								$this->openScope('blockquote');
+							}
 							break;
 						default:
 							//if scope stack has no block elements, then start a new paragraph
@@ -287,7 +293,7 @@
 		}
 		
 		private static function isIndentedType($type) {
-			return in_array($type, array('orderedlist', 'unorderedlist', 'deflist'));
+			return in_array($type, array('orderedlist', 'unorderedlist', 'deflist', 'blockquote'));
 		}
 		
 		private function throwException(Exception $e) {

@@ -208,6 +208,27 @@ WIKI;
 			$this->butterfly->toHtml($wikitext, true);
 		}
 		
+		
+		public function testBlockquote1() {
+			$wikitext = <<<WIKI
+<<Hello there, this is 
+a blockquote that should be terminated
+ by two line breaks.
+
+<<Here is another.
+WIKI;
+
+			$expected = <<<HTML
+<blockquote><div>
+Hello there, this is a blockquote that should be terminated by two line breaks.</div></blockquote>
+<blockquote><div>
+Here is another.</div></blockquote>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
+		
 	}
 
 ?>
