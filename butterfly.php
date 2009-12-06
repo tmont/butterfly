@@ -10,9 +10,12 @@
 			//name                    opener             closer               containers
 			//block level
 			'paragraph'      => array('<p>',             '</p>',              array('listitem', 'tablecell', 'tableheader', 'blockquote')),
-			'list_unordered' => array('<ul>',            '</ul>',             array('paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem')),
-			'list_ordered'   => array('<ol>',            '</ol>',             array('paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem')),
-			'listitem'       => array('<li>',            '</li>',             array('list_unordered', 'list_ordered')),
+			'unorderedlist'  => array('<ul>',            '</ul>',             array('paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem')),
+			'orderedlist'    => array('<ol>',            '</ol>',             array('paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem')),
+			'listitem'       => array('<li>',            '</li>',             array('unorderedlist', 'orderedlist')),
+			'deflist'        => array('<dl>',            '</dl>',             array('paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem')),
+			'defterm'        => array('<dt>',            '</dt>',             array('paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem')),
+			'defdef'         => array('<dd>',            '</dd>',             array('paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem')),
 			'header'         => array('<h{level}>',      '</h{level}>',       array()),
 			'table'          => array('<table>',         '</table>',          array('paragraph', 'blockquote', 'listitem')),
 			'tablecell'      => array('<td>',            '</td>',             array('tablerow')),
@@ -37,9 +40,9 @@
 		);
 		
 		private static $blockScopes = array(
-			'paragraph', 'list_unordered', 'list_ordered', 'listitem', 
+			'paragraph', 'unorderedlist', 'orderedlist', 'listitem', 
 			'header', 'table', 'tablecell', 'tablerow', 'tableheader', 
-			'preformatted', 'blockquote'
+			'preformatted', 'blockquote', 'deflist', 'defterm', 'defdef'
 		);
 		
 		private static $inlineScopes = array(
@@ -123,6 +126,20 @@
 							
 							$this->handleListItem($text);
 							break;
+						case ';':
+							if (!$this->isInScopeStack('deflist')) {
+								$this->openScope('deflist');
+							}
+							
+							$this->openScope('defterm');
+							break;
+						case ':':
+							if (!$this->isInScopeStack('deflist')) {
+								throw new Exception('Cannot have a definition without a definition term');
+							}
+							
+							$this->openScope('defdef');
+							break;
 						default:
 							//if scope stack has no block elements, then start a new paragraph
 							if (!$this->isInScopeStack(self::$blockScopes)) {
@@ -163,10 +180,10 @@
 			$this->closeScopes(strlen($text));
 			$this->isStartOfLine = true;
 		}
-		
+
 		private function handleListItem($text) {
-			$listType = (substr($text, -1) === '*') ? 'list_unordered' : 'list_ordered';
-			if (!$this->isInScopeStack('list_ordered', 'list_unordered')) {
+			$listType = (substr($text, -1) === '*') ? 'unorderedlist' : 'orderedlist';
+			if (!$this->isInScopeStack('orderedlist', 'unorderedlist')) {
 				//new list
 				if (strlen($text) > 1) {
 					$this->throwException(new Exception('New lists cannot be nested'));
@@ -177,7 +194,7 @@
 				//if a list is already started, and the nesting level is the same, then we need to close a listitem scope
 				$nestedLists = 0;
 				foreach ($this->scopeStack as $scope) {
-					if ($scope['type'] === 'list_ordered' || $scope['type'] === 'list_unordered') {
+					if ($scope['type'] === 'orderedlist' || $scope['type'] === 'unorderedlist') {
 						$nestedLists++;
 					}
 				}
@@ -187,7 +204,7 @@
 				if ($difference < 0) {
 					//close previous list(s)
 					for (; $difference; $difference++) {
-						$this->closeScopeUntil('list_ordered', 'list_unordered');
+						$this->closeScopeUntil('orderedlist', 'unorderedlist');
 					}
 				} else if ($difference === 1) {
 					//start new list
@@ -218,11 +235,14 @@
 			if ($numNewLines > 1) {
 				$this->emptyScopeStack();
 			} else if ($numNewLines === 1) {
-				if ($nextScope['type'] === 'header') {
-					$this->closeScope($this->scopePop(), $nextScope['nesting_level']);
-				} else if ($nextScope['type'] === 'paragraph') {
-					//a single newline is treated as a space (similar to HTML)
-					$this->out(' ');
+				switch ($nextScope['type']) {
+					case 'header':
+						$this->closeScope($this->scopePop(), $nextScope['nesting_level']);
+						break;
+					case 'defterm':
+					case 'defdef':
+						$this->closeScope($this->scopePop());
+						break;
 				}
 			}
 		}
@@ -293,7 +313,7 @@
 		}
 		
 		private static function isIndentedType($type) {
-			return in_array($type, array('list_ordered', 'list_unordered'));
+			return in_array($type, array('orderedlist', 'unorderedlist', 'deflist'));
 		}
 		
 		private function throwException(Exception $e) {

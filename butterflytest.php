@@ -161,7 +161,7 @@ WIKI;
 
 			$expected = <<<HTML
 <p>foo</p>
-<p>bar baz</p>
+<p>barbaz</p>
 <p>bat</p>
 
 HTML;
@@ -169,6 +169,33 @@ HTML;
 			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
 		}
 		
+		
+		
+		public function testDefinitionList1() {
+			$wikitext = <<<WIKI
+;foo
+:bar
+WIKI;
+
+			$expected = <<<HTML
+<dl>
+  <dt>foo</dt>
+  <dd>bar</dd>
+</dl>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
+		
+		public function testDefinitionList2() {
+			$wikitext = <<<WIKI
+:foo
+WIKI;
+
+			$this->setExpectedException('Exception', 'Cannot have a definition without a definition term');
+			$this->butterfly->toHtml($wikitext, true);
+		}
 		
 	}
 
