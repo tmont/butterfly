@@ -7,48 +7,44 @@
 		private $scopeStack;
 		
 		private static $scopes = array(
-			//name                    opener             closer               containers
+			//name                       opener              closer
 			//block level
-			'paragraph'      => array('<p>',             '</p>',              array('listitem', 'tablecell', 'tableheader', 'blockquote')),
-			'unorderedlist'  => array('<ul>',            '</ul>',             array('paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem')),
-			'orderedlist'    => array('<ol>',            '</ol>',             array('paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem')),
-			'listitem'       => array('<li>',            '</li>',             array('unorderedlist', 'orderedlist')),
-			'deflist'        => array('<dl>',            '</dl>',             array('paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem')),
-			'defterm'        => array('<dt>',            '</dt>',             array('paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem')),
-			'defdef'         => array('<dd>',            '</dd>',             array('paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem')),
-			'header'         => array('<h{level}>',      '</h{level}>',       array()),
-			'table'          => array('<table>',         '</table>',          array('paragraph', 'blockquote', 'listitem')),
-			'tablecell'      => array('<td>',            '</td>',             array('tablerow')),
-			'tablerow'       => array('<tr>',            '</tr>',             array('table')),
-			'tableheader'    => array('<th>',            '</th>',             array('tablerow')),
-			'preformatted'   => array('<pre>',           '</pre>',            array('paragraph', 'blockquote', 'listitem', 'tablecell', 'tableheader')),
-			'preformattedline'   => array('<pre>',           '</pre>',            array('paragraph', 'blockquote', 'listitem', 'tablecell', 'tableheader')),
-			'blockquote'     => array('<blockquote><div>', '</div></blockquote>', array('blockquote', 'paragraph', 'listitem', 'tablecell', 'tableheader')),
+			'paragraph'        => array('<p>',               '</p>'),
+			'unorderedlist'    => array('<ul>',              '</ul>'),
+			'orderedlist'      => array('<ol>',              '</ol>'),
+			'listitem'         => array('<li>',              '</li>'),
+			'deflist'          => array('<dl>',              '</dl>'),
+			'defterm'          => array('<dt>',              '</dt>'),
+			'defdef'           => array('<dd>',              '</dd>'),
+			'header'           => array('<h{level}>',        '</h{level}>'),
+			'table'            => array('<table>',           '</table>'),
+			'tablecell'        => array('<td>',              '</td>'),
+			'tablerow'         => array('<tr>',              '</tr>'),
+			'tableheader'      => array('<th>',              '</th>'),
+			'preformatted'     => array('<pre>',             '</pre>'),
+			'preformattedline' => array('<pre>',             '</pre>'),
+			'blockquote'       => array('<blockquote><div>', '</div></blockquote>'),
 			
 			//inline
-			'strong'         => array('<strong>',        '</strong>',         array('link', 'paragraph', 'code', 'emphasis', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'teletype')),
-			'emphasis'       => array('<em>',            '</em>',             array('link', 'paragraph', 'strong', 'code', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'teletype')),
-			'strikethrough'  => array('<del>',           '</del>',            array('link', 'paragraph', 'strong', 'emphasis', 'preformatted', 'code', 'underline', 'small', 'big', 'teletype')),
-			'underline'      => array('<ins>',           '</ins>',            array('link', 'paragraph', 'strong', 'emphasis', 'preformatted', 'strikethrough', 'code', 'small', 'big', 'teletype')),
-			'small'          => array('<small>',         '</small>',          array('link', 'paragraph', 'strong', 'emphasis', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'teletype', 'code')),
-			'big'            => array('<big>',           '</big>',            array('link', 'paragraph', 'strong', 'emphasis', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'teletype', 'code')),
-			'teletype'       => array('<tt>',            '</tt>',             array('link', 'paragraph', 'strong', 'emphasis', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'code')),
-			'source'         => array('<pre><code>',     '</code></pre>',     array('link', 'paragraph', 'blockquote', 'tablecell', 'tableheader', 'listitem', 'link', 'strong', 'emphasis', 'preformatted', 'strikethrough', 'underline', 'small', 'big', 'teletype')),
-			'link'           => array('<a class="{class}" href="{href}">', '</a>', array('paragraph', 'listitem', 'header', 'tablecell', 'tableheader', 'preformatted', 'blockquote', 'strong', 'emphasis', 'strikethrough', 'underline', 'small', 'big', 'teletype', 'code')),
-			'image'          => array('<img alt="{alt}" src="{src}"/>', null, array('link', 'paragraph', 'listitem', 'header', 'tablecell', 'tableheader', 'preformatted', 'blockquote', 'strong', 'emphasis', 'strikethrough', 'underline', 'small', 'big', 'teletype', 'code')),
-			
-			'module'         => array(null, null, array())
+			'strong'           => array('<strong>',          '</strong>'),
+			'emphasis'         => array('<em>',              '</em>'),
+			'strikethrough'    => array('<del>',             '</del>'),
+			'underline'        => array('<ins>',             '</ins>'),
+			'small'            => array('<small>',           '</small>'),
+			'big'              => array('<big>',             '</big>'),
+			'teletype'         => array('<tt>',              '</tt>')
 		);
 		
 		private static $blockScopes = array(
 			'paragraph', 'unorderedlist', 'orderedlist', 'listitem', 
 			'header', 'table', 'tablecell', 'tablerow', 'tableheader', 
-			'preformatted', 'blockquote', 'deflist', 'defterm', 'defdef'
+			'preformatted', 'blockquote', 'deflist', 'defterm', 'defdef',
+			'preformattedline'
 		);
 		
 		private static $inlineScopes = array(
-			'strong', 'emphasis', 'strikethrough', 'unerline',
-			'small', 'big', 'teletype', 'code', 'link', 'image'
+			'strong', 'emphasis', 'strikethrough', 'underline',
+			'small', 'big', 'teletype'
 		);
 		
 		private $isStartOfLine;
