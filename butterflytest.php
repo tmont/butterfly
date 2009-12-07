@@ -328,9 +328,9 @@ HTML;
 		
 		public function testSmall() {
 			$wikitext = <<<WIKI
-((foo))
+(-foo-)
 
-(foo ((sm((all))))
+(foo (-sm(-all-)-)
 WIKI;
 
 			$expected = <<<HTML
@@ -352,6 +352,21 @@ WIKI;
 			$expected = <<<HTML
 <p><big>foo</big></p>
 <p>(foo <big>bi<big>g</big></big></p>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
+		
+		
+		
+		public function testHorizontalRuler() {
+			$wikitext = <<<WIKI
+----
+WIKI;
+
+			$expected = <<<HTML
+<hr />
 
 HTML;
 			

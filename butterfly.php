@@ -144,18 +144,20 @@
 							$this->openScope('preformattedline');
 							break;
 						case '{':
-							if ($this->peek() === '{') {
-								$text .= $this->read();
-								//TODO: scope persister
-								$this->printPlainText($text);
+							$this->openScope('preformatted');
+							break;
+						case '-':
+							if ($this->peek(4) === "---" || $this->peek(4) === "---\n") {
+								$this->read(3);
+								$this->out("<hr />\n");
 							} else {
-								$this->openScope('preformatted');
+								//intentionally unhandled, since "-" is a special character and will be handled in the switch statement below
+								$this->createParagraph();
+								$continue = false;
 							}
 							break;
 						default:
-							if (!$this->isInScopeStack(self::$blockScopes)) {
-								$this->openScope('paragraph');
-							}
+							$this->createParagraph();
 							$continue = false;
 							break;
 					}
@@ -196,12 +198,15 @@
 							} else {
 								$this->openOrCloseUnnestableScope('underline');
 							}
+						} else if ($this->peek() === ')' && $this->nextScope['type'] === 'small') {
+							$this->read();
+							$this->closeScopeOfType('small');
 						} else {
 							$this->printPlainText($text);
 						}
 						break;
 					case '(':
-						if ($this->peek() === '(') {
+						if ($this->peek() === '-') {
 							$this->read();
 							$this->openScope('small');
 						} else if ($this->peek() === '+') {
@@ -214,15 +219,7 @@
 					case '+':
 						if ($this->peek() === ')' && $this->nextScope['type'] === 'big') {
 							$this->read();
-							$this->closeScope($this->scopePop());
-						} else {
-							$this->printPlainText($text);
-						}
-						break;
-					case ')':
-						if ($this->peek() === ')' && $this->nextScope['type'] === 'small') {
-							$this->read();
-							$this->closeScope($this->scopePop());
+							$this->closeScopeOfType('big');
 						} else {
 							$this->printPlainText($text);
 						}
@@ -241,6 +238,12 @@
 			}
 		}
 		
+		private function createParagraph() {
+			if (!$this->isInScopeStack(self::$blockScopes)) {
+				$this->openScope('paragraph');
+			}
+		}
+		
 		private function printPlainText($text) {
 			$this->out($text);
 		}
@@ -252,6 +255,15 @@
 			} else {
 				$this->openScope($type);
 			}
+		}
+		
+		private function closeScopeOfType($type) {
+			$nextScope = $this->scopePeek();
+			if ($nextScope['type'] !== $type) {
+				$this->throwException(new Exception('Expected scope of type "' . $type . '", got "' . $nextScope['type'] . '"'));
+			}
+			
+			$this->closeScope($this->scopePop());
 		}
 		
 		private function handleNewLine() {
@@ -365,16 +377,41 @@
 			}
 		}
 
-		private function peek() {
-			return isset($this->wikitext[$this->index + 1]) ? $this->wikitext[$this->index + 1] : null;
-		}
-		
-		private function read() {
-			if (isset($this->wikitext[$this->index + 1])) {
-				return $this->wikitext[++$this->index];
+		private function peek($num = 1) {
+			$index = $this->index;
+			$text = '';
+			while ($num) {
+				if (!isset($this->wikitext[$index + 1])) {
+					if (empty($text)) {
+						$text = null;
+					}
+					
+					break;
+				}
+				
+				$text .= $this->wikitext[++$index];
+				$num--;
 			}
 			
-			return null;
+			return $text;
+		}
+		
+		private function read($num = 1) {
+			$text = '';
+			while ($num) {
+				if (!isset($this->wikitext[$this->index + 1])) {
+					if (empty($text)) {
+						$text = null;
+					}
+					
+					break;
+				}
+				
+				$text .= $this->wikitext[++$this->index];
+				$num--;
+			}
+			
+			return $text;
 		}
 		
 		private function isInScopeStack($type) {
