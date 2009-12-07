@@ -5,6 +5,7 @@
 		private $wikitext;
 		private $index;
 		private $scopeStack;
+		private $isStartOfLine;
 		
 		private static $scopes = array(
 			//name                       opener              closer
@@ -47,7 +48,6 @@
 			'small', 'big', 'teletype'
 		);
 		
-		private $isStartOfLine;
 		
 		public function __construct() {
 			$this->init();
