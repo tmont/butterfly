@@ -214,16 +214,23 @@ WIKI;
 			$wikitext = <<<WIKI
 <<Hello there, this is 
 a blockquote that should be terminated 
-by two line breaks.
+by a blockquote closer
+>>
 
-<<Here is another.
+<<Here is another.>>
+
+<<
+here is one that is terminated by virtue 
+of eof
 WIKI;
 
 			$expected = <<<HTML
 <blockquote><div>
-Hello there, this is a blockquote that should be terminated by two line breaks.</div></blockquote>
+Hello there, this is a blockquote that should be terminated by a blockquote closer</div></blockquote>
 <blockquote><div>
 Here is another.</div></blockquote>
+<blockquote><div>
+here is one that is terminated by virtue of eof</div></blockquote>
 
 HTML;
 			
@@ -247,13 +254,22 @@ HTML;
 		
 		public function testPreformatted2() {
 			$wikitext = <<<WIKI
-{this is some preformatted
-text
+{{{this is some preformatted
+
+
+text}}}
+
+{{{hi there, this should be
+automatically closed
 WIKI;
 
 			$expected = <<<HTML
 <pre>this is some preformatted
+
+
 text</pre>
+<pre>hi there, this should be
+automatically closed</pre>
 
 HTML;
 			

@@ -48,6 +48,9 @@
 			'small', 'big', 'teletype'
 		);
 		
+		private static $manuallyClosableScopes = array(
+			'blockquote', 'preformatted', 'code'
+		);
 		
 		public function __construct() {
 			$this->init();
@@ -97,15 +100,15 @@
 				if ($this->isStartOfLine) {
 					$continue = true;
 					switch ($text) {
-						case '!':
+						case '!': //header
 							while ($this->peek() === '!') {
 								$text .= $this->read();
 							}
 							
 							$this->openScope('header', min(6, strlen($text)));
 							break;
-						case '*':
-						case '#':
+						case '*': //unordered list
+						case '#': //ordered list
 							$peek = $this->peek();
 							while ($peek === '*' || $peek === '#') {
 								$text .= $this->read();
@@ -114,21 +117,21 @@
 							
 							$this->handleListItem($text);
 							break;
-						case ';':
+						case ';': //definition term
 							if (!$this->isInScopeStack('deflist')) {
 								$this->openScope('deflist');
 							}
 							
 							$this->openScope('defterm');
 							break;
-						case ':':
+						case ':': //definition
 							if (!$this->isInScopeStack('deflist')) {
 								throw new Exception('Cannot have a definition without a definition term');
 							}
 							
 							$this->openScope('defdef');
 							break;
-						case '<':
+						case '<': //blockquote opener
 							if ($this->peek() === '<') {
 								$this->read();
 								$this->openScope('blockquote');
@@ -136,24 +139,26 @@
 								$this->printPlainText($text);
 							}
 							break;
-						case ' ':
+						case ' ': //preformatted line
 							$this->openScope('preformattedline');
 							break;
-						case '{':
-							$this->openScope('preformatted');
+						case '{': //preformatted block
+							if ($this->peek(2) === '{{') {
+								$this->read(2);
+								$this->openScope('preformatted');
+							} else {
+								$continue = false;
+							}
 							break;
-						case '-':
+						case '-': //horizontal ruler
 							if ($this->peek(4) === "---" || $this->peek(4) === "---\n") {
 								$this->read(3);
 								$this->out("<hr />\n");
 							} else {
-								//intentionally unhandled, since "-" is a special character and will be handled in the switch statement below
-								$this->createParagraph();
 								$continue = false;
 							}
 							break;
 						default:
-							$this->createParagraph();
 							$continue = false;
 							break;
 					}
@@ -162,6 +167,8 @@
 					
 					if ($continue) {
 						continue;
+					} else {
+						$this->createParagraph();
 					}
 				}
 				
@@ -169,7 +176,7 @@
 					case "\n":
 						$this->handleNewLine();
 						break;
-					case '_':
+					case '_': //bold
 						if ($this->peek() === '_') {
 							$this->read();
 							$this->openOrCloseUnnestableScope('strong');
@@ -177,7 +184,7 @@
 							$this->printPlainText($text);
 						}
 						break;
-					case '\'':
+					case '\'': //emphasis
 						if ($this->peek() === '\'') {
 							$this->read();
 							$this->openOrCloseUnnestableScope('emphasis');
@@ -185,7 +192,7 @@
 							$this->printPlainText($text);
 						}
 						break;
-					case '-':
+					case '-': //underline, strikethrough, small closer
 						if ($this->peek() === '-') {
 							$this->read();
 							if ($this->peek() === '-') {
@@ -201,7 +208,7 @@
 							$this->printPlainText($text);
 						}
 						break;
-					case '(':
+					case '(': //small opener, big opener
 						if ($this->peek() === '-') {
 							$this->read();
 							$this->openScope('small');
@@ -212,10 +219,26 @@
 							$this->printPlainText($text);
 						}
 						break;
-					case '+':
+					case '+': //big closer
 						if ($this->peek() === ')' && $this->nextScope['type'] === 'big') {
 							$this->read();
 							$this->closeScopeOfType('big');
+						} else {
+							$this->printPlainText($text);
+						}
+						break;
+					case '}': //preformatted block closer
+						if ($this->peek(2) === '}}' && $this->isInScopeStack('preformatted')) {
+							$this->read(2);
+							$this->closeScopeUntil('preformatted');
+						} else {
+							$this->printPlainText($text);
+						}
+						break;
+					case '>': //blockquote closer
+						if ($this->peek() === '>' && $this->isInScopeStack('blockquote')) {
+							$this->read();
+							$this->closeScopeUntil('blockquote');
 						} else {
 							$this->printPlainText($text);
 						}
@@ -328,7 +351,14 @@
 			}
 			
 			if ($numNewLines > 1) {
-				$this->emptyScopeStack();
+				//close all scopes that are not manually closable
+				while ($this->nextScope !== null && !self::isManuallyClosable($this->nextScope['type'])) {
+					$this->closeScope($this->scopePop());
+				}
+				
+				if ($this->nextScope !== null && $this->nextScope['type'] === 'preformatted') {
+					$this->out(str_repeat("\n", $numNewLines));
+				}
 			} else if ($numNewLines === 1) {
 				switch ($nextScope['type']) {
 					case 'header':
@@ -442,6 +472,10 @@
 					'preformatted', 'listitem', 'header'
 				)
 			);
+		}
+		
+		private static function isManuallyClosable($type) {
+			return in_array($type, self::$manuallyClosableScopes);
 		}
 		
 		private function throwException(Exception $e) {
