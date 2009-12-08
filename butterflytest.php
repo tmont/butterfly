@@ -489,6 +489,20 @@ HTML;
 			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
 		}
 		
+		public function testLink5() {
+			$wikitext = <<<WIKI
+this is a [http://example.com|__bold__ link]
+WIKI;
+
+			$expected = <<<HTML
+<p>this is a <a class="external" href="http://example.com"><strong>bold</strong> link</a></p>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
+		
+		
 	}
 
 ?>
