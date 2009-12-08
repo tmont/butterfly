@@ -419,6 +419,76 @@ HTML;
 			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
 		}
 		
+		
+		
+		public function testLink1() {
+			$wikitext = <<<WIKI
+[foo]
+
+this is a [wiki] link
+WIKI;
+
+			$expected = <<<HTML
+<p><a class="wiki" href="/foo">foo</a></p>
+
+<p>this is a <a class="wiki" href="/wiki">wiki</a> link</p>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
+		
+		public function testLink2() {
+			$wikitext = <<<WIKI
+[foo|bar]
+
+this is a [wiki|hello there!] link
+WIKI;
+
+			$expected = <<<HTML
+<p><a class="wiki" href="/foo">bar</a></p>
+
+<p>this is a <a class="wiki" href="/wiki">hello there!</a> link</p>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
+		
+		public function testLink3() {
+			$wikitext = <<<WIKI
+[http://example.com]
+
+this is a [http://example.com] link
+WIKI;
+
+			$expected = <<<HTML
+<p><a class="external" href="http://example.com">http://example.com</a></p>
+
+<p>this is a <a class="external" href="http://example.com">http://example.com</a> link</p>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
+		
+		public function testLink4() {
+			$wikitext = <<<WIKI
+[http://example.com|foo]
+
+this is a [http://example.com|bar] link
+WIKI;
+
+			$expected = <<<HTML
+<p><a class="external" href="http://example.com">foo</a></p>
+
+<p>this is a <a class="external" href="http://example.com">bar</a> link</p>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
+		
 	}
 
 ?>

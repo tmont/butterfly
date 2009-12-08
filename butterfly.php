@@ -34,9 +34,9 @@
 			'small'            => array('<small>',           '</small>'),
 			'big'              => array('<big>',             '</big>'),
 			'teletype'         => array('<tt>',              '</tt>'),
-			'link'             => array('<tt>',              '</tt>'),
+			'link'             => array('<a class="{class}" href="{href}">', '</a>'),
 			
-			'escape'           => array(null,                 null),
+			'escape'           => array(null,                 null)
 		);
 		
 		private static $blockScopes = array(
@@ -48,11 +48,11 @@
 		
 		private static $inlineScopes = array(
 			'strong', 'emphasis', 'strikethrough', 'underline',
-			'small', 'big', 'teletype', 'link'
+			'small', 'big', 'teletype', 'link', 'escape'
 		);
 		
 		private static $manuallyClosableScopes = array(
-			'blockquote', 'preformatted', 'code'
+			'blockquote', 'preformatted', 'escape'
 		);
 		
 		public function __construct() {
@@ -90,6 +90,10 @@
 		
 		private function out($string, $indent = false, $opening = true) {
 			echo ($indent ? str_repeat('  ', max(0, count($this->scopeStack) - (int)$opening)) : '') . $string;
+		}
+
+		public static function escape($string, $charset = 'utf-8') {
+			return htmlentities($string, ENT_QUOTES, $charset);
 		}
 		
 		public function toHtml($wikitext, $return = false) {
@@ -139,6 +143,16 @@
 					if ($this->peek() === '!') {
 						$this->read();
 						$this->openScope('escape');
+					} else {
+						//this is a link or an image
+						$this->handleLinkOrImage();
+					}
+					break;
+				case ']':
+					if ($this->isInScopeStack('link')) {
+						$this->closeScopeUntil('link');
+					} else {
+						$this->printPlainText($text);
 					}
 					break;
 				case '_': //bold
@@ -216,13 +230,15 @@
 		
 		private function handleStartOfLine($text) {
 			$continue = true;
+			$createParagraph = false;
 			switch ($text) {
 				case '!': //header
 					while ($this->peek() === '!') {
 						$text .= $this->read();
 					}
 					
-					$this->openScope('header', min(6, strlen($text)));
+					$level = min(6, strlen($text));
+					$this->openScope('header', $level, $level);
 					break;
 				case '*': //unordered list
 				case '#': //ordered list
@@ -265,6 +281,7 @@
 						$this->openScope('preformatted');
 					} else {
 						$continue = false;
+						$createParagraph = true;
 					}
 					break;
 				case '-': //horizontal ruler
@@ -273,21 +290,115 @@
 						$this->out("<hr />\n");
 					} else {
 						$continue = false;
+						$createParagraph = true;
 					}
 					break;
 				case '[':
+					$continue = false;
+					$createParagraph = ($this->peek() !== '!' && $this->peek() !== ':') ? true : false;
+					break;
 				case "\n":
-					return;
+					$createParagraph = false;
+					$continue = false;
+					break;
 				default:
+					$createParagraph = true;
 					$continue = false;
 					break;
 			}
 			
 			$this->isStartOfLine = false;
-			if (!$continue) {
+			if ($createParagraph) {
 				$this->createParagraph();
 			}
 			return $continue;
+		}
+		
+		private function handleImage() {
+			$peek = $this->peek();
+			$text = '';
+			$data = array();
+			while ($peek !== null) {
+				if ($peek === ']') {
+					//possible closure
+					$this->read();
+					if ($this->peek() === ']') {
+						$text .= $this->read();
+					} else {
+						$data[] = $text;
+						break;
+					}
+				} else if ($peek === '|') {
+					$this->read();
+					if ($this->peek() === '|') {
+						//a literal vertical bar
+						$text .= $this->read();
+					} else {
+						$data[] = $text;
+						$text = '';
+					}
+				}
+			}
+			
+			$img = '<img src="' . self::escape(array_shift($data)) . '" ';
+			foreach ($data as $datum) {
+				list($key, $value) = explode('=', $datum);
+				$value = self::escape($value);
+				switch ($key) {
+					case 'alt':
+						$img .= 'alt="' . $value . '" ';
+						break;
+					case 'width':
+						$img .= 'width="' . intval($value) . 'px" ';
+						break;
+					case 'height':
+						$img .= 'height="' . intval($value) . 'px" ';
+						break;
+				}
+			}
+			$img .= '/>';
+			
+			$this->out($img);
+		}
+		
+		private function handleLinkOrImage() {
+			//[foo]                 -> <a href="/foo">foo</a>
+			//[foo|bar]             -> <a href="/foo">bar</a>
+			//[http://foo.com/|foo] -> <a href="http://foo.com/">foo</a>
+			//[http://foo.com/]     -> <a href="http://foo.com/">http://foo.com/</a>
+			
+			$data = array();
+			$text = '';
+			$peek = $this->peek();
+			while ($peek !== null && $peek !== '|' && $peek !== ']') {
+				$text .= $this->read();
+				if ($text === 'image:') {
+					$this->handleImage();
+					return;
+				}
+				
+				$peek = $this->peek();
+			}
+			
+			$closer = $this->read();
+			
+			if (strpos($text, '://') !== false) {
+				$class = 'external';
+				$href = $text;
+			} else {
+				$href = '/' . $text;
+				$class = 'wiki';
+			}
+			
+			$this->openScope('link', null, $class, $href);
+		
+			if ($closer === ']') {
+				//the text is the same as the href, so close the scope
+				$this->out(self::escape($text));
+				$this->closeScopeUntil('link');
+			}
+			
+			return $data;
 		}
 		
 		private function createParagraph() {
@@ -375,8 +486,15 @@
 		private function openScope($type, $nestingLevel = null) {
 			$args = func_get_args();
 			$type = array_shift($args);
-			$this->scopePush($type, $nestingLevel);
-			$opener = preg_replace(array('/\{.*\}/'), $args, self::$scopes[$type][0]);
+			$this->scopePush($type, array_shift($args));
+			
+			$opener = self::$scopes[$type][0];
+			if (count($args) > 0) {
+				foreach ($args as $arg) {
+					$opener = preg_replace('/\{.*?\}/', $arg, $opener, 1);
+				}
+			}
+			
 			$this->out($opener . (self::newlineOnOpen($type) ? "\n" : ''), self::indentOnOpen($type));
 		}
 		
