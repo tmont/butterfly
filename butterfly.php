@@ -152,7 +152,7 @@
 					if ($this->isInScopeStack('link')) {
 						$this->closeScopeUntil('link');
 					} else {
-						$this->printPlainText($text);
+						$this->out($text);
 					}
 					break;
 				case '_': //bold
@@ -160,7 +160,7 @@
 						$this->read();
 						$this->openOrCloseUnnestableScope('strong');
 					} else {
-						$this->printPlainText($text);
+						$this->out($text);
 					}
 					break;
 				case '\'': //emphasis
@@ -168,7 +168,7 @@
 						$this->read();
 						$this->openOrCloseUnnestableScope('emphasis');
 					} else {
-						$this->printPlainText($text);
+						$this->out($text);
 					}
 					break;
 				case '-': //underline, strikethrough, small closer
@@ -184,7 +184,7 @@
 						$this->read();
 						$this->closeScopeOfType('small');
 					} else {
-						$this->printPlainText($text);
+						$this->out($text);
 					}
 					break;
 				case '(': //small opener, big opener
@@ -195,7 +195,7 @@
 						$this->read();
 						$this->openScope('big');
 					} else {
-						$this->printPlainText($text);
+						$this->out($text);
 					}
 					break;
 				case '+': //big closer
@@ -203,7 +203,7 @@
 						$this->read();
 						$this->closeScopeOfType('big');
 					} else {
-						$this->printPlainText($text);
+						$this->out($text);
 					}
 					break;
 				case '}': //preformatted block closer
@@ -211,7 +211,7 @@
 						$this->read(2);
 						$this->closeScopeUntil('preformatted');
 					} else {
-						$this->printPlainText($text);
+						$this->out($text);
 					}
 					break;
 				case '>': //blockquote closer
@@ -219,11 +219,11 @@
 						$this->read();
 						$this->closeScopeUntil('blockquote');
 					} else {
-						$this->printPlainText($text);
+						$this->out($text);
 					}
 					break;
 				default:
-					$this->printPlainText($text);
+					$this->out($text);
 					break;
 			}
 		}
@@ -269,7 +269,7 @@
 						$this->read();
 						$this->openScope('blockquote');
 					} else {
-						$this->printPlainText($text);
+						$this->out($text);
 					}
 					break;
 				case ' ': //preformatted line
@@ -405,10 +405,6 @@
 			if (!$this->isInScopeStack(self::$blockScopes)) {
 				$this->openScope('paragraph');
 			}
-		}
-		
-		private function printPlainText($text) {
-			$this->out($text);
 		}
 		
 		private function openOrCloseUnnestableScope($type) {
