@@ -161,7 +161,9 @@ WIKI;
 
 			$expected = <<<HTML
 <p>foo</p>
+
 <p>barbaz</p>
+
 <p>bat</p>
 
 HTML;
@@ -189,6 +191,7 @@ WIKI;
   <dt>baz</dt>
   <dd>bat</dd>
 </dl>
+
 <dl>
   <dt>boo</dt>
   <dd>biz</dd>
@@ -227,8 +230,10 @@ WIKI;
 			$expected = <<<HTML
 <blockquote><div>
 Hello there, this is a blockquote that should be terminated by a blockquote closer</div></blockquote>
+
 <blockquote><div>
 Here is another.</div></blockquote>
+
 <blockquote><div>
 here is one that is terminated by virtue of eof</div></blockquote>
 
@@ -268,6 +273,7 @@ WIKI;
 
 
 text</pre>
+
 <pre>hi there, this should be
 automatically closed</pre>
 
@@ -287,6 +293,7 @@ WIKI;
 
 			$expected = <<<HTML
 <p><strong>foo</strong></p>
+
 <p>_foo and so<strong>me fo</strong>o.</p>
 
 HTML;
@@ -303,6 +310,7 @@ WIKI;
 
 			$expected = <<<HTML
 <p><em>foo</em></p>
+
 <p>'foo and so<em>me fo</em>o.</p>
 
 HTML;
@@ -319,6 +327,7 @@ WIKI;
 
 			$expected = <<<HTML
 <p><ins>foo</ins></p>
+
 <p>-foo and so<ins>me fo</ins>o.</p>
 
 HTML;
@@ -335,6 +344,7 @@ WIKI;
 
 			$expected = <<<HTML
 <p><del>foo</del></p>
+
 <p>-foo and so<del>me fo</del>o.</p>
 
 HTML;
@@ -351,6 +361,7 @@ WIKI;
 
 			$expected = <<<HTML
 <p><small>foo</small></p>
+
 <p>(foo <small>sm<small>all</small></small></p>
 
 HTML;
@@ -367,6 +378,7 @@ WIKI;
 
 			$expected = <<<HTML
 <p><big>foo</big></p>
+
 <p>(foo <big>bi<big>g</big></big></p>
 
 HTML;
@@ -389,6 +401,23 @@ HTML;
 			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
 		}
 		
+		
+		
+		public function testEscape1() {
+			$wikitext = <<<WIKI
+[!escaped __hello__ [hi]]]
+
+how about some __[![inline]] es''capage'']__?
+WIKI;
+
+			$expected = <<<HTML
+escaped __hello__ [hi]
+<p>how about some <strong>[inline] es''capage''</strong>?</p>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
 		
 	}
 

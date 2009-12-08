@@ -35,6 +35,8 @@
 			'big'              => array('<big>',             '</big>'),
 			'teletype'         => array('<tt>',              '</tt>'),
 			'link'             => array('<tt>',              '</tt>'),
+			
+			'escape'           => array(null,                 null),
 		);
 		
 		private static $blockScopes = array(
@@ -98,6 +100,21 @@
 			}
 			
 			while (($text = $this->read()) !== null) {
+				if ($this->isInScopeStack('escape')) {
+					if ($text === ']') {
+						if ($this->peek() === ']') {
+							//to output a literal "]" precede it with another "]"
+							$this->read();
+						} else {
+							$this->closeScopeUntil('escape');
+							continue;
+						}
+					}
+					
+					$this->out($text);
+					continue;
+				}
+				
 				if ($this->isStartOfLine && $this->handleStartOfLine($text)) {
 					continue;
 				}
@@ -117,6 +134,12 @@
 			switch ($text) {
 				case "\n":
 					$this->handleNewLine();
+					break;
+				case '[': //open link, open image, open escape
+					if ($this->peek() === '!') {
+						$this->read();
+						$this->openScope('escape');
+					}
 					break;
 				case '_': //bold
 					if ($this->peek() === '_') {
@@ -252,6 +275,9 @@
 						$continue = false;
 					}
 					break;
+				case '[':
+				case "\n":
+					return;
 				default:
 					$continue = false;
 					break;
@@ -299,6 +325,9 @@
 			}
 			
 			$this->closeScopes(strlen($text));
+			if (strlen($text) > 1 && $this->nextScope['type'] !== 'preformatted') {
+				$this->out("\n");
+			}
 			$this->isStartOfLine = true;
 		}
 
