@@ -503,6 +503,38 @@ HTML;
 		}
 		
 		
+		
+		public function testImage1() {
+			$wikitext = <<<WIKI
+[image:http://example.com/]
+
+[image:http://example.com/||]]]
+WIKI;
+
+			$expected = <<<HTML
+<p><img src="http://example.com/" /></p>
+
+<p><img src="http://example.com/|]" /></p>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
+		
+		public function testImage2() {
+			$wikitext = <<<WIKI
+[image:http://example.com/|width=200|height=100|alt=[foo||bar]]]
+WIKI;
+
+			$expected = <<<HTML
+<p><img src="http://example.com/" width="200px" height="100px" alt="[foo|bar]" /></p>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
+		
+		
 	}
 
 ?>

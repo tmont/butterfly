@@ -337,7 +337,11 @@
 						$data[] = $text;
 						$text = '';
 					}
+				} else {
+					$text .= $this->read();
 				}
+				
+				$peek = $this->peek();
 			}
 			
 			$img = '<img src="' . self::escape(array_shift($data)) . '" ';
