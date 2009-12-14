@@ -20,6 +20,7 @@
 			'header'           => array('<h{level}>',        '</h{level}>'),
 			'table'            => array('<table>',           '</table>'),
 			'tablecell'        => array('<td>',              '</td>'),
+			'tablerowline'     => array('<tr>',              '</tr>'),
 			'tablerow'         => array('<tr>',              '</tr>'),
 			'tableheader'      => array('<th>',              '</th>'),
 			'preformatted'     => array('<pre>',             '</pre>'),
@@ -43,7 +44,7 @@
 			'paragraph', 'unorderedlist', 'orderedlist', 'listitem', 
 			'header', 'table', 'tablecell', 'tablerow', 'tableheader', 
 			'preformatted', 'blockquote', 'deflist', 'defterm', 'defdef',
-			'preformattedline'
+			'preformattedline', 'tablerowline'
 		);
 		
 		private static $inlineScopes = array(
@@ -52,7 +53,7 @@
 		);
 		
 		private static $manuallyClosableScopes = array(
-			'blockquote', 'preformatted', 'escape'
+			'blockquote', 'preformatted', 'escape', 'tablerow'
 		);
 		
 		public function __construct() {
@@ -155,6 +156,13 @@
 						$this->out($text);
 					}
 					break;
+				case '|':
+					if ($this->isInScopeStack('table')) {
+						$this->handleTableCell();
+					} else {
+						$this->out($text);
+					}
+					break;
 				case '_': //bold
 					if ($this->peek() === '_') {
 						$this->read();
@@ -206,8 +214,11 @@
 						$this->out($text);
 					}
 					break;
-				case '}': //preformatted block closer
-					if ($this->peek(2) === '}}' && $this->isInScopeStack('preformatted')) {
+				case '}': //preformatted block closer, tablerow closer
+					if ($this->peek() === '|' && $this->isInScopeStack('tablerow')) {
+						$this->read();
+						$this->closeScopeUntil('tablerow');
+					} else if ($this->peek(2) === '}}' && $this->isInScopeStack('preformatted')) {
 						$this->read(2);
 						$this->closeScopeUntil('preformatted');
 					} else {
@@ -284,6 +295,9 @@
 						$createParagraph = true;
 					}
 					break;
+				case '|': //tables!
+					$this->handleTableCell();
+					break;
 				case '-': //horizontal ruler
 					if ($this->peek(4) === "---" || $this->peek(4) === "---\n") {
 						$this->read(3);
@@ -298,7 +312,7 @@
 					$createParagraph = ($this->peek() !== '!' && $this->peek() !== ':') ? true : false;
 					break;
 				case "\n":
-					$createParagraph = false;
+					$createParagraph = false; //to prevent empty paragraphs
 					$continue = false;
 					break;
 				default:
@@ -312,6 +326,42 @@
 				$this->createParagraph();
 			}
 			return $continue;
+		}
+		
+		private function handleTableCell() {
+			if ($this->peek() === '{') {
+				$this->read();
+				$rowType = 'tablerow';
+			} else {
+				$rowType = 'tablerowline';
+			}
+			
+			if ($this->peek() === '!') {
+				$this->read();
+				$cellType = 'tableheader';
+			} else {
+				$cellType = 'tablecell';
+			}
+			
+			if (!$this->isInScopeStack('table')) {
+				//new table
+				$this->openScope('table');
+				$this->openScope($rowType);
+			} else if ($this->isInScopeStack('tablecell', 'tableheader')) {
+				if ($this->nextScope['type'] !== 'tablecell' && $this->nextScope['type'] !== 'tableheader') {
+					throw new Exception('Expected tablecell or tableheader scope, but got "' . $this->nextScope['type'] . '"');
+				}
+				
+				//close previous tablecell
+				$this->closeScope($this->scopePop());
+			} else if (!$this->isInScopeStack('tablerow')) {
+				//new tablerow
+				$this->openScope($rowType);
+			}
+			
+			if ($this->peek() !== "\n" && $this->peek() !== null) {
+				$this->openScope($cellType);
+			}
 		}
 		
 		private function handleImage() {
@@ -366,11 +416,6 @@
 		}
 		
 		private function handleLinkOrImage() {
-			//[foo]                 -> <a href="/foo">foo</a>
-			//[foo|bar]             -> <a href="/foo">bar</a>
-			//[http://foo.com/|foo] -> <a href="http://foo.com/">foo</a>
-			//[http://foo.com/]     -> <a href="http://foo.com/">http://foo.com/</a>
-			
 			$data = array();
 			$text = '';
 			$peek = $this->peek();
@@ -499,8 +544,7 @@
 		}
 		
 		private function closeScopes($numNewLines) {
-			$nextScope = $this->scopePeek();
-			if ($nextScope === null) {
+			if ($this->nextScope === null) {
 				return;
 			}
 			
@@ -514,13 +558,15 @@
 					$this->out(str_repeat("\n", $numNewLines));
 				}
 			} else if ($numNewLines === 1) {
-				switch ($nextScope['type']) {
+				switch ($this->nextScope['type']) {
 					case 'header':
-						$this->closeScope($this->scopePop(), $nextScope['nesting_level']);
+						$scope = $this->scopePop();
+						$this->closeScope($scope, $scope['nesting_level']);
 						break;
 					case 'defterm':
 					case 'defdef':
 					case 'preformattedline':
+					case 'tablerowline':
 						$this->closeScope($this->scopePop());
 						break;
 					case 'preformatted':
@@ -606,7 +652,11 @@
 		}
 		
 		private static function indentOnOpen($type) {
-			return in_array($type, array('orderedlist', 'unorderedlist', 'listitem', 'deflist', 'blockquote', 'defterm', 'defdef'));
+			return in_array($type, array(
+				'orderedlist', 'unorderedlist', 'listitem', 'deflist', 'blockquote',
+				'defterm', 'defdef', 'table', 'tablerowline', 'tablerow', 'tablecell',
+				'tableheader'
+			));
 		}
 		
 		private static function indentOnClose($type) {
@@ -614,7 +664,10 @@
 		}
 		
 		private static function newlineOnOpen($type) {
-			return in_array($type, array('orderedlist', 'unorderedlist', 'deflist', 'blockquote'));
+			return in_array($type, array(
+				'orderedlist', 'unorderedlist', 'deflist', 'blockquote', 'table',
+				'tablerowline', 'tablerow'
+			));
 		}
 		
 		private static function newlineOnClose($type) {
@@ -623,7 +676,8 @@
 				array(
 					'orderedlist', 'unorderedlist', 'deflist', 'blockquote',
 					'paragraph', 'defterm', 'defdef', 'preformattedline', 
-					'preformatted', 'listitem', 'header'
+					'preformatted', 'listitem', 'header', 'table', 'tablerowline',
+					'tablerow', 'tablecell', 'tableheader'
 				)
 			);
 		}
