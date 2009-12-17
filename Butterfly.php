@@ -270,7 +270,7 @@
 					break;
 				case ':': //definition
 					if (!$this->isInScopeStack('deflist')) {
-						throw new Exception('Cannot have a definition without a definition term');
+						$this->throwException(new Exception('Cannot have a definition without a definition term'));
 					}
 					
 					$this->openScope('defdef');
@@ -349,7 +349,7 @@
 				$this->openScope($rowType);
 			} else if ($this->isInScopeStack('tablecell', 'tableheader')) {
 				if ($this->nextScope['type'] !== 'tablecell' && $this->nextScope['type'] !== 'tableheader') {
-					throw new Exception('Expected tablecell or tableheader scope, but got "' . $this->nextScope['type'] . '"');
+					$this->throwException(new Exception('Expected tablecell or tableheader scope, but got "' . $this->nextScope['type'] . '"'));
 				}
 				
 				//close previous tablecell
