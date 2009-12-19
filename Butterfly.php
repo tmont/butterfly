@@ -195,6 +195,14 @@
 						$this->out($text);
 					}
 					break;
+				case '=': //teletype
+					if ($this->peek() === '=') {
+						$this->read();
+						$this->openOrCloseUnnestableScope('teletype');
+					} else {
+						$this->out($text);
+					}
+					break;
 				case '(': //small opener, big opener
 					if ($this->peek() === '-') {
 						$this->read();

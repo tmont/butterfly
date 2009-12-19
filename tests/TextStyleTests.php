@@ -106,6 +106,22 @@ HTML;
 			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
 		}
 		
+		public function testTeletype() {
+			$wikitext = <<<WIKI
+==foo==
+
+=foo and so==me fo==o.
+WIKI;
+
+			$expected = <<<HTML
+<p><tt>foo</tt></p>
+
+<p>=foo and so<tt>me fo</tt>o.</p>
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
 		
 	}
 
