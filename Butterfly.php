@@ -475,6 +475,8 @@
 			$nextScope = $this->scopePeek();
 			if ($nextScope['type'] === $type) {
 				$this->closeScope($this->scopePop());
+			} else if ($this->isInScopeStack($type)) {
+				$this->throwException(new Exception('Scope mismatch, must close ' . $this->nextScope['type'] . ' first'));
 			} else {
 				$this->openScope($type);
 			}

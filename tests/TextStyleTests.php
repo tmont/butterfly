@@ -123,6 +123,12 @@ HTML;
 			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
 		}
 		
+		public function testUnnestableScopeWithScopeMismatch() {
+			$wikitext = '__--foo__--';
+			$this->setExpectedException('Exception', 'Scope mismatch, must close underline first');
+			$this->butterfly->toHtml($wikitext, true);
+		}
+		
 	}
 
 ?>
