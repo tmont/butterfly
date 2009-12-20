@@ -459,7 +459,14 @@
 		}
 		
 		private function createParagraph() {
-			if (!$this->isInScopeStack(self::$blockScopes)) {
+			$unparagraphableScopes = self::$blockScopes;
+			foreach (array('blockquote', 'tablerow')  as $type) {
+				if (($key = array_search($type, $unparagraphableScopes)) !== false) {
+					unset($unparagraphableScopes[$key]);
+				}
+			}
+			
+			if (!$this->isInScopeStack($unparagraphableScopes)) {
 				$this->openScope('paragraph');
 			}
 		}

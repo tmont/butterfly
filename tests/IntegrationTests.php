@@ -36,7 +36,10 @@ HTML;
 			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
 		}
 		
-	
+		public function testNestedScopesInBlockquote() {
+			$this->loadData('blockquote', $wikitext, $expected);
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
 		
 		
 	}
