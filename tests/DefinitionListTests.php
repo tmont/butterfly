@@ -17,15 +17,15 @@ WIKI;
 
 			$expected = <<<HTML
 <dl>
-  <dt>foo</dt>
-  <dd>bar</dd>
-  <dt>baz</dt>
-  <dd>bat</dd>
+<dt>foo</dt>
+<dd>bar</dd>
+<dt>baz</dt>
+<dd>bat</dd>
 </dl>
 
 <dl>
-  <dt>boo</dt>
-  <dd>biz</dd>
+<dt>boo</dt>
+<dd>biz</dd>
 </dl>
 
 HTML;

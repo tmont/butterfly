@@ -12,10 +12,10 @@ WIKI;
 
 			$expected = <<<HTML
 <ul>
-  <li>foo</li>
-  <ul>
-    <li>bar</li>
-  </ul>
+<li>foo</li>
+<ul>
+<li>bar</li>
+</ul>
 </ul>
 
 HTML;
@@ -31,10 +31,10 @@ WIKI;
 
 			$expected = <<<HTML
 <ol>
-  <li>foo</li>
-  <ul>
-    <li>bar</li>
-  </ul>
+<li>foo</li>
+<ul>
+<li>bar</li>
+</ul>
 </ol>
 
 HTML;
@@ -65,20 +65,20 @@ WIKI;
 
 			$expected = <<<HTML
 <ul>
-  <li>foo</li>
-  <li>bar</li>
-  <ul>
-    <li>baz</li>
-    <ul>
-      <li>bat</li>
-    </ul>
-    <li>bart</li>
-    <ul>
-      <li>boo</li>
-    </ul>
-  </ul>
-  <li>foobar</li>
-  <li>faz</li>
+<li>foo</li>
+<li>bar</li>
+<ul>
+<li>baz</li>
+<ul>
+<li>bat</li>
+</ul>
+<li>bart</li>
+<ul>
+<li>boo</li>
+</ul>
+</ul>
+<li>foobar</li>
+<li>faz</li>
 </ul>
 
 HTML;

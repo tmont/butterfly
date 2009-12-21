@@ -12,14 +12,14 @@ WIKI;
 
 			$expected = <<<HTML
 <table>
-  <tr>
-    <th> foo </th>
-    <th> bar </th>
-  </tr>
-  <tr>
-    <td> baz </td>
-    <td> bat </td>
-  </tr>
+<tr>
+<th> foo </th>
+<th> bar </th>
+</tr>
+<tr>
+<td> baz </td>
+<td> bat </td>
+</tr>
 </table>
 
 HTML;
@@ -36,15 +36,15 @@ WIKI;
 
 			$expected = <<<HTML
 <table>
-  <tr>
-    <th> foo </th>
-    <td> bar</td>
-    <td> bat </td>
-  </tr>
-  <tr>
-    <td> baz </td>
-    <td> bat </td>
-  </tr>
+<tr>
+<th> foo </th>
+<td> bar</td>
+<td> bat </td>
+</tr>
+<tr>
+<td> baz </td>
+<td> bat </td>
+</tr>
 </table>
 
 HTML;

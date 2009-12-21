@@ -89,8 +89,8 @@
 			return count($this->scopeStack) ? array_pop($this->scopeStack) : null;
 		}
 		
-		private function out($string, $indent = false, $opening = true) {
-			echo ($indent ? str_repeat('  ', max(0, count($this->scopeStack) - (int)$opening)) : '') . $string;
+		private function out($string) {
+			echo $string;
 		}
 
 		public static function escape($string, $charset = 'utf-8') {
@@ -546,6 +546,8 @@
 		}
 		
 		private function openScope($type, $nestingLevel = null) {
+			$this->verifyScope($type);
+			
 			$args = func_get_args();
 			$type = array_shift($args);
 			$this->scopePush($type, array_shift($args));
@@ -557,7 +559,7 @@
 				}
 			}
 			
-			$this->out($opener . (self::newlineOnOpen($type) ? "\n" : ''), self::indentOnOpen($type));
+			$this->out($opener . (self::newlineOnOpen($type) ? "\n" : ''));
 		}
 		
 		private function closeScopes($numNewLines) {
@@ -604,7 +606,7 @@
 			$args = func_get_args();
 			$scope = array_shift($args);
 			$closer = preg_replace(array('/\{.*\}/'), $args, self::$scopes[$scope['type']][1]);
-			$this->out($closer . (self::newlineOnClose($scope['type']) ? "\n" : ''), self::indentOnClose($scope['type']), false);
+			$this->out($closer . (self::newlineOnClose($scope['type']) ? "\n" : ''));
 		}
 		
 		private function closeScopeUntil($scopeType) {
@@ -668,16 +670,10 @@
 			return false;
 		}
 		
-		private static function indentOnOpen($type) {
-			return in_array($type, array(
-				'orderedlist', 'unorderedlist', 'listitem', 'deflist', 'blockquote',
-				'defterm', 'defdef', 'table', 'tablerowline', 'tablerow', 'tablecell',
-				'tableheader'
-			));
-		}
-		
-		private static function indentOnClose($type) {
-			return self::newlineOnOpen($type);
+		private function verifyScope($newScopeType) {
+			if (in_array($newScopeType, self::$blockScopes) && $this->isInScopeStack(self::$inlineScopes)) {
+				$this->throwException(new Exception('Cannot nest a block level scope inside an inline level scope'));
+			}
 		}
 		
 		private static function newlineOnOpen($type) {
