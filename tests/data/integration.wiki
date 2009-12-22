@@ -107,6 +107,18 @@ to represent links in Butterfly:
 #An external link with alternate text
 #*==[![http://example.com/|external link]]]== -> [http://example.com/|external link]
 
+!!Images
+Images are constructed similarly to links. The format is:
+ [![image:{url}|{width|height|alt}=value]]]
+
+For example,
+
+ [![image:http://example.com/|width=200|height=100|alt=This is my image lol]]]
+
+produces
+
+[image:http://example.com/|width=200|height=100|alt=This is my image lol]
+
 !!Lists
 Lists are also important. They should be overused at all times.
 
