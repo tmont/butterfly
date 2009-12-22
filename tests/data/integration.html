@@ -89,3 +89,80 @@ world</pre>
 <p>produces</p>
 
 <p><big>this text will be <big>even bigger</big></big>, but this text will not.</p>
+
+<h2>Links</h2>
+<p>Links are an important part of wikis. There are four different ways to represent links in Butterfly:</p>
+
+<ol>
+<li>A wiki link with default text</li>
+<ul>
+<li><tt>[foo]</tt> -&gt; <a class="wiki" href="/foo">foo</a></li>
+</ul>
+<li>A wiki link with alternate text</li>
+<ul>
+<li><tt>[foo|bar]</tt> -&gt; <a class="wiki" href="/foo">bar</a></li>
+</ul>
+<li>An external link with default text</li>
+<ul>
+<li><tt>[http://example.com/]</tt> -&gt; <a class="external" href="http://example.com/">http://example.com/</a></li>
+</ul>
+<li>An external link with alternate text</li>
+<ul>
+<li><tt>[http://example.com/|external link]</tt> -&gt; <a class="external" href="http://example.com/">external link</a></li>
+</ul>
+</ol>
+
+<h2>Lists</h2>
+<p>Lists are also important. They should be overused at all times.</p>
+
+<h3>Bullet Lists</h3>
+<pre>*List 1
+*List 2
+**Sub list 2-1
+**Sub list 2-2
+**#Sub list 2-2-1
+**#Sub list 2-2-2
+**Sub list 2-3
+*List 3
+*#Sub list 3-1
+*#Sub list 3-2
+*List 4</pre>
+
+<p>produces</p>
+
+<ul>
+<li>List 1</li>
+<li>List 2</li>
+<ul>
+<li>Sub list 2-1</li>
+<li>Sub list 2-2</li>
+<ol>
+<li>Sub list 2-2-1</li>
+<li>Sub list 2-2-2</li>
+</ol>
+<li>Sub list 2-3</li>
+</ul>
+<li>List 3</li>
+<ol>
+<li>Sub list 3-1</li>
+<li>Sub list 3-2</li>
+</ol>
+<li>List 4</li>
+</ul>
+
+<h3>Definition Lists</h3>
+<p>Start a line with a semicolon for terms, start a line with a colon for definitions.</p>
+
+<pre>;Term
+:Definition
+;Elephant
+:Grey, long trunk, enormous in stature</pre>
+
+<p>produces</p>
+
+<dl>
+<dt>Term</dt>
+<dd>Definition</dd>
+<dt>Elephant</dt>
+<dd>Grey, long trunk, enormous in stature</dd>
+</dl>

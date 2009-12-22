@@ -93,3 +93,62 @@ Bigger text starts with ==[!(+]== and ends with ==[!+)]==.
 produces
 
 (+this text will be (+even bigger+)+), but this text will not.
+
+!!Links
+Links are an important part of wikis. There are four different ways 
+to represent links in Butterfly:
+
+#A wiki link with default text
+#*==[![foo]]]== -> [foo]
+#A wiki link with alternate text
+#*==[![foo|bar]]]== -> [foo|bar]
+#An external link with default text
+#*==[![http://example.com/]]]== -> [http://example.com/]
+#An external link with alternate text
+#*==[![http://example.com/|external link]]]== -> [http://example.com/|external link]
+
+!!Lists
+Lists are also important. They should be overused at all times.
+
+!!!Bullet Lists
+{{{[!*List 1
+*List 2
+**Sub list 2-1
+**Sub list 2-2
+**#Sub list 2-2-1
+**#Sub list 2-2-2
+**Sub list 2-3
+*List 3
+*#Sub list 3-1
+*#Sub list 3-2
+*List 4]}}}
+
+produces
+
+*List 1
+*List 2
+**Sub list 2-1
+**Sub list 2-2
+**#Sub list 2-2-1
+**#Sub list 2-2-2
+**Sub list 2-3
+*List 3
+*#Sub list 3-1
+*#Sub list 3-2
+*List 4
+
+!!!Definition Lists
+Start a line with a semicolon for terms, start a line with a 
+colon for definitions.
+
+{{{[!;Term
+:Definition
+;Elephant
+:Grey, long trunk, enormous in stature]}}}
+
+produces
+
+;Term
+:Definition
+;Elephant
+:Grey, long trunk, enormous in stature
