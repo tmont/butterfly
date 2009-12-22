@@ -152,3 +152,30 @@ produces
 :Definition
 ;Elephant
 :Grey, long trunk, enormous in stature
+
+!!Preformatted
+Preformatted text can be done in two different ways: indenting the 
+first character of a line or wrapping it in ==[!{{{ }}}]== (three 
+curly braces).
+
+ This is indented by a space and will be terminated by a line break.
+
+{{{[!{{{Wrapped in curly
+braces. Notice
+how line
+__breaks
+and
+text styles
+are__
+preserved}}}]}}}
+
+produces
+
+{{{Wrapped in curly
+braces. Notice
+how line
+__breaks
+and
+text styles
+are__
+preserved}}}

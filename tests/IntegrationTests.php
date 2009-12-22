@@ -41,6 +41,32 @@ HTML;
 			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
 		}
 		
+		public function testNestedScopesInPreformatted() {
+			$wikitext = <<<WIKI
+{{{Hello
+__world
+and such
+
+
+hello__
+world}}}
+WIKI;
+			
+			$expected = <<<HTML
+<pre>Hello
+<strong>world
+and such
+
+
+hello</strong>
+world</pre>
+
+HTML;
+
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+			
+		}
+		
 	}
 
 ?>

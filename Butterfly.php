@@ -508,7 +508,7 @@
 			}
 			
 			$this->closeScopes(strlen($text));
-			if (strlen($text) > 1 && $this->nextScope['type'] !== 'preformatted') {
+			if (strlen($text) > 1 && !$this->isInScopeStack('preformatted')) {
 				$this->out("\n");
 			}
 			$this->isStartOfLine = true;
@@ -526,7 +526,7 @@
 				
 				$this->openScope($listType);
 			} else {
-				//if a list is already started, and the nesting level is the same, then we need to close a listitem scope
+				//if a list is already started
 				$nestedLists = 0;
 				foreach ($this->scopeStack as $scope) {
 					if ($scope['type'] === 'orderedlist' || $scope['type'] === 'unorderedlist') {
@@ -534,7 +534,6 @@
 					}
 				}
 				
-				$this->closeScopeUntil('listitem');
 				$difference = strlen($text) - $nestedLists;
 				if ($difference < 0) {
 					//close previous list(s)
@@ -573,36 +572,18 @@
 		}
 		
 		private function closeScopes($numNewLines) {
-			if ($this->nextScope === null) {
-				return;
+			while (
+				$this->nextScope !== null && (
+					($numNewLines > 1 && self::closeOnMultipleLineBreaks($this->nextScope['type'])) || 
+					self::closeOnSingleLineBreak($this->nextScope['type'])
+				)
+			) {
+				$scope = $this->scopePop();
+				$this->closeScope($scope, $scope['nesting_level']);
 			}
 			
-			if ($numNewLines > 1) {
-				//close all scopes that are not manually closable
-				while ($this->nextScope !== null && !in_array($this->nextScope['type'], self::$manuallyClosableScopes)) {
-					$scope = $this->scopePop();
-					$this->closeScope($scope, $scope['nesting_level']);
-				}
-				
-				if ($this->nextScope !== null && $this->nextScope['type'] === 'preformatted') {
-					$this->out(str_repeat("\n", $numNewLines));
-				}
-			} else if ($numNewLines === 1) {
-				switch ($this->nextScope['type']) {
-					case 'header':
-						$scope = $this->scopePop();
-						$this->closeScope($scope, $scope['nesting_level']);
-						break;
-					case 'defterm':
-					case 'defdef':
-					case 'preformattedline':
-					case 'tablerowline':
-						$this->closeScope($this->scopePop());
-						break;
-					case 'preformatted':
-						$this->out("\n");
-						break;
-				}
+			if ($this->isInScopeStack('preformatted')) {
+				$this->out(str_repeat("\n", $numNewLines));
 			}
 		}
 		
@@ -625,6 +606,7 @@
 			$nextScope = $this->scopePeek();
 			if ($nextScope !== null && !in_array($nextScope['type'], $terminatingScopes)) {
 				$this->closeScope($this->scopePop(), false);
+				$nextScope = $this->scopePeek();
 			}
 			
 			//the terminating scope
@@ -709,6 +691,14 @@
 					'tablerow', 'tablecell', 'tableheader'
 				)
 			);
+		}
+		
+		private static function closeOnMultipleLineBreaks($type) {
+			return in_array($type, array('table', 'paragraph', 'unorderedlist', 'orderedlist', 'deflist'));
+		}
+		
+		private static function closeOnSingleLineBreak($type) {
+			return in_array($type, array('tablerowline', 'listitem', 'defterm', 'defdef', 'header', 'preformattedline'));
 		}
 		
 		private function throwException(Exception $e) {
