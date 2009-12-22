@@ -4,6 +4,30 @@ This article outlines how to use the Butterfly wiki syntax. It's
 pretty similar to most other wiki syntaxes (like [http://wikipedia.org/|MediaWiki]), 
 but tries to improve on it whenever I felt like it.
 
+!!Headers
+To make a header, start a line with an exclamation point (==!==).
+
+ !!!I am an <h3> tag!
+
+produces
+
+!!!I am an <h3> tag!
+
+!!Paragraphs
+Two successive line breaks is a paragraph. Paragraphs are also created 
+by single line breaks after closing certain scopes (like, e.g. a 
+header).
+
+{{{[!Hello
+
+world]}}}
+
+produces
+
+Hello
+
+world
+
 !!Text
 Basic textual manipulation.
 
