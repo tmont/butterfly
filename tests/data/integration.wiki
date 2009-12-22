@@ -179,3 +179,26 @@ and
 text styles
 are__
 preserved}}}
+
+!!Blockquote
+Blockquotes start with two successive less than signs (==<<==) and 
+end with two successive greater than signs (==>>==). The opening less 
+than signs must start at the beginning of a line.
+
+{{{[!<<This is a blockquote.
+
+They can be very long, if you wish.
+
+*Here is a list item.
+
+That's all for now.>>]}}}
+
+produces
+
+<<This is a blockquote.
+
+They can be very long, if you wish.
+
+*Here is a list item.
+
+That's all for now.>>
