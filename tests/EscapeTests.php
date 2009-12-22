@@ -13,7 +13,7 @@ WIKI;
 
 			$expected = <<<HTML
 escaped __hello__ [hi]
-<p>how about some <strong>[inline] es''capage''</strong>?</p>
+<p>how about some <strong>[inline] es&#039;&#039;capage&#039;&#039;</strong>?</p>
 
 HTML;
 			

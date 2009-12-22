@@ -17,7 +17,7 @@
 			$expected = file_get_contents($this->getDataDir() . $prefix . '.html');
 		}
 		
-		public function _testIntegration() {
+		public function testIntegration() {
 			$this->loadData('integration', $wikitext, $expected);
 			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
 		}

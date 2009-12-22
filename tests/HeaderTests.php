@@ -42,6 +42,22 @@ HTML;
 			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
 		}
 		
+		public function testHeaderGetsClosedProperlyOnDoubleLineBreak() {
+			$wikitext = <<<WIKI
+!Test
+
+
+WIKI;
+
+			$expected = <<<HTML
+<h1>Test</h1>
+
+
+HTML;
+			
+			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+		}
+		
 	}
 
 ?>

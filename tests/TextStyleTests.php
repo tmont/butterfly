@@ -31,7 +31,7 @@ WIKI;
 			$expected = <<<HTML
 <p><em>foo</em></p>
 
-<p>'foo and so<em>me fo</em>o.</p>
+<p>&#039;foo and so<em>me fo</em>o.</p>
 
 HTML;
 			

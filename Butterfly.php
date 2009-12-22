@@ -89,8 +89,8 @@
 			return count($this->scopeStack) ? array_pop($this->scopeStack) : null;
 		}
 		
-		private function out($string) {
-			echo $string;
+		private function out($string, $escape = false) {
+			echo ($escape ? self::escape($string) : $string);
 		}
 
 		public static function escape($string, $charset = 'utf-8') {
@@ -104,19 +104,24 @@
 				ob_start();
 			}
 			
+			$escaped = '';
 			while (($text = $this->read()) !== null) {
 				if ($this->isInScopeStack('escape')) {
 					if ($text === ']') {
 						if ($this->peek() === ']') {
 							//to output a literal "]" precede it with another "]"
+							$escaped .= $text;
 							$this->read();
 						} else {
+							$this->out($escaped, true);
+							$escaped = '';
 							$this->closeScopeUntil('escape');
 							continue;
 						}
+					} else {
+						$escaped .= $text;
 					}
 					
-					$this->out($text);
 					continue;
 				}
 				
@@ -125,6 +130,11 @@
 				}
 				
 				$this->handleChar($text);
+			}
+			
+			//output escaped text if needed
+			if (!empty($escaped)) {
+				$this->out($escaped, true);
 			}
 			
 			//close orphaned scopes
@@ -176,7 +186,7 @@
 						$this->read();
 						$this->openOrCloseUnnestableScope('emphasis');
 					} else {
-						$this->out($text);
+						$this->out($text, true);
 					}
 					break;
 				case '-': //underline, strikethrough, small closer
@@ -238,11 +248,11 @@
 						$this->read();
 						$this->closeScopeUntil('blockquote');
 					} else {
-						$this->out($text);
+						$this->out($text, true);
 					}
 					break;
 				default:
-					$this->out($text);
+					$this->out($text, true);
 					break;
 			}
 		}
@@ -288,7 +298,7 @@
 						$this->read();
 						$this->openScope('blockquote');
 					} else {
-						$this->out($text);
+						$this->out($text, true);
 					}
 					break;
 				case ' ': //preformatted line
@@ -569,8 +579,9 @@
 			
 			if ($numNewLines > 1) {
 				//close all scopes that are not manually closable
-				while ($this->nextScope !== null && !self::isManuallyClosable($this->nextScope['type'])) {
-					$this->closeScope($this->scopePop());
+				while ($this->nextScope !== null && !in_array($this->nextScope['type'], self::$manuallyClosableScopes)) {
+					$scope = $this->scopePop();
+					$this->closeScope($scope, $scope['nesting_level']);
 				}
 				
 				if ($this->nextScope !== null && $this->nextScope['type'] === 'preformatted') {
@@ -605,7 +616,7 @@
 		private function closeScope(array $scope) {
 			$args = func_get_args();
 			$scope = array_shift($args);
-			$closer = preg_replace(array('/\{.*\}/'), $args, self::$scopes[$scope['type']][1]);
+			$closer = preg_replace(array('/\{.*?\}/'), $args, self::$scopes[$scope['type']][1]);
 			$this->out($closer . (self::newlineOnClose($scope['type']) ? "\n" : ''));
 		}
 		
@@ -674,6 +685,11 @@
 			if (in_array($newScopeType, self::$blockScopes) && $this->isInScopeStack(self::$inlineScopes)) {
 				$this->throwException(new Exception('Cannot nest a block level scope inside an inline level scope'));
 			}
+			
+			//preformatted should not be nested in a paragraph
+			if (($newScopeType === 'preformatted' || $newScopeType === 'preformattedline') && $this->isInScopeStack('paragraph')) {
+				$this->closeScopeUntil('paragraph');
+			}
 		}
 		
 		private static function newlineOnOpen($type) {
@@ -693,10 +709,6 @@
 					'tablerow', 'tablecell', 'tableheader'
 				)
 			);
-		}
-		
-		private static function isManuallyClosable($type) {
-			return in_array($type, self::$manuallyClosableScopes);
 		}
 		
 		private function throwException(Exception $e) {

@@ -1,0 +1,71 @@
+!Butterfly Basics
+
+This article outlines how to use the Butterfly wiki syntax. It's 
+pretty similar to most other wiki syntaxes (like [http://wikipedia.org/|MediaWiki]), 
+but tries to improve on it whenever I felt like it.
+
+!!Text
+Basic textual manipulation.
+
+!!!Bold
+Bold text is surrounded by two successive underscores (==[!__]==).
+
+ [!__this text will be bold__, but this text will not.]
+
+produces
+
+__this text will be bold__, but this text will not.
+
+!!!Italics
+Italic text is surrounded by two successive apostrophes (==[!'']==).
+
+ [!''this text will be italicized'', but this text will not.]
+
+produces
+
+''this text will be bold'', but this text will not.
+
+!!!Teletype
+Teletype text is surrounded by two successive equals signs (==[!==]==).
+
+ [!==this text will be teletype==, but this text will not.]
+
+produces
+
+==this text will be teletype==, but this text will not.
+
+!!!Underline
+Underlined text is surrounded by two successive dashes (==[!--]==).
+
+ [!--this text will be underlined--, but this text will not.]
+
+produces
+
+--this text will be underlined--, but this text will not.
+
+!!!Strike-through
+Strike-through text is surrounded by three successive dashes (==[!---]==).
+
+ [!---this text will be strike-through---, but this text will not.]
+
+produces
+
+---this text will be strike-through---, but this text will not.
+
+!!!Small
+Smaller text starts with ==[!(-]== and ends with ==[!-)]==.
+
+ [!(-this text will be (-even smaller-)-), but this text will not.]
+
+produces
+
+(-this text will be (-even smaller-)-), but this text will not.
+
+!!!Big
+Bigger text starts with ==[!(+]== and ends with ==[!+)]==.
+
+ [!(+this text will be (+even bigger+)+), but this text will not.]
+
+produces
+
+(+this text will be (+even bigger+)+), but this text will not.
