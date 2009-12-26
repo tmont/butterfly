@@ -30,7 +30,11 @@ HTML;
 		public function testRowScoping() {
 			$wikitext = <<<WIKI
 |{! foo | bar
-| bat }|
+| bat 
+| boo |
+bal
+
+}|
 | baz | bat |
 WIKI;
 
@@ -40,6 +44,9 @@ WIKI;
 <th> foo </th>
 <td> bar</td>
 <td> bat </td>
+<td> boo </td>
+<td>bal
+</td>
 </tr>
 <tr>
 <td> baz </td>

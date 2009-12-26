@@ -214,3 +214,24 @@ They can be very long, if you wish.
 *Here is a list item.
 
 That's all for now.>>
+
+!!Tables
+Everybody loves tables! Tables are pretty easy. It's easier to show than 
+explain.
+
+{{{[!|!Foo|!Bar|!Baz|
+|Tables|are|fun!|
+|{table rows
+can span|multiple
+lines}|
+|this row| only has two columns|
+]}}}
+
+produces
+
+|!Foo|!Bar|!Baz|
+|Tables|are|fun!|
+|{table rows 
+can span|multiple|
+lines}|
+|this row|only has two columns|

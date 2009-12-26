@@ -377,7 +377,11 @@
 				$this->openScope($rowType);
 			}
 			
-			if ($this->peek() !== "\n" && $this->peek() !== null) {
+			//line breaks only matter for tablerowline scopes
+			if (
+				$this->peek() !== null &
+				(($this->isInScopeStack('tablerowline') && $this->peek() !== "\n") || $this->isInScopeStack('tablerow'))
+			) {
 				$this->openScope($cellType);
 			}
 		}
