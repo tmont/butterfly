@@ -21,7 +21,6 @@ HTML;
 			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
 		}
 		
-		
 	}
 
 ?>

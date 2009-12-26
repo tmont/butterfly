@@ -327,7 +327,7 @@
 					break;
 				case '[':
 					$continue = false;
-					$createParagraph = ($this->peek() !== ':') ? true : false;
+					$createParagraph = ($this->peek() !== ':') ? true : false; //images/macros don't start paragraphs
 					break;
 				case "\n":
 					$createParagraph = false; //to prevent empty paragraphs
