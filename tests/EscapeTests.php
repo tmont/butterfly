@@ -12,7 +12,8 @@ how about some __[![inline]] es''capage'']__?
 WIKI;
 
 			$expected = <<<HTML
-escaped __hello__ [hi]
+<p>escaped __hello__ [hi]</p>
+
 <p>how about some <strong>[inline] es&#039;&#039;capage&#039;&#039;</strong>?</p>
 
 HTML;

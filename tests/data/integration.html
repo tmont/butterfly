@@ -262,3 +262,14 @@ lines}|
 <td>only has two columns</td>
 </tr>
 </table>
+
+<h2>Escaping</h2>
+<p>Sometimes you want to escape text that has meaning to the wiki language. You can accomplish this by enclosing it in <tt><strong>[!</strong></tt><em>{your text and stuff}]</em><tt><strong>]</strong></tt>.</p>
+
+<pre>[!__this__ should &#039;&#039;not&#039;&#039; be [wikized]]</pre>
+
+<p>produces</p>
+
+<p>__this__ should &#039;&#039;not&#039;&#039; be [wikized]</p>
+
+<p>Notice that preceding a close square bracket with another close square bracket outputs a literal close square bracket.</p>

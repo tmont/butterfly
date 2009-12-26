@@ -235,3 +235,17 @@ produces
 can span|multiple|
 lines}|
 |this row|only has two columns|
+
+!!Escaping
+Sometimes you want to escape text that has meaning to the wiki language. 
+You can accomplish this by enclosing it in 
+==__[![!]__==''{your text and stuff}]''==__]__==.
+
+ [![!__this__ should ''not'' be [wikized]]]]]
+
+produces
+
+[!__this__ should ''not'' be [wikized]]]
+
+Notice that preceding a close square bracket with another close square bracket 
+outputs a literal close square bracket.
