@@ -47,7 +47,7 @@ Italic text is surrounded by two successive apostrophes (==[!'']==).
 
 produces
 
-''this text will be bold'', but this text will not.
+''this text will be italicized'', but this text will not.
 
 !!!Teletype
 Teletype text is surrounded by two successive equals signs (==[!==]==).
@@ -222,7 +222,7 @@ explain.
 {{{[!|!Foo|!Bar|!Baz|
 |Tables|are|fun!|
 |{table rows
-can span|multiple
+can span|multiple|
 lines}|
 |this row| only has two columns|
 ]}}}
@@ -239,9 +239,9 @@ lines}|
 !!Escaping
 Sometimes you want to escape text that has meaning to the wiki language. 
 You can accomplish this by enclosing it in 
-==__[![!]__==''{your text and stuff}]''==__]__==.
+==__[![!]__== and ==__]__==.
 
- [![!__this__ should ''not'' be [wikized]]]]]
+ [![!__this__ should ''not'' be [wikized]]]]]]]
 
 produces
 

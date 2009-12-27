@@ -19,7 +19,12 @@
 		
 		public function testIntegration() {
 			$this->loadData('integration', $wikitext, $expected);
-			$this->assertEquals($expected, $this->butterfly->toHtml($wikitext, true));
+			$start = microtime(true);
+			$actual = $this->butterfly->toHtml($wikitext, true);
+			$elapsed = microtime(true) - $start;
+			$this->assertEquals($expected, $actual);
+			
+			$this->assertLessThan(2, $elapsed, "Elapsed time for parsing should be less than 2 seconds but was $elapsed");
 		}
 		
 		public function testNestedInlineScopes() {
