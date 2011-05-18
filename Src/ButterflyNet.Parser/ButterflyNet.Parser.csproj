@@ -84,6 +84,7 @@
     <Compile Include="Satisfiers\CharMatchSatisfier.cs" />
     <Compile Include="Strategies\CloseParagraphStrategy.cs" />
     <Compile Include="Satisfiers\ExactCharMatchSatisfier.cs" />
+    <Compile Include="Satisfiers\CurrentScopeMustMatchOrBeParagraphSatisfier.cs" />
     <Compile Include="Strategies\ExtendedDefinitionStrategy.cs" />
     <Compile Include="Strategies\FunctionalStrategy.cs" />
     <Compile Include="Strategies\InlineStrategy.cs" />
