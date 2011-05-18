@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
+	[TokenTransformer("[:")]
 	public class ModuleStrategy : FunctionalStrategy {
-		public ModuleStrategy() {
-			AddSatisfier(new ExactCharMatchSatisfier("[:"));
-		}
-
 		public override int Priority {
 			get {
 				//must be less than OpenLinkStrategy
