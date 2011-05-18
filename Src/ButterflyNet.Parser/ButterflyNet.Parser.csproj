@@ -152,7 +152,6 @@
     <Compile Include="Strategies\CloseBigStrategy.cs" />
     <Compile Include="Strategies\CloseBlockquoteStrategy.cs" />
     <Compile Include="Strategies\CloseLinkStrategy.cs" />
-    <Compile Include="Strategies\CloseNoWikiStrategy.cs" />
     <Compile Include="Strategies\ClosePreformattedStrategy.cs" />
     <Compile Include="Strategies\CloseSmallStrategy.cs" />
     <Compile Include="Strategies\CloseTableRowStrategy.cs" />
@@ -168,7 +167,7 @@
     <Compile Include="Strategies\OpenBigStrategy.cs" />
     <Compile Include="Strategies\OpenBlockquoteStrategy.cs" />
     <Compile Include="Strategies\OpenLinkStrategy.cs" />
-    <Compile Include="Strategies\OpenNoWikiStrategy.cs" />
+    <Compile Include="Strategies\NoWikiStrategy.cs" />
     <Compile Include="Strategies\OpenParagraphStrategy.cs" />
     <Compile Include="Strategies\OpenPreformattedLineStrategy.cs" />
     <Compile Include="Strategies\OpenPreformattedStrategy.cs" />
@@ -181,7 +180,6 @@
     <Compile Include="TokenTransformerAttribute.cs" />
     <Compile Include="Strategies\UnderlineStrategy.cs" />
     <Compile Include="Strategies\WriteCharacterStrategy.cs" />
-    <Compile Include="Strategies\WriteNonParsedCharacterStrategy.cs" />
     <Compile Include="ParserExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScopeLevel.cs" />

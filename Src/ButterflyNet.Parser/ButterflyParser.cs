@@ -61,7 +61,7 @@ namespace ButterflyNet.Parser {
 
 				var strategy = orderedStrategies.Where(s => s.IsSatisfiedBy(context)).FirstOrDefault();
 				if (strategy == null) {
-					throw new ParseException(string.Format("No strategy found for {0}", context.CurrentChar));
+					throw new ParseException(string.Format("No strategy found for {0}", (char)context.CurrentChar));
 				}
 
 				strategy.Execute(context);

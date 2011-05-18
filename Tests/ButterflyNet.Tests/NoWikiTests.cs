@@ -6,17 +6,16 @@ namespace ButterflyNet.Parser.Tests {
 
 		[Test]
 		public void Should_escape_wiki_syntax_inside_inline_scope() {
-			Convert("__bold [!==not teletype==]__");
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), "<p><strong>bold ==not teletype==</strong></p>");
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("__bold [!==not teletype==]__"), "<p><strong>bold ==not teletype==</strong></p>");
 		}
 
 		[Test]
 		public void Should_allow_multiline_escaping() {
-			Convert(@"foo [!oh hai!
+			const string text = @"foo [!oh hai!
 * not a list
 | not a table |
-]");
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), "<p>foo oh hai!* not a list| not a table |</p>");
+]";
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<p>foo oh hai!* not a list| not a table |</p>");
 		}
 
 	}
