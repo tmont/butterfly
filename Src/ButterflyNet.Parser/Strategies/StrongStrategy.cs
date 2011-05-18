@@ -3,11 +3,8 @@ using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
+	[TokenTransformer("__")]
 	public abstract class StrongStrategy : InlineStrategy {
-		protected StrongStrategy() {
-			AddSatisfier(new ExactCharMatchSatisfier("__"));
-		}
-
 		protected override sealed Type Type { get { return ScopeTypeCache.Strong; } }
 	}
 

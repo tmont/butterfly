@@ -3,11 +3,8 @@ using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
+	[TokenTransformer("---")]
 	public abstract class StrikeThroughStrategy : InlineStrategy {
-		protected StrikeThroughStrategy() {
-			AddSatisfier(new ExactCharMatchSatisfier("---"));
-		}
-		
 		public override sealed int Priority { get { return DefaultPriority - 1; } }
 		protected override sealed Type Type { get { return ScopeTypeCache.StrikeThrough; } }
 	}

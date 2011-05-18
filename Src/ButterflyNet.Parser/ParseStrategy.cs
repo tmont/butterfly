@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ButterflyNet.Parser.Strategies;
 
 namespace ButterflyNet.Parser {
 
@@ -8,6 +9,31 @@ namespace ButterflyNet.Parser {
 		public const int DefaultPriority = 100;
 		public event Action<ParseContext> BeforeExecute;
 		public event Action<ParseContext> AfterExecute;
+
+		private readonly IList<ISatisfier> satisfiers = new List<ISatisfier>();
+
+		protected ParseStrategy() {
+			var tokenAttribute = GetType().GetAttributes<TokenTransformerAttribute>().FirstOrDefault();
+			if (tokenAttribute != null) {
+				if (tokenAttribute.RegexMatch) {
+					AddSatisfier(new CharMatchSatisfier(tokenAttribute.Token));
+				} else {
+					AddSatisfier(new ExactCharMatchSatisfier(tokenAttribute.Token));
+				}
+
+				BeforeExecute += AdvanceInputForToken(tokenAttribute.Token);
+			}
+		}
+
+		private static Action<ParseContext> AdvanceInputForToken(string token) {
+			return context => {
+				if (token.Length <= 1) {
+					return;
+				}
+
+				context.AdvanceInput(token.Length - 1);
+			};
+		}
 
 		#region can't get no satisfaction
 		private class LambdaDrivenSatisfier : ISatisfier {
@@ -21,8 +47,6 @@ namespace ButterflyNet.Parser {
 				return func(context);
 			}
 		}
-
-		private readonly IList<ISatisfier> satisfiers = new List<ISatisfier>();
 
 		protected ParseStrategy AddSatisfier(Func<ParseContext, bool> satisfyingFunction) {
 			AddSatisfier(new LambdaDrivenSatisfier(satisfyingFunction));

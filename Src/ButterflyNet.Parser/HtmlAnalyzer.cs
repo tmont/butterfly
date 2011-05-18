@@ -47,8 +47,16 @@ namespace ButterflyNet.Parser {
 			Writer.Write(HttpUtility.HtmlEncode(text));
 		}
 
+		public override void WriteAndEscape(char c) {
+			Writer.Write(c);
+		}
+
 		public override void WriteUnescapedString(string text) {
 			Writer.Write(text);
+		}
+
+		public override void WriteUnescapedChar(char c) {
+			Writer.Write(c);
 		}
 
 		public override void CloseParagraph() {

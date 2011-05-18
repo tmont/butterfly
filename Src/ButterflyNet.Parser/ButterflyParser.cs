@@ -49,8 +49,11 @@ namespace ButterflyNet.Parser {
 				ModuleFactory ?? new ActivatorFactory<IButterflyModule>(new NamedTypeRegistry<IButterflyModule>().LoadDefaults()),
 				MacroFactory ?? new ActivatorFactory<IButterflyMacro>(new NamedTypeRegistry<IButterflyMacro>().LoadDefaults())
 			);
+
 			var orderedStrategies = Strategies.OrderBy(strategy => strategy.Priority);
 			bool eofHandled;
+
+			context.Analyzer.OnStart();
 
 			do {
 				context.AdvanceInput();
@@ -63,6 +66,8 @@ namespace ButterflyNet.Parser {
 
 				strategy.Execute(context);
 			} while (!eofHandled);
+
+			context.Analyzer.OnEnd();
 
 			return new ParseResult(context.ScopeTree, context.Input.Value);
 		}

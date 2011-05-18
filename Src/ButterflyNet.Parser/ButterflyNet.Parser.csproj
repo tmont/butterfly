@@ -82,7 +82,6 @@
     <Compile Include="ScopeTypeCache.cs" />
     <Compile Include="ServiceProviderParseStrategyFactory.cs" />
     <Compile Include="Satisfiers\CharMatchSatisfier.cs" />
-    <Compile Include="Strategies\BeginningOfFileStrategy.cs" />
     <Compile Include="Strategies\CloseParagraphStrategy.cs" />
     <Compile Include="Satisfiers\ExactCharMatchSatisfier.cs" />
     <Compile Include="Strategies\ExtendedDefinitionStrategy.cs" />
@@ -162,7 +161,6 @@
     <Compile Include="Strategies\EofStrategy.cs" />
     <Compile Include="Strategies\HeaderStrategy.cs" />
     <Compile Include="Strategies\HorizontalRulerStrategy.cs" />
-    <Compile Include="Strategies\InvokeConvertersOnEofStrategy.cs" />
     <Compile Include="Strategies\ListStrategy.cs" />
     <Compile Include="Strategies\ModuleStrategy.cs" />
     <Compile Include="Strategies\OpenBigStrategy.cs" />
@@ -179,6 +177,7 @@
     <Compile Include="Strategies\StrongStrategy.cs" />
     <Compile Include="Strategies\TableStrategy.cs" />
     <Compile Include="Strategies\TeletypeStrategy.cs" />
+    <Compile Include="TokenTransformerAttribute.cs" />
     <Compile Include="Strategies\UnderlineStrategy.cs" />
     <Compile Include="Strategies\WriteCharacterStrategy.cs" />
     <Compile Include="Strategies\WriteNonParsedCharacterStrategy.cs" />

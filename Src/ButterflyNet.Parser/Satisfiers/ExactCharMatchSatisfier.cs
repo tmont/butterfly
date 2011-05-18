@@ -11,7 +11,7 @@
 				return chars[0] == context.Input.Current;
 			}
 
-			return context.Input.Current + context.Input.Peek(chars.Length - 1) == chars;
+			return (char)context.Input.Current + context.Input.Peek(chars.Length - 1) == chars;
 		}
 	}
 }

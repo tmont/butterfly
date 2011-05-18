@@ -3,11 +3,8 @@ using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
+	[TokenTransformer("--")]
 	public abstract class UnderlineStrategy : InlineStrategy {
-		protected UnderlineStrategy() {
-			AddSatisfier(new ExactCharMatchSatisfier("--"));
-		}
-
 		protected override sealed Type Type { get { return ScopeTypeCache.Underline; } }
 	}
 

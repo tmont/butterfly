@@ -88,5 +88,6 @@ namespace ButterflyNet.Parser.Strategies {
 				AfterScopeCloses.Invoke(currentScope, context);
 			}
 		}
+
 	}
 }

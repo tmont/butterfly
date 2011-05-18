@@ -2,11 +2,10 @@
 using ButterflyNet.Parser.Satisfiers;
 
 namespace ButterflyNet.Parser.Strategies {
+	[TokenTransformer("-)")]
 	public sealed class CloseSmallStrategy : InlineStrategy {
 		public CloseSmallStrategy() {
-			AddSatisfier(new InScopeStackSatisfier(Type));
 			AddSatisfier(new CurrentScopeMustMatchSatisfier(Type));
-			AddSatisfier(new ExactCharMatchSatisfier("-)"));
 		}
 
 		protected override void DoExecute(ParseContext context) {
