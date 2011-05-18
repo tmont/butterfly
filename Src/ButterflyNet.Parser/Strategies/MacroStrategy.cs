@@ -5,8 +5,11 @@ using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
 	public class MacroStrategy : FunctionalStrategy {
+		private const string Token = "[::";
+
 		public MacroStrategy() {
 			SetEventDelegates();
+			AddSatisfier(new ExactCharMatchSatisfier(Token));
 		}
 
 		private void SetEventDelegates() {
@@ -49,7 +52,5 @@ namespace ButterflyNet.Parser.Strategies {
 			macro.Load(data);
 			return new MacroScope(macro);
 		}
-
-		public override string Token { get { return "[::"; } }
 	}
 }

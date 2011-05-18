@@ -3,9 +3,12 @@ using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public abstract class StrikeThroughStrategy : InlineStrategy, ITokenProvider {
+	public abstract class StrikeThroughStrategy : InlineStrategy {
+		protected StrikeThroughStrategy() {
+			AddSatisfier(new ExactCharMatchSatisfier("---"));
+		}
+		
 		public override sealed int Priority { get { return DefaultPriority - 1; } }
-		public string Token { get { return "---"; } }
 		protected override sealed Type Type { get { return ScopeTypeCache.StrikeThrough; } }
 	}
 

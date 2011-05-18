@@ -1,12 +1,13 @@
 ﻿using ButterflyNet.Parser.Satisfiers;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class ParagraphOnConsecutiveNewlinesStrategy : ScopeDrivenStrategy, ITokenProvider {
-		private readonly ParseStrategyBase paragraphStrategy = new OpenParagraphStrategy();
+	public class ParagraphOnConsecutiveNewlinesStrategy : ScopeDrivenStrategy {
+		private readonly ParseStrategy paragraphStrategy = new OpenParagraphStrategy();
 
 		public ParagraphOnConsecutiveNewlinesStrategy() {
 			//preformatted line breaks are significant
 			AddSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Preformatted, ScopeTypeCache.PreformattedLine)));
+			AddSatisfier(new ExactCharMatchSatisfier("\n\n"));
 		}
 
 		protected override void DoExecute(ParseContext context) {
@@ -26,7 +27,5 @@ namespace ButterflyNet.Parser.Strategies {
 				}
 			}
 		}
-
-		public string Token { get { return "\n\n"; } }
 	}
 }

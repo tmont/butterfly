@@ -1,9 +1,11 @@
 ﻿using ButterflyNet.Parser.Satisfiers;
+using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class HeaderStrategy : ScopeDrivenStrategy, ITokenProvider {
+	public class HeaderStrategy : ScopeDrivenStrategy {
 		public HeaderStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
+			AddSatisfier(new ExactCharMatchSatisfier("!"));
 		}
 
 		protected override void DoExecute(ParseContext context) {
@@ -15,9 +17,7 @@ namespace ButterflyNet.Parser.Strategies {
 
 			context.Input.SeekToNonWhitespace(); //ignore spaces/tabs
 			context.UpdateCurrentChar();
-			OpenScope(new Scopes.HeaderScope(depth), context);
+			OpenScope(new HeaderScope(depth), context);
 		}
-
-		public string Token { get { return "!"; } }
 	}
 }

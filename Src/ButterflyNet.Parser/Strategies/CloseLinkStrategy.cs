@@ -2,9 +2,10 @@
 using ButterflyNet.Parser.Satisfiers;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class CloseLinkStrategy : InlineStrategy, ITokenProvider {
+	public class CloseLinkStrategy : InlineStrategy {
 		public CloseLinkStrategy() {
 			AddSatisfier(new CurrentScopeMustMatchSatisfier(ScopeTypeCache.Link));
+			AddSatisfier(new ExactCharMatchSatisfier("]"));
 		}
 
 		protected override void DoExecute(ParseContext context) {
@@ -12,7 +13,5 @@ namespace ButterflyNet.Parser.Strategies {
 		}
 
 		protected override Type Type { get { return ScopeTypeCache.Link; } }
-
-		public string Token { get { return "]"; } }
 	}
 }

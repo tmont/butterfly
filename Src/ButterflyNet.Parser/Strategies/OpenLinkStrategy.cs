@@ -3,9 +3,10 @@ using System.Text;
 using ButterflyNet.Parser.Satisfiers;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class OpenLinkStrategy : InlineStrategy, ITokenProvider {
+	public class OpenLinkStrategy : InlineStrategy {
 		public OpenLinkStrategy() {
 			AddSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Link)));
+			AddSatisfier(new ExactCharMatchSatisfier("["));
 		}
 
 		protected override void DoExecute(ParseContext context) {
@@ -29,7 +30,5 @@ namespace ButterflyNet.Parser.Strategies {
 		}
 
 		protected override Type Type { get { return ScopeTypeCache.Link; } }
-
-		public string Token { get { return "["; } }
 	}
 }

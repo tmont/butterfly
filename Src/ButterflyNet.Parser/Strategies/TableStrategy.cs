@@ -3,8 +3,9 @@ using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class TableStrategy : ScopeDrivenStrategy, ITokenProvider {
+	public class TableStrategy : ScopeDrivenStrategy {
 		public TableStrategy() {
+			AddSatisfier(new ExactCharMatchSatisfier("|"));
 			AddSatisfier<TableSatisfier>();
 		}
 
@@ -62,7 +63,5 @@ namespace ButterflyNet.Parser.Strategies {
 				return startOfLine.IsSatisfiedBy(context) || containsTableScope.IsSatisfiedBy(context);
 			}
 		}
-
-		public string Token { get { return "|"; } }
 	}
 }

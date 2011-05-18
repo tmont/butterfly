@@ -4,8 +4,11 @@ using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
 
-	public abstract class EmphasisStrategy : InlineStrategy, ITokenProvider {
-		public string Token { get { return "''"; } }
+	public abstract class EmphasisStrategy : InlineStrategy {
+		protected EmphasisStrategy() {
+			AddSatisfier(new ExactCharMatchSatisfier("''"));
+		}
+
 		protected override sealed Type Type { get { return ScopeTypeCache.Emphasis; } }
 	}
 

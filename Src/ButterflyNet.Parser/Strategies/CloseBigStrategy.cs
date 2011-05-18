@@ -2,10 +2,11 @@
 using ButterflyNet.Parser.Satisfiers;
 
 namespace ButterflyNet.Parser.Strategies {
-	public sealed class CloseBigStrategy : InlineStrategy, ITokenProvider {
+	public sealed class CloseBigStrategy : InlineStrategy {
 		public CloseBigStrategy() {
 			AddSatisfier(new InScopeStackSatisfier(Type));
 			AddSatisfier(new CurrentScopeMustMatchSatisfier(Type));
+			AddSatisfier(new ExactCharMatchSatisfier("+)"));
 		}
 
 		protected override void DoExecute(ParseContext context) {
@@ -13,6 +14,5 @@ namespace ButterflyNet.Parser.Strategies {
 		}
 
 		protected override Type Type { get { return ScopeTypeCache.Big; } }
-		public string Token { get { return "+)"; } }
 	}
 }

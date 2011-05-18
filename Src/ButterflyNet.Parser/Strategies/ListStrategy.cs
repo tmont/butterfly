@@ -82,44 +82,4 @@ namespace ButterflyNet.Parser.Strategies {
 		}
 	}
 
-	public class CloseListStrategy : ScopeDrivenStrategy, ITokenProvider {
-		public CloseListStrategy() {
-			AddSatisfier(new CurrentScopeMustMatchSatisfier(ScopeTypeCache.ListItem));
-			AddSatisfier<NextLineIsNotAList>();
-		}
-
-		public override int Priority {
-			get {
-				return int.MinValue;
-			}
-		}
-
-		protected override void DoExecute(ParseContext context) {
-			CloseCurrentScope(context);
-		}
-
-		public string Token { get { return "\n"; } }
-
-		private class NextLineIsNotAList : ISatisfier {
-			public bool IsSatisfiedBy(ParseContext context) {
-				var currentScope = context.Scopes.Peek() as ListItemScope;
-				if (currentScope == null) {
-					return false;
-				}
-
-				if (context.Input.Peek() != '*' && context.Input.Peek() != '#') {
-					return true;
-				}
-
-				//get depth of next list item
-				var depth = 1;
-				var peek = context.Input.Peek(2).Last();
-				while (peek == '*' || peek == '#') {
-					peek = context.Input.Peek(++depth + 1).Last();
-				}
-
-				return depth <= currentScope.Depth;
-			}
-		}
-	}
 }

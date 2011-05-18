@@ -1,7 +1,7 @@
 ﻿using ButterflyNet.Parser.Satisfiers;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class InvokeConvertersOnEofStrategy : ParseStrategyBase {
+	public class InvokeConvertersOnEofStrategy : ParseStrategy {
 		public InvokeConvertersOnEofStrategy() {
 			AddSatisfier<EofSatisfier>();
 		}

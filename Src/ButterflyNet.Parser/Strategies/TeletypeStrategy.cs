@@ -4,8 +4,11 @@ using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
 
-	public abstract class TeletypeStrategy : InlineStrategy, ITokenProvider {
-		public string Token { get { return "=="; } }
+	public abstract class TeletypeStrategy : InlineStrategy {
+		protected TeletypeStrategy() {
+			AddSatisfier(new ExactCharMatchSatisfier("=="));
+		}
+
 		protected override sealed Type Type { get { return ScopeTypeCache.Teletype; } }
 	}
 

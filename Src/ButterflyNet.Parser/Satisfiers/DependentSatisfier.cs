@@ -1,8 +1,8 @@
 ﻿namespace ButterflyNet.Parser.Satisfiers {
 	public class DependentSatisfier : ISatisfier {
-		private readonly ParseStrategyBase strategy;
+		private readonly ParseStrategy strategy;
 
-		public DependentSatisfier(ParseStrategyBase strategy) {
+		public DependentSatisfier(ParseStrategy strategy) {
 			this.strategy = strategy;
 		}
 
@@ -11,7 +11,7 @@
 		}
 	}
 
-	public sealed class DependentSatisfier<T> : DependentSatisfier where T : ParseStrategyBase, new() {
+	public sealed class DependentSatisfier<T> : DependentSatisfier where T : ParseStrategy, new() {
 		public DependentSatisfier() : base(new T()) { }
 	}
 }

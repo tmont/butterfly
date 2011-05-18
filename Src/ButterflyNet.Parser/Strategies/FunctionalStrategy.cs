@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace ButterflyNet.Parser.Strategies {
-	public abstract class FunctionalStrategy : InlineStrategy, ITokenProvider {
+	public abstract class FunctionalStrategy : InlineStrategy {
 		protected override sealed void DoExecute(ParseContext context) {
 			var peek = context.Input.Peek();
 			var functionNameBuilder = new StringBuilder();
@@ -70,7 +70,5 @@ namespace ButterflyNet.Parser.Strategies {
 
 			data[optionString.Substring(0, equals)] = optionString.Substring(Math.Min(equals + 1, optionString.Length));
 		}
-
-		public abstract string Token { get; }
 	}
 }

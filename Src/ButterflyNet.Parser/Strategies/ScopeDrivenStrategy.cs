@@ -2,7 +2,7 @@
 using System.Linq;
 
 namespace ButterflyNet.Parser.Strategies {
-	public abstract class ScopeDrivenStrategy : ParseStrategyBase {
+	public abstract class ScopeDrivenStrategy : ParseStrategy {
 		public event Action<IScope, ParseContext> BeforeScopeOpens;
 		public event Action<IScope, ParseContext> AfterScopeOpens;
 		public event Action<IScope, ParseContext> BeforeScopeCloses;

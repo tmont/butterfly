@@ -33,8 +33,11 @@ namespace ButterflyNet.Parser.Tests {
 		}
 
 		#region Custom strong strategy
-		public abstract class CustomStrongStrategy : InlineStrategy, ITokenProvider {
-			public string Token { get { return "??"; } }
+		public abstract class CustomStrongStrategy : InlineStrategy {
+			protected CustomStrongStrategy() {
+				AddSatisfier(new ExactCharMatchSatisfier("??"));
+			}
+
 			protected override sealed Type Type { get { return ScopeTypeCache.Strong; } }
 		}
 
@@ -43,7 +46,7 @@ namespace ButterflyNet.Parser.Tests {
 				AddSatisfier(new OpenNonNestableInlineScopeSatisfier(Type));
 			}
 
-			protected override void Execute(ParseContext context) {
+			protected override void DoExecute(ParseContext context) {
 				OpenScope(new StrongScope(), context);
 			}
 		}
@@ -53,16 +56,15 @@ namespace ButterflyNet.Parser.Tests {
 				AddSatisfier(new CurrentScopeMustMatchSatisfier(Type));
 			}
 
-			protected override void Execute(ParseContext context) {
+			protected override void DoExecute(ParseContext context) {
 				CloseCurrentScope(context);
 			}
 		}
 		#endregion
 
 		#region Blink strategy ftw
-		public abstract class BlinkStrategy : InlineStrategy, ITokenProvider {
+		public abstract class BlinkStrategy : InlineStrategy {
 			protected override sealed Type Type { get { return typeof(BlinkScope); } }
-			public abstract string Token { get; }
 		}
 
 		public class BlinkScope : InlineScope {
@@ -88,25 +90,23 @@ namespace ButterflyNet.Parser.Tests {
 		public class OpenBlinkStrategy : BlinkStrategy {
 			public OpenBlinkStrategy() {
 				AddSatisfier(new OpenNonNestableInlineScopeSatisfier(Type));
+				AddSatisfier(new ExactCharMatchSatisfier("((("));
 
 			}
-			protected override void Execute(ParseContext context) {
+			protected override void DoExecute(ParseContext context) {
 				OpenScope(new BlinkScope(), context);
 			}
-
-			public override string Token { get { return "((("; } }
 		}
 
 		public class CloseBlinkStrategy : BlinkStrategy {
 			public CloseBlinkStrategy() {
 				AddSatisfier(new CurrentScopeMustMatchSatisfier(Type));
+				AddSatisfier(new ExactCharMatchSatisfier(")))"));
 			}
 
-			protected override void Execute(ParseContext context) {
+			protected override void DoExecute(ParseContext context) {
 				CloseCurrentScope(context);
 			}
-
-			public override string Token { get { return ")))"; } }
 		}
 
 		public class BlinkAnalyzer : HtmlAnalyzer {

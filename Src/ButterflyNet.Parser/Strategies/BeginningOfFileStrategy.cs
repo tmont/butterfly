@@ -1,7 +1,7 @@
 ﻿using ButterflyNet.Parser.Satisfiers;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class BeginningOfFileStrategy : ParseStrategyBase {
+	public class BeginningOfFileStrategy : ParseStrategy {
 		public BeginningOfFileStrategy() {
 			AddSatisfier<BeginningOfFileSatisfier>();
 		}

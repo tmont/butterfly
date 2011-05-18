@@ -81,13 +81,15 @@
     <Compile Include="Scopes\MacroScope.cs" />
     <Compile Include="ScopeTypeCache.cs" />
     <Compile Include="ServiceProviderParseStrategyFactory.cs" />
+    <Compile Include="Satisfiers\CharMatchSatisfier.cs" />
+    <Compile Include="Strategies\BeginningOfFileStrategy.cs" />
     <Compile Include="Strategies\CloseParagraphStrategy.cs" />
+    <Compile Include="Satisfiers\ExactCharMatchSatisfier.cs" />
     <Compile Include="Strategies\ExtendedDefinitionStrategy.cs" />
     <Compile Include="Strategies\FunctionalStrategy.cs" />
     <Compile Include="Strategies\InlineStrategy.cs" />
     <Compile Include="ISatisfier.cs" />
     <Compile Include="IScope.cs" />
-    <Compile Include="ITokenProvider.cs" />
     <Compile Include="ParseContext.cs" />
     <Compile Include="ParseContextExtensions.cs" />
     <Compile Include="ButterflyParser.cs" />
@@ -146,7 +148,6 @@
     <Compile Include="Scopes\UnderlineScope.cs" />
     <Compile Include="Scopes\UnescapedScope.cs" />
     <Compile Include="Scopes\UnorderedListScope.cs" />
-    <Compile Include="Strategies\BeginningOfFileStrategy.cs" />
     <Compile Include="Strategies\CloseBigStrategy.cs" />
     <Compile Include="Strategies\CloseBlockquoteStrategy.cs" />
     <Compile Include="Strategies\CloseLinkStrategy.cs" />

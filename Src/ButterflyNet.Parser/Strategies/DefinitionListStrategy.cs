@@ -2,10 +2,11 @@
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class DefinitionListStrategy : ScopeDrivenStrategy, ITokenProvider {
+	public class DefinitionListStrategy : ScopeDrivenStrategy {
 		public DefinitionListStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
 			AddSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.DefinitionTerm)));
+			AddSatisfier(new ExactCharMatchSatisfier(";"));
 		}
 
 		protected override void DoExecute(ParseContext context) {
@@ -15,7 +16,5 @@ namespace ButterflyNet.Parser.Strategies {
 
 			OpenScope(new DefinitionTermScope(), context);
 		}
-
-		public string Token { get { return ";"; } }
 	}
 }

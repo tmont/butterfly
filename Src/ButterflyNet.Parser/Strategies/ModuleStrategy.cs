@@ -4,6 +4,10 @@ using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
 	public class ModuleStrategy : FunctionalStrategy {
+		public ModuleStrategy() {
+			AddSatisfier(new ExactCharMatchSatisfier("[:"));
+		}
+
 		public override int Priority {
 			get {
 				//must be less than OpenLinkStrategy
@@ -19,7 +23,5 @@ namespace ButterflyNet.Parser.Strategies {
 
 			return new ModuleScope(module);
 		}
-
-		public override string Token { get { return "[:"; } }
 	}
 }

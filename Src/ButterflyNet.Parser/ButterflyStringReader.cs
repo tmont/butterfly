@@ -38,6 +38,7 @@ namespace ButterflyNet.Parser {
 		public int Current { get { return index < Length ? input[index] : NoValue; } }
 		public string Value { get { return input; } }
 		public int Index { get { return index; } }
+		public string Substring { get { return index < Length ? input.Substring(index) : string.Empty; } }
 
 		public string Peek(int charsToRead, bool throwOnEof = false) {
 			var count = 0;
