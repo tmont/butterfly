@@ -34,9 +34,9 @@ namespace ButterflyNet.Parser.Tests {
 		}
 
 		[Test]
-		[ExpectedException(typeof(ModuleException), ExpectedMessage = "\"foo!\" is not a valid HTML entity")]
+		[ExpectedException(typeof(ModuleException), ExpectedMessage = "\"<script>malicious code</script>\" is not a valid HTML entity")]
 		public void Should_validate_entity_value() {
-			Parser.Parse("[:entity|value=foo!]");
+			Parser.Parse("[:entity|value=<script>malicious code</script>]");
 		}
 	}
 }
