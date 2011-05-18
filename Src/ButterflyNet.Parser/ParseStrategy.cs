@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ButterflyNet.Parser {
 
-	public abstract class ParseStrategyBase : ISatisfier {
+	public abstract class ParseStrategy : ISatisfier {
 		public const int DefaultPriority = 100;
 		public event Action<ParseContext> BeforeExecute;
 		public event Action<ParseContext> AfterExecute;
@@ -24,17 +24,17 @@ namespace ButterflyNet.Parser {
 
 		private readonly IList<ISatisfier> satisfiers = new List<ISatisfier>();
 
-		protected ParseStrategyBase AddSatisfier(Func<ParseContext, bool> satisfyingFunction) {
+		protected ParseStrategy AddSatisfier(Func<ParseContext, bool> satisfyingFunction) {
 			AddSatisfier(new LambdaDrivenSatisfier(satisfyingFunction));
 			return this;
 		}
 
-		protected ParseStrategyBase AddSatisfier<T>() where T : ISatisfier, new() {
+		protected ParseStrategy AddSatisfier<T>() where T : ISatisfier, new() {
 			AddSatisfier(new T());
 			return this;
 		}
 
-		protected ParseStrategyBase AddSatisfier(ISatisfier satisfier) {
+		protected ParseStrategy AddSatisfier(ISatisfier satisfier) {
 			satisfiers.Add(satisfier);
 			return this;
 		}

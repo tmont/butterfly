@@ -8,8 +8,8 @@ namespace ButterflyNet.Parser {
 			this.serviceProvider = serviceProvider;
 		}
 
-		public ParseStrategyBase Create(Type type) {
-			return (ParseStrategyBase)serviceProvider.GetService(type);
+		public ParseStrategy Create(Type type) {
+			return (ParseStrategy)serviceProvider.GetService(type);
 		}
 	}
 }

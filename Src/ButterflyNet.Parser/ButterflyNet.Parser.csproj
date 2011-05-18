@@ -91,7 +91,7 @@
     <Compile Include="ParseContext.cs" />
     <Compile Include="ParseContextExtensions.cs" />
     <Compile Include="ButterflyParser.cs" />
-    <Compile Include="ParseStrategyBase.cs" />
+    <Compile Include="ParseStrategy.cs" />
     <Compile Include="ParseStrategyExtensions.cs" />
     <Compile Include="Satisfiers\AtLeastOneScopeSatisfier.cs" />
     <Compile Include="Satisfiers\BeginningOfFileSatisfier.cs" />

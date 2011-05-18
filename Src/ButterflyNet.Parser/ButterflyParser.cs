@@ -5,29 +5,29 @@ using System.Linq;
 
 namespace ButterflyNet.Parser {
 	public class ButterflyParser {
-		private readonly ICollection<ParseStrategyBase> strategies = new Collection<ParseStrategyBase>();
+		private readonly ICollection<ParseStrategy> strategies = new Collection<ParseStrategy>();
 
 		public ButterflyParser() {
 			Analyzer = new HtmlAnalyzer(new StringWriter());
 		}
 
 		public ButterflyAnalyzer Analyzer { get; set; }
-		public IEnumerable<ParseStrategyBase> Strategies { get { return strategies; } }
+		public IEnumerable<ParseStrategy> Strategies { get { return strategies; } }
 		public INamedFactory<IButterflyModule> ModuleFactory { get; set; }
 		public INamedFactory<IButterflyMacro> MacroFactory { get; set; }
 
 		#region add and remove stuff
-		public ButterflyParser AddStrategy(ParseStrategyBase strategy) {
+		public ButterflyParser AddStrategy(ParseStrategy strategy) {
 			strategies.Add(strategy);
 			return this;
 		}
 
-		public ButterflyParser AddStrategy<T>() where T : ParseStrategyBase, new() {
+		public ButterflyParser AddStrategy<T>() where T : ParseStrategy, new() {
 			strategies.Add(new T());
 			return this;
 		}
 
-		public ButterflyParser RemoveStrategy<T>() where T : ParseStrategyBase {
+		public ButterflyParser RemoveStrategy<T>() where T : ParseStrategy {
 			strategies
 				.OfType<T>()
 				.ToList()
@@ -36,7 +36,7 @@ namespace ButterflyNet.Parser {
 			return this;
 		}
 
-		public ButterflyParser RemoveStrategy(ParseStrategyBase strategy) {
+		public ButterflyParser RemoveStrategy(ParseStrategy strategy) {
 			strategies.Remove(strategy);
 			return this;
 		}
