@@ -2,10 +2,10 @@
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
+	[TokenTransformer("!")]
 	public class HeaderStrategy : ScopeDrivenStrategy {
 		public HeaderStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
-			AddSatisfier(new ExactCharMatchSatisfier("!"));
 		}
 
 		protected override void DoExecute(ParseContext context) {

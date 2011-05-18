@@ -60,6 +60,7 @@ namespace ButterflyNet.Parser.Strategies {
 
 		public static IEnumerable<INewlineScopeClosingStrategy> DefaultScopeClosingStrategies {
 			get {
+				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.Header);
 				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.Definition);
 				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.DefinitionTerm);
 				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.TableRowLine);
