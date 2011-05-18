@@ -23,7 +23,7 @@ namespace ButterflyNet.Parser.Strategies {
 
 			if (closer == ']') {
 				//the text is the same as the URL, so we can close the scope immediately
-				context.Analyzer.WriteAndEscapeString(url);
+				context.Analyzer.WriteAndEscape(url);
 				CloseCurrentScope(context);
 			}
 		}

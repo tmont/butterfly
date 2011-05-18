@@ -43,7 +43,7 @@ namespace ButterflyNet.Parser {
 			Writer.Write("</h" + depth + ">\n");
 		}
 
-		public override void WriteAndEscapeString(string text) {
+		public override void WriteAndEscape(string text) {
 			Writer.Write(HttpUtility.HtmlEncode(text));
 		}
 

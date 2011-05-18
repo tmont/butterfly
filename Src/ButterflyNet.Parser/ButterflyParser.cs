@@ -55,15 +55,11 @@ namespace ButterflyNet.Parser {
 			do {
 				context.AdvanceInput();
 				eofHandled = context.Input.IsEof;
-				context.ExecuteNext = true;
 
-				foreach (var strategy in orderedStrategies.Where(s => s.IsSatisfiedBy(context))) {
+				var strategy = orderedStrategies.Where(s => s.IsSatisfiedBy(context)).FirstOrDefault();
+				if (strategy != null) {
 					strategy.Execute(context);
-					if (!context.ExecuteNext) {
-						break;
-					}
 				}
-
 			} while (!eofHandled);
 
 			return new ParseResult(context.ScopeTree, context.Input.Value);

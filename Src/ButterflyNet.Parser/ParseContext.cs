@@ -15,8 +15,6 @@ namespace ButterflyNet.Parser {
 			ModuleFactory = moduleFactory;
 			MacroFactory = macroFactory;
 			ScopeTree = new ScopeTree();
-			Buffer = new StringBuilder();
-			ExecuteNext = true;
 		}
 
 		public int CurrentChar { get; set; }
@@ -25,12 +23,6 @@ namespace ButterflyNet.Parser {
 		public ButterflyAnalyzer Analyzer { get; private set; }
 		public ScopeTree ScopeTree { get; private set; }
 		public ScopeTreeNode CurrentNode { get; set; }
-		public StringBuilder Buffer { get; private set; }
-
-		/// <summary>
-		/// Gets or sets whether to execute the next strategy in the chain. Defaults to true.
-		/// </summary>
-		public bool ExecuteNext { get; set; }
 
 		public INamedFactory<IButterflyModule> ModuleFactory { get; private set; }
 		public INamedFactory<IButterflyMacro> MacroFactory { get; private set; }

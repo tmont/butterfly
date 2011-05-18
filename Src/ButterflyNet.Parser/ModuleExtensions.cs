@@ -19,8 +19,7 @@ namespace ButterflyNet.Parser {
 
 		public static NamedTypeRegistry<IButterflyModule> LoadDefaults(this NamedTypeRegistry<IButterflyModule> registry) {
 			return registry
-				.RegisterType<ImageModule>("image")
-				.RegisterType<CategoryModule>("category");
+				.RegisterType<ImageModule>("image");
 		}
 
 		public static NamedTypeRegistry<IButterflyMacro> LoadDefaults(this NamedTypeRegistry<IButterflyMacro> registry) {

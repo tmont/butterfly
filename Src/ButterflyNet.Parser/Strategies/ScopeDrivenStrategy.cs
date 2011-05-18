@@ -3,72 +3,25 @@ using System.Linq;
 
 namespace ButterflyNet.Parser.Strategies {
 	public abstract class ScopeDrivenStrategy : ParseStrategyBase {
-		private readonly IParseStrategy bufferingStrategy;
-
 		public event Action<IScope, ParseContext> BeforeScopeOpens;
 		public event Action<IScope, ParseContext> AfterScopeOpens;
 		public event Action<IScope, ParseContext> BeforeScopeCloses;
 		public event Action<IScope, ParseContext> AfterScopeCloses;
 
-		protected ScopeDrivenStrategy(IParseStrategy bufferingStrategy) {
-			this.bufferingStrategy = bufferingStrategy;
-
+		protected ScopeDrivenStrategy() {
 			BeforeScopeOpens += CreateParagraphIfNecessary;
-			BeforeScopeOpens += EmptyBufferAndCloseParagraph;
 			AfterScopeOpens += UpdateScopeTreeAfterOpen;
-			BeforeScopeCloses += EmptyBufferOnClose;
 			AfterScopeCloses += UpdateScopeTreeAfterClose;
 		}
 
-		internal ScopeDrivenStrategy() : this(WriteStringStrategy.Instance) { }
-
 		#region Event delegates
-		private void CreateParagraphIfNecessary(IScope scope, ParseContext context) {
+		private static void CreateParagraphIfNecessary(IScope scope, ParseContext context) {
 			if (scope.GetType() == ScopeTypeCache.Paragraph) {
 				return;
 			}
 
 			if (scope.Level == ScopeLevel.Inline) {
 				new OpenParagraphStrategy().ExecuteIfSatisfied(context);
-			} else {
-				bufferingStrategy.ExecuteIfSatisfied(context);
-			}
-		}
-
-		private void EmptyBufferOnClose(IScope scope, ParseContext context) {
-			if (!bufferingStrategy.IsSatisfiedBy(context)) {
-				return;
-			}
-
-			var preEmptyCount = context.Scopes.Count;
-			bufferingStrategy.Execute(context);
-			if (context.Scopes.Count > preEmptyCount) {
-				while (context.Scopes.Count > preEmptyCount) {
-					CloseCurrentScope(context);
-				}
-			}
-		}
-
-		private void EmptyBufferAndCloseParagraph(IScope scope, ParseContext context) {
-			if (scope.GetType() != ScopeTypeCache.Paragraph) {
-				var preBufferScopeCount = context.Scopes.Count;
-				BufferingStrategy.ExecuteIfSatisfied(context);
-				if (scope.Level == ScopeLevel.Block) {
-					//we don't want to nest block level scopes inside a paragraph
-					switch (context.Scopes.Count - preBufferScopeCount) {
-						case 0:
-							break;
-						case 1:
-							if (context.Scopes.Peek().GetType() != ScopeTypeCache.Paragraph) {
-								throw new NotSupportedException("Buffering strategy created a non-paragraph scope");
-							}
-
-							CloseCurrentScope(context);
-							break;
-						default:
-							throw new NotSupportedException("Buffering strategy created more than one scope while emptying the buffer");
-					}
-				}
 			}
 		}
 
@@ -135,7 +88,5 @@ namespace ButterflyNet.Parser.Strategies {
 				AfterScopeCloses.Invoke(currentScope, context);
 			}
 		}
-
-		protected virtual IParseStrategy BufferingStrategy { get { return bufferingStrategy; } }
 	}
 }

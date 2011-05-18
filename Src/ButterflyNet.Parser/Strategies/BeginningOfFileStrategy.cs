@@ -11,7 +11,6 @@ namespace ButterflyNet.Parser.Strategies {
 
 		protected override void Execute(ParseContext context) {
 			context.Analyzer.OnStart();
-			context.ExecuteNext = true;
 		}
 	}
 }

@@ -124,7 +124,6 @@
     <Compile Include="Scopes\HorizontalRulerScope.cs" />
     <Compile Include="Scopes\InlineScope.cs" />
     <Compile Include="NamedFactoryBase.cs" />
-    <Compile Include="Modules\CategoryModule.cs" />
     <Compile Include="Modules\ImageModule.cs" />
     <Compile Include="ButterflyStringReader.cs" />
     <Compile Include="ModuleExtensions.cs" />
@@ -183,7 +182,6 @@
     <Compile Include="Strategies\UnderlineStrategy.cs" />
     <Compile Include="Strategies\WriteCharacterStrategy.cs" />
     <Compile Include="Strategies\WriteNonParsedCharacterStrategy.cs" />
-    <Compile Include="Strategies\WriteStringStrategy.cs" />
     <Compile Include="ParserExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScopeLevel.cs" />

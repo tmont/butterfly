@@ -16,8 +16,10 @@ namespace ButterflyNet.Parser {
 		public virtual void OnStart() { }
 		public virtual void OnEnd() { }
 
-		public virtual void WriteAndEscapeString(string text) { }
+		public virtual void WriteAndEscape(string text) { }
+		public virtual void WriteAndEscape(char c) { }
 		public virtual void WriteUnescapedString(string text) { }
+		public virtual void WriteUnescapedChar(char c) { }
 
 		public virtual void OpenStrongText() { }
 		public virtual void CloseStrongText() { }

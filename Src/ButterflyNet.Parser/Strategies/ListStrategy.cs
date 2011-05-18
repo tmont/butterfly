@@ -96,7 +96,6 @@ namespace ButterflyNet.Parser.Strategies {
 
 		protected override void Execute(ParseContext context) {
 			CloseCurrentScope(context);
-			context.ExecuteNext = true;
 		}
 
 		public string Token { get { return "\n"; } }
