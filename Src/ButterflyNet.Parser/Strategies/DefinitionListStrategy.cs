@@ -2,11 +2,11 @@
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
+	[TokenTransformer(";")]
 	public class DefinitionListStrategy : ScopeDrivenStrategy {
 		public DefinitionListStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
 			AddSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.DefinitionTerm)));
-			AddSatisfier(new ExactCharMatchSatisfier(";"));
 		}
 
 		protected override void DoExecute(ParseContext context) {

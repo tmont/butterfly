@@ -2,7 +2,7 @@
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	[TokenTransformer(@"^----(?=(?:\n|$))", RegexMatch = true)]
+	[TokenTransformer(@"^----(?:\n|$)", RegexMatch = true)]
 	public class HorizontalRulerStrategy : ScopeDrivenStrategy {
 		public HorizontalRulerStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();

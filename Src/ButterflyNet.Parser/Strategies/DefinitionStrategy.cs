@@ -1,12 +1,14 @@
-﻿using ButterflyNet.Parser.Satisfiers;
+﻿using System;
+using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
+	[TokenTransformer(":")]
 	public class DefinitionStrategy : ScopeDrivenStrategy {
 		public DefinitionStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
 			AddSatisfier(new InScopeStackSatisfier(ScopeTypeCache.DefinitionList));
-			AddSatisfier(new ExactCharMatchSatisfier(":"));
+			AddSatisfier<TermMustBePreviousNodeSatisfier>();
 		}
 
 		protected override void DoExecute(ParseContext context) {

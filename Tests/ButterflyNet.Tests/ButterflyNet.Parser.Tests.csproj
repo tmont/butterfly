@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlockquoteTests.cs" />
-    <Compile Include="MultiLineDefinitionTests.cs" />
     <Compile Include="ExtensibilityTests.cs" />
     <Compile Include="DefinitionListTests.cs" />
     <Compile Include="HeaderTests.cs" />

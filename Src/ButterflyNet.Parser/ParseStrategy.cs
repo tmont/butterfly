@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Strategies;
 
 namespace ButterflyNet.Parser {

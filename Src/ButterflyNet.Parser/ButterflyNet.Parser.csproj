@@ -112,6 +112,7 @@
     <Compile Include="Scopes\ScopeBase.cs" />
     <Compile Include="Strategies\MacroStrategy.cs" />
     <Compile Include="Scopes\MultiLineDefinitionScope.cs" />
+    <Compile Include="Strategies\NewlineStrategy.cs" />
     <Compile Include="Strategies\ScopeDrivenStrategy.cs" />
     <Compile Include="Scopes\BigScope.cs" />
     <Compile Include="Scopes\BlockquoteScope.cs" />
@@ -172,7 +173,6 @@
     <Compile Include="Strategies\OpenPreformattedStrategy.cs" />
     <Compile Include="Strategies\OpenSmallStrategy.cs" />
     <Compile Include="Strategies\OpenUnescapedStrategy.cs" />
-    <Compile Include="Strategies\ParagraphOnConsecutiveNewlinesStrategy.cs" />
     <Compile Include="Strategies\StrikeThroughStrategy.cs" />
     <Compile Include="Strategies\StrongStrategy.cs" />
     <Compile Include="Strategies\TableStrategy.cs" />
