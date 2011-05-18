@@ -1,7 +1,7 @@
 ﻿using ButterflyNet.Parser.Satisfiers;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class ClosePreformattedStrategy : BlockStrategy, ITokenProvider {
+	public class ClosePreformattedStrategy : ScopeDrivenStrategy, ITokenProvider {
 
 		public ClosePreformattedStrategy() {
 			AddSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Preformatted));

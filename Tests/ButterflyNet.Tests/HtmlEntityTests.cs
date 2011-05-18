@@ -13,12 +13,12 @@ namespace ButterflyNet.Parser.Tests {
 
 		[Test]
 		public void Should_display_named_html_entity() {
-			Assert.That(Parser.ParseAndReturn("[:entity|value=hellip]"), Is.EqualTo("<p>&hellip;</p>"));
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("[:entity|value=hellip]"), "<p>&hellip;</p>");
 		}
 
 		[Test]
 		public void Should_display_numbered_html_entity() {
-			Assert.That(Parser.ParseAndReturn("[:entity|value=#8567]"), Is.EqualTo("<p>&#8567;</p>"));
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("[:entity|value=#8567]"), "<p>&#8567;</p>");
 		}
 
 		[Test]

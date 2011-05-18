@@ -2,11 +2,10 @@
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class DefinitionStrategy : BlockStrategy, ITokenProvider {
+	public class DefinitionStrategy : ScopeDrivenStrategy, ITokenProvider {
 		public DefinitionStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
 			AddSatisfier(new InScopeStackSatisfier(ScopeTypeCache.DefinitionList));
-			AddPreExecuteSatisfier<TermMustBePreviousNodeSatisfier>();
 		}
 
 		protected override void Execute(ParseContext context) {

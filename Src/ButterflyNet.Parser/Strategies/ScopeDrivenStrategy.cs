@@ -13,9 +13,7 @@ namespace ButterflyNet.Parser.Strategies {
 		protected ScopeDrivenStrategy(IParseStrategy bufferingStrategy) {
 			this.bufferingStrategy = bufferingStrategy;
 
-			BeforeScopeOpens += CloseContextualScopes;
 			BeforeScopeOpens += CreateParagraphIfNecessary;
-			BeforeScopeOpens += CloseNonManuallyClosingScopes;
 			BeforeScopeOpens += EmptyBufferAndCloseParagraph;
 			AfterScopeOpens += UpdateScopeTreeAfterOpen;
 			BeforeScopeCloses += EmptyBufferOnClose;
@@ -25,17 +23,6 @@ namespace ButterflyNet.Parser.Strategies {
 		internal ScopeDrivenStrategy() : this(WriteStringStrategy.Instance) { }
 
 		#region Event delegates
-		private void CloseContextualScopes(IScope scope, ParseContext context) {
-			while (!context.Scopes.IsEmpty()) {
-				var currentScope = context.Scopes.Peek();
-				if (!currentScope.ClosesOnContext || !currentScope.ShouldClose(scope)) {
-					break;
-				}
-
-				CloseCurrentScope(context);
-			}
-		}
-
 		private void CreateParagraphIfNecessary(IScope scope, ParseContext context) {
 			if (scope.GetType() == ScopeTypeCache.Paragraph) {
 				return;
@@ -85,19 +72,6 @@ namespace ButterflyNet.Parser.Strategies {
 			}
 		}
 
-		private void CloseNonManuallyClosingScopes(IScope scope, ParseContext context) {
-			if (scope.Level == ScopeLevel.Block) {
-				while (!context.Scopes.IsEmpty()) {
-					var previousScope = context.Scopes.Peek();
-					if ((previousScope.ManuallyClosing || !previousScope.ShouldClose(scope)) && previousScope.GetType() != ScopeTypeCache.Paragraph) {
-						break;
-					}
-
-					CloseCurrentScope(context);
-				}
-			}
-		}
-
 		private static void UpdateScopeTreeAfterOpen(IScope scope, ParseContext context) {
 			var newNode = new ScopeTreeNode(scope);
 
@@ -121,7 +95,7 @@ namespace ButterflyNet.Parser.Strategies {
 			}
 
 			context.Scopes.Push(scope);
-			scope.Open(context.Analyzers);
+			scope.Open(context.Analyzer);
 
 			if (AfterScopeOpens != null) {
 				AfterScopeOpens.Invoke(scope, context);
@@ -133,10 +107,6 @@ namespace ButterflyNet.Parser.Strategies {
 				var scope = context.Scopes.Peek();
 				if (scopeTypes.Contains(scope.GetType())) {
 					break;
-				}
-
-				if (scope.ManuallyClosing) {
-					throw new ParseException(string.Format("The scope \"{0}\" must be manually closed", scope.GetType().GetFriendlyName(false)));
 				}
 
 				CloseCurrentScope(context);
@@ -159,7 +129,7 @@ namespace ButterflyNet.Parser.Strategies {
 
 			//cannot pop scope until after BeforeScopeCloses is invoked; among other things, it screws up paragraph creation logic
 			context.Scopes.Pop();
-			currentScope.Close(context.Analyzers);
+			currentScope.Close(context.Analyzer);
 
 			if (AfterScopeCloses != null) {
 				AfterScopeCloses.Invoke(currentScope, context);

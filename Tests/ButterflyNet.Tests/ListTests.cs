@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using NUnit.Framework;
 
 namespace ButterflyNet.Parser.Tests {
@@ -24,18 +25,20 @@ namespace ButterflyNet.Parser.Tests {
 #** lulz
 #* back to depth=2");
 
-			var expected = @"
+			var expected = Regex.Replace(@"
 <ol>
-<li>lol</li>
-<ul>
-<li>nested</li>
-<ul>
-<li>nested again</li>
-<li>lulz</li>
-</ul>
-<li>back to depth=2</li>
-</ul>
-</ol>".Replace(Environment.NewLine, "");
+	<li>lol
+		<ul>
+			<li>nested
+				<ul>
+					<li>nested again</li>
+					<li>lulz</li>
+				</ul>
+			</li>
+			<li>back to depth=2</li>
+		</ul>
+	</li>
+</ol>", @"^\s*", "", RegexOptions.Multiline).Replace(Environment.NewLine, "");
 
 			AssertWithNoRegardForLineBreaks(Writer.ToString(), expected);
 		}
@@ -76,6 +79,25 @@ namespace ButterflyNet.Parser.Tests {
 * lulz";
 
 			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<ul><li>lol</li><li>lulz</li></ul>");
+		}
+
+		[Test]
+		public void Should_parse_simple_list() {
+			const string text = @"* foo
+* bar
+* baz";
+
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<ul><li>foo</li><li>bar</li><li>baz</li></ul>");
+		}
+
+		[Test]
+		public void Should_parse_list_followed_by_paragraph() {
+			const string text = @"* foo
+* bar
+
+oh hai";
+
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<ul><li>foo</li><li>bar</li></ul><p>oh hai</p>");
 		}
 
 		

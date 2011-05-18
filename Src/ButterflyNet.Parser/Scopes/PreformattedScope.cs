@@ -6,13 +6,11 @@
 			this.language = language;
 		}
 
-		public override bool ManuallyClosing { get { return true; } }
-
-		protected override void OpenAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Open(ButterflyAnalyzer analyzer) {
 			analyzer.OpenPreformatted(language);
 		}
 
-		protected override void CloseAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Close(ButterflyAnalyzer analyzer) {
 			analyzer.ClosePreformatted(language);
 		}
 	}

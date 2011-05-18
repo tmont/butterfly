@@ -15,9 +15,5 @@ namespace ButterflyNet.Parser {
 		public static bool ContainsType(this Stack<IScope> stack, params Type[] types) {
 			return stack.Any(scope => types.Contains(scope.GetType()));
 		}
-
-		public static IScope LastNonContextualScope(this Stack<IScope> stack) {
-			return stack.SkipWhile(scope => scope.ClosesOnContext).FirstOrDefault();
-		}
 	}
 }

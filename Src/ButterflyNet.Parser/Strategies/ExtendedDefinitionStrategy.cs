@@ -2,7 +2,7 @@
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class OpenMultiLineDefinitionStrategy : BlockStrategy, ITokenProvider {
+	public class OpenMultiLineDefinitionStrategy : ScopeDrivenStrategy, ITokenProvider {
 		public OpenMultiLineDefinitionStrategy() {
 			AddSatisfier<DependentSatisfier<DefinitionStrategy>>();
 		}
@@ -16,13 +16,8 @@ namespace ButterflyNet.Parser.Strategies {
 		public string Token { get { return ":{"; } }
 	}
 
-	public class CloseMultiLineDefinitionStrategy : BlockStrategy, ITokenProvider {
-		public CloseMultiLineDefinitionStrategy() {
-			AddSatisfier(new LastNonContextualScopeSatisfier(ScopeTypeCache.MultiLineDefinition));
-		}
-
+	public class CloseMultiLineDefinitionStrategy : ScopeDrivenStrategy, ITokenProvider {
 		protected override void Execute(ParseContext context) {
-			CloseContextualScopes(context);
 			CloseCurrentScope(context);
 		}
 

@@ -3,11 +3,11 @@
 		public override bool CanNestParagraph { get { return true; } }
 		public override bool ManuallyClosing { get { return true; } }
 
-		protected override void OpenAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Open(ButterflyAnalyzer analyzer) {
 			analyzer.OpenBlockquote();
 		}
 
-		protected override void CloseAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Close(ButterflyAnalyzer analyzer) {
 			analyzer.CloseBlockquote();
 		}
 	}

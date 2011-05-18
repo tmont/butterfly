@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 
 namespace ButterflyNet.Parser {
 	public class ButterflyParser {
-
 		private readonly ICollection<IParseStrategy> strategies = new Collection<IParseStrategy>();
-		private readonly ICollection<ButterflyAnalyzer> analyzers = new Collection<ButterflyAnalyzer>();
 
-		public IEnumerable<ButterflyAnalyzer> Analyzers { get { return analyzers; } }
+		public ButterflyParser() {
+			Analyzer = new HtmlAnalyzer(new StringWriter());
+		}
+
+		public ButterflyAnalyzer Analyzer { get; set; }
 		public IEnumerable<IParseStrategy> Strategies { get { return strategies; } }
 		public INamedFactory<IButterflyModule> ModuleFactory { get; set; }
 		public INamedFactory<IButterflyMacro> MacroFactory { get; set; }
@@ -37,24 +40,14 @@ namespace ButterflyNet.Parser {
 			strategies.Remove(strategy);
 			return this;
 		}
-
-		public ButterflyParser AddAnalyzer(ButterflyAnalyzer analyzer) {
-			analyzers.Add(analyzer);
-			return this;
-		}
-
-		public ButterflyParser ClearAnalyzers() {
-			analyzers.Clear();
-			return this;
-		}
 		#endregion
 
 		public ParseResult Parse(string wikitext) {
 			var context = new ParseContext(
-				new ButterflyStringReader(wikitext ?? string.Empty), 
-				analyzers,
+				new ButterflyStringReader(wikitext ?? string.Empty),
+				Analyzer,
 				ModuleFactory ?? new ActivatorFactory<IButterflyModule>(new NamedTypeRegistry<IButterflyModule>().LoadDefaults()),
-				MacroFactory ??  new ActivatorFactory<IButterflyMacro>(new NamedTypeRegistry<IButterflyMacro>().LoadDefaults())
+				MacroFactory ?? new ActivatorFactory<IButterflyMacro>(new NamedTypeRegistry<IButterflyMacro>().LoadDefaults())
 			);
 			var orderedStrategies = Strategies.OrderBy(strategy => strategy.Priority);
 			bool eofHandled;
@@ -64,10 +57,13 @@ namespace ButterflyNet.Parser {
 				eofHandled = context.Input.IsEof;
 				context.ExecuteNext = true;
 
-				orderedStrategies
-					.Where(s => s.IsSatisfiedBy(context))
-					.TakeWhile(strategy => context.ExecuteNext)
-					.Walk(strategy => strategy.Execute(context));
+				foreach (var strategy in orderedStrategies.Where(s => s.IsSatisfiedBy(context))) {
+					strategy.Execute(context);
+					if (!context.ExecuteNext) {
+						break;
+					}
+				}
+
 			} while (!eofHandled);
 
 			return new ParseResult(context.ScopeTree, context.Input.Value);

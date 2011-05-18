@@ -7,8 +7,6 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier<NonParsedCharacterSatisfier>();
 		}
 
-		protected override bool Scopable { get { return false; } }
-
 		public override int Priority { get { return DefaultPriority - 1; } }
 
 		protected override char GetChar(ParseContext context) {

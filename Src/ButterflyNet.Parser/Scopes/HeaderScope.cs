@@ -5,14 +5,12 @@
 		}
 
 		public int Depth { get; private set; }
-		public override bool CloseOnSingleLineBreak { get { return true; } }
-		public override bool ManuallyClosing { get { return false; } }
 
-		protected override void OpenAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Open(ButterflyAnalyzer analyzer) {
 			analyzer.OpenHeader(Depth);
 		}
 
-		protected override void CloseAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Close(ButterflyAnalyzer analyzer) {
 			analyzer.CloseHeader(Depth);
 		}
 	}

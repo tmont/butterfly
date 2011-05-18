@@ -8,11 +8,11 @@
 
 		public override bool CanNestText { get { return false; } }
 
-		protected override void OpenAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Open(ButterflyAnalyzer analyzer) {
 			analyzer.OpenModule(Module);
 		}
 
-		protected override void CloseAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Close(ButterflyAnalyzer analyzer) {
 			analyzer.CloseModule(Module);
 		}
 	}

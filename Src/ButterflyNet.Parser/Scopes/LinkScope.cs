@@ -8,11 +8,11 @@ namespace ButterflyNet.Parser.Scopes {
 			Url = url;
 		}
 
-		protected override void OpenAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Open(ButterflyAnalyzer analyzer) {
 			analyzer.OpenLink(Url);
 		}
 
-		protected override void CloseAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Close(ButterflyAnalyzer analyzer) {
 			analyzer.CloseLink();
 		}
 	}

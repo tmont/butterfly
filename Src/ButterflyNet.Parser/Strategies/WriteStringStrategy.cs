@@ -16,8 +16,6 @@ namespace ButterflyNet.Parser.Strategies {
 
 		public static IParseStrategy Instance { get { return instance ?? (instance = new WriteStringStrategy()); } }
 
-		protected override bool Scopable { get { return false; } }
-
 		private IParseStrategy ParagraphStrategy { get { return paragraphStrategy ?? (paragraphStrategy = new OpenParagraphStrategy()); } }
 
 		protected override void Execute(ParseContext context) {
@@ -28,9 +26,9 @@ namespace ButterflyNet.Parser.Strategies {
 			var bufferContents = context.Buffer.ToString();
 			context.Buffer.Clear();
 			if (context.CurrentNode != null && context.CurrentNode.Scope.GetType() == ScopeTypeCache.Unescaped) {
-				context.Analyzers.Walk(converter => converter.WriteUnescapedString(bufferContents));
+				context.Analyzer.WriteUnescapedString(bufferContents);
 			} else {
-				context.Analyzers.Walk(converter => converter.WriteAndEscapeString(bufferContents));
+				context.Analyzer.WriteAndEscapeString(bufferContents);
 			}
 
 			emptying = false;

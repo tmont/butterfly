@@ -3,7 +3,7 @@ using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class TableStrategy : BlockStrategy, ITokenProvider {
+	public class TableStrategy : ScopeDrivenStrategy, ITokenProvider {
 		public TableStrategy() {
 			AddSatisfier<TableSatisfier>();
 		}

@@ -2,11 +2,11 @@
 	public class MultiLineDefinitionScope : BlockScope {
 		public override bool CanNestParagraph { get { return true; } }
 
-		protected override void OpenAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Open(ButterflyAnalyzer analyzer) {
 			analyzer.OpenMultiLineDefinition();
 		}
 
-		protected override void CloseAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Close(ButterflyAnalyzer analyzer) {
 			analyzer.CloseMultiLineDefinition();
 		}
 	}

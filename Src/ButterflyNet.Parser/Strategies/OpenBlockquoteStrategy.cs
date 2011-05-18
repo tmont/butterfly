@@ -2,7 +2,7 @@
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class OpenBlockquoteStrategy : BlockStrategy, ITokenProvider {
+	public class OpenBlockquoteStrategy : ScopeDrivenStrategy, ITokenProvider {
 		public OpenBlockquoteStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
 		}

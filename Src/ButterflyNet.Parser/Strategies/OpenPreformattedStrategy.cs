@@ -3,7 +3,7 @@ using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class OpenPreformattedStrategy : BlockStrategy, ITokenProvider {
+	public class OpenPreformattedStrategy : ScopeDrivenStrategy, ITokenProvider {
 
 		public OpenPreformattedStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();

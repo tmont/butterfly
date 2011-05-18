@@ -104,7 +104,6 @@
     <Compile Include="Satisfiers\DependentSatisfier.cs" />
     <Compile Include="Satisfiers\EofSatisfier.cs" />
     <Compile Include="Satisfiers\InScopeStackSatisfier.cs" />
-    <Compile Include="Satisfiers\LastNonContextualScopeSatisfier.cs" />
     <Compile Include="Satisfiers\NegatingSatisfier.cs" />
     <Compile Include="Satisfiers\NextCharacterIsNotTheSameSatisfier.cs" />
     <Compile Include="Satisfiers\OneOfSeveralTokensSatisfier.cs" />
@@ -150,13 +149,11 @@
     <Compile Include="Scopes\UnescapedScope.cs" />
     <Compile Include="Scopes\UnorderedListScope.cs" />
     <Compile Include="Strategies\BeginningOfFileStrategy.cs" />
-    <Compile Include="Strategies\BlockStrategy.cs" />
     <Compile Include="Strategies\CloseBigStrategy.cs" />
     <Compile Include="Strategies\CloseBlockquoteStrategy.cs" />
     <Compile Include="Strategies\CloseLinkStrategy.cs" />
     <Compile Include="Strategies\CloseNoWikiStrategy.cs" />
     <Compile Include="Strategies\ClosePreformattedStrategy.cs" />
-    <Compile Include="Strategies\CloseSingleLineScopesStrategy.cs" />
     <Compile Include="Strategies\CloseSmallStrategy.cs" />
     <Compile Include="Strategies\CloseTableRowStrategy.cs" />
     <Compile Include="Strategies\CloseUnescapedStrategy.cs" />

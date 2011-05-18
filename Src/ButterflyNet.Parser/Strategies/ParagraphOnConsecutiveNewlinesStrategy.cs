@@ -10,10 +10,6 @@ namespace ButterflyNet.Parser.Strategies {
 		}
 
 		protected override void Execute(ParseContext context) {
-			if (context.Input.Peek() != '\n') {
-				return;
-			}
-
 			context.AdvanceInput();
 
 			paragraphStrategy.ExecuteIfSatisfied(context);
@@ -31,6 +27,6 @@ namespace ButterflyNet.Parser.Strategies {
 			}
 		}
 
-		public string Token { get { return "\n"; } }
+		public string Token { get { return "\n\n"; } }
 	}
 }

@@ -13,10 +13,11 @@ namespace ButterflyNet.Parser.Tests {
 			var parser = new ButterflyParser()
 				.LoadDefaultStrategies(new DefaultParseStrategyFactory())
 				.AddStrategy<OpenBlinkStrategy>()
-				.AddStrategy<CloseBlinkStrategy>()
-				.AddAnalyzer(new BlinkAnalyzer(new StringWriter()));
+				.AddStrategy<CloseBlinkStrategy>();
 
-			Assert.That(parser.ParseAndReturn("(((lulz)))"), Is.EqualTo("<p><blink>lulz</blink></p>"));
+			parser.Analyzer = new BlinkAnalyzer(new StringWriter());
+
+			Assert.That(parser.ParseAndReturn("(((lulz)))").Replace("\n", ""), Is.EqualTo("<p><blink>lulz</blink></p>"));
 		}
 
 		[Test]
@@ -26,10 +27,9 @@ namespace ButterflyNet.Parser.Tests {
 				.RemoveStrategy<OpenStrongStrategy>()
 				.RemoveStrategy<CloseStrongStrategy>()
 				.AddStrategy<CustomOpenStrongStrategy>()
-				.AddStrategy<CustomCloseStrongStrategy>()
-				.AddAnalyzer(new HtmlAnalyzer(new StringWriter()));
+				.AddStrategy<CustomCloseStrongStrategy>();
 
-			Assert.That(parser.ParseAndReturn("??__lulz__??"), Is.EqualTo("<p><strong>__lulz__</strong></p>"));
+			Assert.That(parser.ParseAndReturn("??__lulz__??").Replace("\n", ""), Is.EqualTo("<p><strong>__lulz__</strong></p>"));
 		}
 
 		#region Custom strong strategy
@@ -66,7 +66,7 @@ namespace ButterflyNet.Parser.Tests {
 		}
 
 		public class BlinkScope : InlineScope {
-			protected override void OpenAndAnalyze(ButterflyAnalyzer analyzer) {
+			public override void Open(ButterflyAnalyzer analyzer) {
 				var blinkAnalyzer = analyzer as BlinkAnalyzer;
 				if (blinkAnalyzer == null) {
 					return;
@@ -75,7 +75,7 @@ namespace ButterflyNet.Parser.Tests {
 				blinkAnalyzer.OpenBlink();
 			}
 
-			protected override void CloseAndAnalyze(ButterflyAnalyzer analyzer) {
+			public override void Close(ButterflyAnalyzer analyzer) {
 				var blinkAnalyzer = analyzer as BlinkAnalyzer;
 				if (blinkAnalyzer == null) {
 					return;

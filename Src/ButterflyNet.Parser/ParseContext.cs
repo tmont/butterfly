@@ -5,13 +5,13 @@ namespace ButterflyNet.Parser {
 	public sealed class ParseContext {
 		public ParseContext(
 			ButterflyStringReader input, 
-			IEnumerable<ButterflyAnalyzer> analyzers, 
+			ButterflyAnalyzer analyzer, 
 			INamedFactory<IButterflyModule> moduleFactory, 
 			INamedFactory<IButterflyMacro> macroFactory
 		) {
 			Input = input;
 			Scopes = new Stack<IScope>();
-			Analyzers = analyzers;
+			Analyzer = analyzer;
 			ModuleFactory = moduleFactory;
 			MacroFactory = macroFactory;
 			ScopeTree = new ScopeTree();
@@ -22,7 +22,7 @@ namespace ButterflyNet.Parser {
 		public int CurrentChar { get; set; }
 		public ButterflyStringReader Input { get; private set; }
 		public Stack<IScope> Scopes { get; private set; }
-		public IEnumerable<ButterflyAnalyzer> Analyzers { get; private set; }
+		public ButterflyAnalyzer Analyzer { get; private set; }
 		public ScopeTree ScopeTree { get; private set; }
 		public ScopeTreeNode CurrentNode { get; set; }
 		public StringBuilder Buffer { get; private set; }

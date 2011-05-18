@@ -8,12 +8,6 @@ namespace ButterflyNet.Parser.Strategies {
 			OpenScope(new NoWikiScope(), context);
 		}
 
-		protected override bool Scopable {
-			get {
-				return false;
-			}
-		}
-
 		public string Token { get { return "[!"; } }
 	}
 }

@@ -41,7 +41,7 @@ namespace ButterflyNet.WebApi.Controllers {
 		public ActionResult Index(ParseModel model) {
 			var parser = new ButterflyParser();
 			parser.LoadDefaultStrategies(new DefaultParseStrategyFactory());
-			parser.AddAnalyzer(new HtmlAnalyzer(new StringWriter()));
+			parser.Analyzer = new HtmlAnalyzer(new StringWriter());
 
 			try {
 				return Json(new { error = (string)null, html = parser.ParseAndReturn(model.MarkUp) });

@@ -11,8 +11,6 @@ namespace ButterflyNet.Parser.Strategies {
 			CloseCurrentScope(context);
 		}
 
-		protected override bool Scopable { get { return false; } }
-
 		public string Token { get { return "]"; } }
 	}
 }

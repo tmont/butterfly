@@ -2,10 +2,10 @@
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class DefinitionListStrategy : BlockStrategy, ITokenProvider {
+	public class DefinitionListStrategy : ScopeDrivenStrategy, ITokenProvider {
 		public DefinitionListStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
-			AddPreExecuteSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.DefinitionTerm)));
+			AddSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.DefinitionTerm)));
 		}
 
 		protected override void Execute(ParseContext context) {

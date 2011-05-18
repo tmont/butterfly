@@ -15,9 +15,11 @@ namespace ButterflyNet.Parser.Tests {
 		[SetUp]
 		public virtual void SetUp() {
 			Writer = new StringWriter();
-			Parser = new ButterflyParser { ModuleFactory = new ActivatorFactory<IButterflyModule>(new NamedTypeRegistry<IButterflyModule>().LoadDefaults()) }
-				.LoadDefaultStrategies(new DefaultParseStrategyFactory())
-				.AddAnalyzer(new HtmlAnalyzer(Writer));
+			Parser = new ButterflyParser {
+				ModuleFactory = new ActivatorFactory<IButterflyModule>(new NamedTypeRegistry<IButterflyModule>().LoadDefaults()),
+				Analyzer = new HtmlAnalyzer(Writer)
+			}.LoadDefaultStrategies(new DefaultParseStrategyFactory());
+
 		}
 
 		[Obsolete("Use Parser.Parse(wikitext) instead")]

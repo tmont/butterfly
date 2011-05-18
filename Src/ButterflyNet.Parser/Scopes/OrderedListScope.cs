@@ -1,10 +1,10 @@
 ﻿namespace ButterflyNet.Parser.Scopes {
 	public class OrderedListScope : ListScope {
-		protected override void OpenAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Open(ButterflyAnalyzer analyzer) {
 			analyzer.OpenOrderedList();
 		}
 
-		protected override void CloseAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Close(ButterflyAnalyzer analyzer) {
 			analyzer.CloseOrderedList();
 		}
 	}

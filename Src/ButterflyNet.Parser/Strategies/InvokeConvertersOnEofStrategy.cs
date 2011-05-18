@@ -6,17 +6,11 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier<EofSatisfier>();
 		}
 
-		protected override bool Scopable {
-			get {
-				return false;
-			}
-		}
-
 		/// <remarks> Should always be executed last </remarks>
 		public override int Priority { get { return int.MaxValue; } }
 
 		protected override void Execute(ParseContext context) {
-			context.Analyzers.Walk(converter => converter.OnEnd());
+			context.Analyzer.OnEnd();
 			context.ExecuteNext = true;
 		}
 	}

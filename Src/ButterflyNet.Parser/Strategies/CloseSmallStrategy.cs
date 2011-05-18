@@ -5,7 +5,7 @@ namespace ButterflyNet.Parser.Strategies {
 	public sealed class CloseSmallStrategy : InlineStrategy, ITokenProvider {
 		public CloseSmallStrategy() {
 			AddSatisfier(new InScopeStackSatisfier(Type));
-			AddPreExecuteSatisfier(new CurrentScopeMustMatchSatisfier(Type));
+			AddSatisfier(new CurrentScopeMustMatchSatisfier(Type));
 		}
 
 		protected override void Execute(ParseContext context) {

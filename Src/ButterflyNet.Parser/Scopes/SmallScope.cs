@@ -1,10 +1,10 @@
 ﻿namespace ButterflyNet.Parser.Scopes {
 	public class SmallScope : InlineScope {
-		protected override void OpenAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Open(ButterflyAnalyzer analyzer) {
 			analyzer.OpenSmallText();
 		}
 
-		protected override void CloseAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Close(ButterflyAnalyzer analyzer) {
 			analyzer.CloseSmallText();
 		}
 	}

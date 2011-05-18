@@ -7,8 +7,6 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier<EofSatisfier>();
 		}
 
-		protected override bool Scopable { get { return false; } }
-
 		protected override void Execute(ParseContext context) {
 			CloseNonManuallyClosingScopes(context);
 			context.ExecuteNext = true;
@@ -18,11 +16,6 @@ namespace ButterflyNet.Parser.Strategies {
 			var emptiedBuffer = false;
 
 			while (!context.Scopes.IsEmpty()) {
-				var scope = context.Scopes.Peek();
-				if (scope.ManuallyClosing) {
-					throw new ParseException(string.Format("The scope \"{0}\" must be manually closed", scope.GetType().GetFriendlyName(false)));
-				}
-
 				if (!emptiedBuffer && WriteStringStrategy.Instance.IsSatisfiedBy(context)) {
 					WriteStringStrategy.Instance.Execute(context);
 					emptiedBuffer = true;

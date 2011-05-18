@@ -11,21 +11,19 @@ namespace ButterflyNet.Parser {
 		/// up as normal through raised exceptions.
 		/// </summary>
 		public static ParseResult Lint(this ButterflyParser parser, string wikitext) {
-			var tempAnalyzers = parser.Analyzers;
-			parser.ClearAnalyzers();
+			var tempAnalyzer = parser.Analyzer;
+			parser.Analyzer = null;
 			var parseResult = parser.Parse(wikitext);
-			tempAnalyzers.Walk(analyzer => parser.AddAnalyzer(analyzer));
+			parser.Analyzer = tempAnalyzer;
 			return parseResult;
 		}
 
 		/// <summary>
-		/// Convenience method for quickly getting the textual result of a previous parse analysis.
-		/// This method will throw if there isn't exactly one analyzer registered with the parser.
+		/// Convenience method for quickly getting the textual result of a previous parse analysis
 		/// </summary>
 		public static string FlushAndReturn(this ButterflyParser parser) {
-			var analyzer = parser.Analyzers.Single();
-			var data = analyzer.Writer.ToString();
-			analyzer.Flush();
+			var data = parser.Analyzer.Writer.ToString();
+			parser.Analyzer.Flush();
 			return data;
 		}
 

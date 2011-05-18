@@ -1,10 +1,10 @@
 ﻿namespace ButterflyNet.Parser.Scopes {
 	public class StrongScope : InlineScope {
-		protected override void OpenAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Open(ButterflyAnalyzer analyzer) {
 			analyzer.OpenStrongText();
 		}
 
-		protected override void CloseAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Close(ButterflyAnalyzer analyzer) {
 			analyzer.CloseStrongText();
 		}
 	}
