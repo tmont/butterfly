@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace ButterflyNet.Parser.Strategies {
+namespace ButterflyNet.Parser.Satisfiers {
 	public class CharMatchSatisfier : ISatisfier {
 		private readonly Regex regex;
 
