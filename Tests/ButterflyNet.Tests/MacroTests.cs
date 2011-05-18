@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using ButterflyNet.Parser.Macros;
 using NUnit.Framework;
 
