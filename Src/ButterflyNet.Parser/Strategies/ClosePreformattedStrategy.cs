@@ -1,11 +1,11 @@
 ﻿using ButterflyNet.Parser.Satisfiers;
 
 namespace ButterflyNet.Parser.Strategies {
+	[TokenTransformer("}}}")]
 	public class ClosePreformattedStrategy : ScopeDrivenStrategy {
 
 		public ClosePreformattedStrategy() {
 			AddSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Preformatted));
-			AddSatisfier(new ExactCharMatchSatisfier("}}}"));
 		}
 
 		protected override void DoExecute(ParseContext context) {

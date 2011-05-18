@@ -3,11 +3,11 @@ using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
+	[TokenTransformer("{{{")]
 	public class OpenPreformattedStrategy : ScopeDrivenStrategy {
 
 		public OpenPreformattedStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
-			AddSatisfier(new ExactCharMatchSatisfier("{{{"));
 			AddSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Preformatted)));
 		}
 

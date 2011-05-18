@@ -29,29 +29,22 @@ lulz
 
 		[Test]
 		public void Should_allow_formatting_inside_preformatted() {
-			Convert(@"{{{
-__bold__}}}");
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), "<pre><strong>bold</strong></pre>");
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("{{{\n__bold__}}}"), "<pre><strong>bold</strong></pre>");
 		}
 
 		[Test]
 		public void Should_not_be_able_to_nest_preformatted_blocks() {
-			Convert(@"{{{
-not {{{nested}}}}}}");
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), "<pre>not {{{nested</pre><p>}}}</p>");
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("{{{\nnot {{{nested}}}}}}"), "<pre>not {{{nested</pre><p>}}}</p>");
 		}
 
 		[Test]
 		public void Should_parse_preformatted_line() {
-			Convert(" text");
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), "<pre>text</pre>");
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(" text"), "<pre>text</pre>");
 		}
 
 		[Test]
 		public void Should_parse_preformatted_line_and_close_on_line_break() {
-			Convert(@" text
-lol");
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), "<pre>text</pre><p>lol</p>");
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(" text\nlol"), "<pre>text</pre><p>lol</p>");
 		}
 	}
 }
