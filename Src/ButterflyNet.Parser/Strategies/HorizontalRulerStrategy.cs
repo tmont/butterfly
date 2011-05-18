@@ -11,7 +11,7 @@ namespace ButterflyNet.Parser.Strategies {
 		//needs to be less than strike through, which is three dashes in a row
 		public override int Priority { get { return DefaultPriority - 2; } }
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			context.Input.Read(3);
 			context.UpdateCurrentChar();
 

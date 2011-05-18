@@ -10,7 +10,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new OneOfSeveralTokensSatisfier('*', '#'));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			var peek = context.Input.Peek();
 
 			var listText = new StringBuilder(((char)context.CurrentChar).ToString(), 3);
@@ -94,7 +94,7 @@ namespace ButterflyNet.Parser.Strategies {
 			}
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			CloseCurrentScope(context);
 		}
 

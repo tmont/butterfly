@@ -50,14 +50,14 @@ namespace ButterflyNet.Parser {
 		}
 
 		/// <summary>
-		/// Loads all <see cref="IParseStrategy"/> implementations found in the specified assembly
+		/// Loads all <see cref="ParseStrategyBase"/> implementations found in the specified assembly
 		/// </summary>
 		public static ButterflyParser LoadStrategiesFromAssembly(this ButterflyParser parser, IParseStrategyFactory strategyFactory, Assembly assembly) {
 			return parser.LoadStrategiesFromTypes(strategyFactory, assembly.GetTypes().Where(type => !type.HasAttribute<ExcludeAttribute>()));
 		}
 
 		private static ButterflyParser LoadStrategiesFromTypes(this ButterflyParser parser, IParseStrategyFactory strategyFactory, IEnumerable<Type> types) {
-			var strategyInterface = typeof(IParseStrategy);
+			var strategyInterface = typeof(ParseStrategyBase);
 			types = types.Where(type => type.IsClass && !type.IsAbstract && strategyInterface.IsAssignableFrom(type));
 
 			types.Walk(type => parser.AddStrategy(strategyFactory.Create(type)));

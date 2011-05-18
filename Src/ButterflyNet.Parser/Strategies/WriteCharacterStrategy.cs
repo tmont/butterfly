@@ -1,6 +1,6 @@
 ﻿namespace ButterflyNet.Parser.Strategies {
 	public class WriteCharacterStrategy : ParseStrategyBase {
-		private IParseStrategy paragraphStrategy;
+		private ParseStrategyBase paragraphStrategy;
 
 		public WriteCharacterStrategy() {
 			AddSatisfier<CanNestTextSatisfier>();
@@ -8,9 +8,9 @@
 
 		public override int Priority { get { return int.MaxValue; } }
 
-		private IParseStrategy ParagraphStrategy { get { return paragraphStrategy ?? (paragraphStrategy = new OpenParagraphStrategy()); } }
+		private ParseStrategyBase ParagraphStrategy { get { return paragraphStrategy ?? (paragraphStrategy = new OpenParagraphStrategy()); } }
 
-		protected override sealed void Execute(ParseContext context) {
+		protected override sealed void DoExecute(ParseContext context) {
 			var c = GetChar(context);
 
 			ParagraphStrategy.ExecuteIfSatisfied(context);

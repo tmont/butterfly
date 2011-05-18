@@ -7,7 +7,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Preformatted));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			CloseScopeUntil(context, ScopeTypeCache.Preformatted);
 			CloseCurrentScope(context);
 		}

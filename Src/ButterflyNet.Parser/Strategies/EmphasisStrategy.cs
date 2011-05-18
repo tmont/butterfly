@@ -14,7 +14,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new OpenNonNestableInlineScopeSatisfier(Type));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			OpenScope(new EmphasisScope(), context);
 		}
 	}
@@ -24,7 +24,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new CurrentScopeMustMatchSatisfier(Type));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			CloseCurrentScope(context);
 		}
 	}

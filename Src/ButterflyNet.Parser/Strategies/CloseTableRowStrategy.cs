@@ -6,7 +6,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new InScopeStackSatisfier(ScopeTypeCache.TableRow));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			CloseScopeUntil(context, ScopeTypeCache.TableRow);
 			CloseCurrentScope(context);
 		}

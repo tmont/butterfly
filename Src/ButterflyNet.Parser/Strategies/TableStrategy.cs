@@ -8,7 +8,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier<TableSatisfier>();
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			IScope rowScope;
 			if (context.Input.Peek() == '{') {
 				context.AdvanceInput();

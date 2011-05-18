@@ -6,7 +6,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Blockquote));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			CloseCurrentScope(context);
 		}
 

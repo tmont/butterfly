@@ -3,7 +3,7 @@ using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
 	public sealed class OpenSmallStrategy : InlineStrategy, ITokenProvider {
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			OpenScope(new SmallScope(), context);
 		}
 

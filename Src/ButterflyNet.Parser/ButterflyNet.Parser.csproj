@@ -85,7 +85,6 @@
     <Compile Include="Strategies\ExtendedDefinitionStrategy.cs" />
     <Compile Include="Strategies\FunctionalStrategy.cs" />
     <Compile Include="Strategies\InlineStrategy.cs" />
-    <Compile Include="IParseStrategy.cs" />
     <Compile Include="ISatisfier.cs" />
     <Compile Include="IScope.cs" />
     <Compile Include="ITokenProvider.cs" />

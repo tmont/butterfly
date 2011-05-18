@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ButterflyNet.Parser.Strategies {
 	public abstract class FunctionalStrategy : InlineStrategy, ITokenProvider {
-		protected override sealed void Execute(ParseContext context) {
+		protected override sealed void DoExecute(ParseContext context) {
 			var peek = context.Input.Peek();
 			var functionNameBuilder = new StringBuilder();
 			while (peek != ButterflyStringReader.NoValue && peek != '|' && peek != ']') {

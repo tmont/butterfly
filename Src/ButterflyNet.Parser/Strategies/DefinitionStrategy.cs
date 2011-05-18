@@ -8,7 +8,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new InScopeStackSatisfier(ScopeTypeCache.DefinitionList));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			OpenScope(new DefinitionScope(), context);
 		}
 

@@ -6,7 +6,7 @@ namespace ButterflyNet.Parser.Strategies {
 		public override int Priority { get { return DefaultPriority - 1; } }
 		public string Token { get { return "[@"; } }
 		
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			OpenScope(new UnescapedScope(), context);
 		}
 	}

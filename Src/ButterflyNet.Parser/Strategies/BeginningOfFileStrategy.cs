@@ -9,7 +9,7 @@ namespace ButterflyNet.Parser.Strategies {
 		/// <remarks> Should always be executed first </remarks>
 		public override int Priority { get { return int.MinValue; } }
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			context.Analyzer.OnStart();
 		}
 	}

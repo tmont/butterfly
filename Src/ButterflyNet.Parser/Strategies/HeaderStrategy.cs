@@ -6,7 +6,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier<StartOfLineSatisfier>();
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			var depth = 1;
 			while (context.Input.Peek() == '!') {
 				depth++;

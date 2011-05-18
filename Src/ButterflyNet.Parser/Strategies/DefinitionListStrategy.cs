@@ -8,7 +8,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.DefinitionTerm)));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			if (!context.Scopes.ContainsType(ScopeTypeCache.DefinitionList)) {
 				OpenScope(new DefinitionListScope(), context);
 			}

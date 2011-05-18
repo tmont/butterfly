@@ -8,7 +8,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new CurrentScopeMustMatchSatisfier(Type));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			CloseCurrentScope(context);
 		}
 

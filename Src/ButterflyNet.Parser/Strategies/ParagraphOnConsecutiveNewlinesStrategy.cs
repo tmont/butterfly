@@ -2,14 +2,14 @@
 
 namespace ButterflyNet.Parser.Strategies {
 	public class ParagraphOnConsecutiveNewlinesStrategy : ScopeDrivenStrategy, ITokenProvider {
-		private readonly IParseStrategy paragraphStrategy = new OpenParagraphStrategy();
+		private readonly ParseStrategyBase paragraphStrategy = new OpenParagraphStrategy();
 
 		public ParagraphOnConsecutiveNewlinesStrategy() {
 			//preformatted line breaks are significant
 			AddSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Preformatted, ScopeTypeCache.PreformattedLine)));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			context.AdvanceInput();
 
 			paragraphStrategy.ExecuteIfSatisfied(context);

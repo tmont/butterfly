@@ -7,7 +7,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier<EofSatisfier>();
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			while (!context.Scopes.IsEmpty()) {
 				CloseCurrentScope(context);
 			}

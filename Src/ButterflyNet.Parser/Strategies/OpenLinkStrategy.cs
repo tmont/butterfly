@@ -8,7 +8,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Link)));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			var peek = context.Input.Peek();
 			var urlBuilder = new StringBuilder();
 			while (peek != ButterflyStringReader.NoValue && peek != '|' && peek != ']') {

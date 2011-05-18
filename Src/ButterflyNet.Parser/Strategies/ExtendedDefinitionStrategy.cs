@@ -9,7 +9,7 @@ namespace ButterflyNet.Parser.Strategies {
 
 		public override int Priority { get { return DefaultPriority - 1; } }
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			OpenScope(new MultiLineDefinitionScope(), context);
 		}
 
@@ -17,7 +17,7 @@ namespace ButterflyNet.Parser.Strategies {
 	}
 
 	public class CloseMultiLineDefinitionStrategy : ScopeDrivenStrategy, ITokenProvider {
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			CloseCurrentScope(context);
 		}
 

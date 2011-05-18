@@ -9,7 +9,7 @@ namespace ButterflyNet.Parser.Strategies {
 		/// <remarks> Should always be executed last </remarks>
 		public override int Priority { get { return int.MaxValue; } }
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			context.Analyzer.OnEnd();
 		}
 	}

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace ButterflyNet.Parser {
-	public abstract class ParseStrategyBase : IParseStrategy {
+
+	public abstract class ParseStrategyBase : ISatisfier {
 		public const int DefaultPriority = 100;
 		public event Action<ParseContext> BeforeExecute;
 		public event Action<ParseContext> AfterExecute;
@@ -47,18 +48,18 @@ namespace ButterflyNet.Parser {
 			return SatisfactionChain.All(satisfier => satisfier.IsSatisfiedBy(context));
 		}
 
-		void IParseStrategy.Execute(ParseContext context) {
+		public void Execute(ParseContext context) {
 			if (BeforeExecute != null) {
 				BeforeExecute.Invoke(context);
 			}
 
-			Execute(context);
+			DoExecute(context);
 
 			if (AfterExecute != null) {
 				AfterExecute.Invoke(context);
 			}
 		}
 
-		protected abstract void Execute(ParseContext context);
+		protected abstract void DoExecute(ParseContext context);
 	}
 }

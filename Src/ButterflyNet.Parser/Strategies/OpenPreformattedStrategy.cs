@@ -10,7 +10,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Preformatted)));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			//read to end of line to get the language, if applicable
 			var languageBuilder = new StringBuilder();
 			context.AdvanceInput();

@@ -7,7 +7,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier<NextCharacterIsNotTheSameSatisfier>();
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			CloseCurrentScope(context);
 		}
 
