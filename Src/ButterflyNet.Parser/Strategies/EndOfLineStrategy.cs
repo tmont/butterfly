@@ -62,18 +62,6 @@ namespace ButterflyNet.Parser.Strategies {
 
 		protected override void DoExecute(ParseContext context) {
 			//close scopes that should be closed by a line break
-			//- list items
-			//- lists
-			//- table rows
-			//- table cells
-			//- tables
-			//- definitions
-			//- definition terms
-			//- definition lists
-			//- preformatted
-			//- headers
-			//- paragraphs
-
 			while (!context.Scopes.IsEmpty()) {
 				var shouldCloseScope = closingStrategyMap[context.Scopes.Peek().GetType()];
 				if (shouldCloseScope == null || !shouldCloseScope(context)) {

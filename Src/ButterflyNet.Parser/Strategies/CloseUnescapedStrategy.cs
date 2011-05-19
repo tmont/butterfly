@@ -2,10 +2,10 @@
 
 namespace ButterflyNet.Parser.Strategies {
 	[NonDefault]
+	[TokenTransformer("]")]
 	public class CloseUnescapedStrategy : ScopeDrivenStrategy {
 		public CloseUnescapedStrategy() {
 			AddSatisfier(new CurrentScopeMustMatchSatisfier(ScopeTypeCache.Unescaped));
-			AddSatisfier(new ExactCharMatchSatisfier("]"));
 			AddSatisfier<NextCharacterIsNotTheSameSatisfier>();
 		}
 

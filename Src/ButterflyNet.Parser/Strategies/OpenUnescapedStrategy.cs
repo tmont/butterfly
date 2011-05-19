@@ -2,11 +2,8 @@
 
 namespace ButterflyNet.Parser.Strategies {
 	[NonDefault]
+	[TokenTransformer("[@")]
 	public class OpenUnescapedStrategy : ScopeDrivenStrategy {
-		public OpenUnescapedStrategy() {
-			AddSatisfier(new ExactCharMatchSatisfier("[@"));
-		}
-
 		public override int Priority { get { return DefaultPriority - 1; } }
 		
 		protected override void DoExecute(ParseContext context) {
