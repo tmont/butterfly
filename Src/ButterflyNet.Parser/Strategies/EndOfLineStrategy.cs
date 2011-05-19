@@ -1,44 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using ButterflyNet.Parser.Satisfiers;
+using ButterflyNet.Parser.Strategies.Eol;
 
 namespace ButterflyNet.Parser.Strategies {
-
-	public interface INewlineScopeClosingStrategy {
-		Type ScopeType { get; }
-		bool ShouldClose(ParseContext context);
-	}
-
-	public sealed class AlwaysTrueScopeClosingStrategy : INewlineScopeClosingStrategy {
-		public AlwaysTrueScopeClosingStrategy(Type scopeType) {
-			ScopeType = scopeType;
-		}
-
-		public Type ScopeType { get; private set; }
-
-		public bool ShouldClose(ParseContext context) {
-			return true;
-		}
-	}
-
-	public sealed class DefinitionListScopeClosingStrategy : INewlineScopeClosingStrategy {
-		public Type ScopeType { get { return ScopeTypeCache.DefinitionList; } }
-
-		public bool ShouldClose(ParseContext context) {
-			//if the next char opens another term, then we don't close the list
-			var peek = context.Input.Peek();
-			return peek != ';' && peek != ':';
-		}
-	}
-
-	public sealed class ParagraphClosingStrategy : INewlineScopeClosingStrategy {
-		public Type ScopeType { get { return ScopeTypeCache.Paragraph; } }
-
-		public bool ShouldClose(ParseContext context) {
-			return context.Input.IsEof || context.Input.Peek() == ButterflyStringReader.NoValue || context.Input.Peek() == '\n';
-		}
-	}
-
 	public class EndOfLineStrategy : ScopeDrivenStrategy {
 		private readonly ClosingStrategyMap closingStrategyMap;
 
@@ -81,6 +46,9 @@ namespace ButterflyNet.Parser.Strategies {
 				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.TableRowLine);
 				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.PreformattedLine);
 				yield return new DefinitionListScopeClosingStrategy();
+				yield return new ListItemClosingStrategy();
+				yield return new ListClosingStrategy(ScopeTypeCache.UnorderedList);
+				yield return new ListClosingStrategy(ScopeTypeCache.OrderedList);
 			}
 		}
 

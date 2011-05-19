@@ -7,23 +7,21 @@ namespace ButterflyNet.Parser.Tests {
 	public class ListTests : WikiToHtmlTest {
 		[Test]
 		public void Should_parse_unordered_list() {
-			Convert("* lol");
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), "<ul><li>lol</li></ul>");
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("* lol"), "<ul><li>lol</li></ul>");
 		}
 
 		[Test]
 		public void Should_parse_ordered_list() {
-			Convert("# lol");
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), "<ol><li>lol</li></ol>");
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("# lol"), "<ol><li>lol</li></ol>");
 		}
 
 		[Test]
 		public void Should_parse_nested_list() {
-			Convert(@"# lol
+			const string text = @"# lol
 #* nested
 #** nested again
 #** lulz
-#* back to depth=2");
+#* back to depth=2";
 
 			var expected = Regex.Replace(@"
 <ol>
@@ -40,20 +38,20 @@ namespace ButterflyNet.Parser.Tests {
 	</li>
 </ol>", @"^\s*", "", RegexOptions.Multiline).Replace(Environment.NewLine, "");
 
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), expected);
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), expected);
 		}
 
 		[Test]
 		[ExpectedException(typeof(ParseException), ExpectedMessage = "Expected list of type OrderedList but got UnorderedList")]
 		public void Should_not_allow_mixed_list_types_at_same_depth() {
-			Convert(@"# lol
+			Parser.Parse(@"# lol
 * lol");
 		}
 
 		[Test]
 		[ExpectedException(typeof(ParseException), ExpectedMessage = "Expected list of type OrderedList but got UnorderedList")]
 		public void Should_not_allow_mixed_list_types_at_previous_depth() {
-			Convert(@"# lol
+			Parser.Parse(@"# lol
 ## lol
 * lol");
 		}
@@ -61,24 +59,13 @@ namespace ButterflyNet.Parser.Tests {
 		[Test]
 		[ExpectedException(typeof(ParseException), ExpectedMessage = "Nested lists cannot skip levels: expected a depth of less than or equal to 2 but got 3")]
 		public void Should_catch_invalid_nesting_levels() {
-			Convert(@"# lol
+			Parser.Parse(@"# lol
 ### lol");
 		}
 
 		[Test]
 		public void Should_allow_formatting_in_list() {
-			Convert("* lol __bold and ''italic''__");
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), "<ul><li>lol <strong>bold and <em>italic</em></strong></li></ul>");
-		}
-
-		[Test]
-		public void Should_parse_consecutive_lists_as_one_list() {
-			const string text = @"* lol
-
-
-* lulz";
-
-			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<ul><li>lol</li><li>lulz</li></ul>");
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("* lol __bold and ''italic''__"), "<ul><li>lol <strong>bold and <em>italic</em></strong></li></ul>");
 		}
 
 		[Test]

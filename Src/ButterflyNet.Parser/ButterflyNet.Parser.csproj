@@ -81,11 +81,15 @@
     <Compile Include="Scopes\MacroScope.cs" />
     <Compile Include="ScopeTypeCache.cs" />
     <Compile Include="ServiceProviderParseStrategyFactory.cs" />
+    <Compile Include="Strategies\Eol\AlwaysTrueScopeClosingStrategy.cs" />
     <Compile Include="Strategies\CloseParagraphStrategy.cs" />
     <Compile Include="Satisfiers\ExactCharMatchSatisfier.cs" />
     <Compile Include="Satisfiers\CurrentScopeMustMatchOrBeParagraphSatisfier.cs" />
+    <Compile Include="Strategies\Eol\DefinitionListScopeClosingStrategy.cs" />
+    <Compile Include="Strategies\Eol\ListClosingStrategy.cs" />
     <Compile Include="Strategies\ExtendedDefinitionStrategy.cs" />
     <Compile Include="Strategies\FunctionalStrategy.cs" />
+    <Compile Include="Strategies\Eol\INewlineScopeClosingStrategy.cs" />
     <Compile Include="Strategies\InlineStrategy.cs" />
     <Compile Include="ISatisfier.cs" />
     <Compile Include="IScope.cs" />
@@ -113,6 +117,7 @@
     <Compile Include="Strategies\MacroStrategy.cs" />
     <Compile Include="Scopes\MultiLineDefinitionScope.cs" />
     <Compile Include="Strategies\EndOfLineStrategy.cs" />
+    <Compile Include="Strategies\Eol\ParagraphClosingStrategy.cs" />
     <Compile Include="Strategies\ScopeDrivenStrategy.cs" />
     <Compile Include="Scopes\BigScope.cs" />
     <Compile Include="Scopes\BlockquoteScope.cs" />
