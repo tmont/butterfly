@@ -5,9 +5,9 @@ namespace ButterflyNet.Parser.Tests {
 	public class TableTests : WikiToHtmlTest {
 		[Test]
 		public void Should_parse_tableheaders_and_tablerow_lines() {
-			Convert(@"|! foo |! bar |
+			const string text = @"|! foo |! bar |
 | baz | bat |
-");
+";
 
 			const string expected = @"
 <table>
@@ -22,19 +22,19 @@ namespace ButterflyNet.Parser.Tests {
 </table>
 ";
 
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), expected.Replace("\r", "").Replace("\n", ""));
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), expected.Replace("\r", "").Replace("\n", ""));
 		}
 
 		[Test]
 		public void Should_parse_table_with_multiline_rows() {
-			Convert(@"|{! foo | bar
+			const string text = @"|{! foo | bar
 | bat 
 | boo |
 bal
 
 }|
 | baz | bat |
-");
+";
 
 			const string expected = @"
 <table>
@@ -52,7 +52,7 @@ bal
 </table>
 ";
 
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), expected.Replace("\r", "").Replace("\n", ""));
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), expected.Replace("\r", "").Replace("\n", ""));
 		}
 	}
 }

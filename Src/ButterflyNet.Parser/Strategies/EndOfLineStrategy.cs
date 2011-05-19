@@ -40,12 +40,20 @@ namespace ButterflyNet.Parser.Strategies {
 		public static IEnumerable<IEolScopeClosingStrategy> DefaultScopeClosingStrategies {
 			get {
 				yield return new ParagraphClosingStrategy();
+
 				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.Header);
+
 				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.Definition);
 				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.DefinitionTerm);
-				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.TableRowLine);
-				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.PreformattedLine);
 				yield return new DefinitionListScopeClosingStrategy();
+
+				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.TableRowLine);
+				yield return new TableCellClosingStrategy(ScopeTypeCache.TableCell);
+				yield return new TableCellClosingStrategy(ScopeTypeCache.TableHeader);
+				yield return new TableClosingStrategy();
+
+				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.PreformattedLine);
+
 				yield return new ListItemClosingStrategy();
 				yield return new ListClosingStrategy(ScopeTypeCache.UnorderedList);
 				yield return new ListClosingStrategy(ScopeTypeCache.OrderedList);

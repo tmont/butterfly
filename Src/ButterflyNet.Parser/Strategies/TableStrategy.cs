@@ -1,24 +1,21 @@
-﻿using System;
-using ButterflyNet.Parser.Satisfiers;
+﻿using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
+	[TokenTransformer("|")]
 	public class TableStrategy : ScopeDrivenStrategy {
 		public TableStrategy() {
-			AddSatisfier(new ExactCharMatchSatisfier("|"));
 			AddSatisfier<TableSatisfier>();
 		}
 
 		protected override void DoExecute(ParseContext context) {
-			IScope rowScope;
+			IScope rowScope = new TableRowLineScope();
 			if (context.Input.Peek() == '{') {
 				context.AdvanceInput();
 				rowScope = new TableRowScope();
-			} else {
-				rowScope = new TableRowLineScope();
 			}
 
-			Type cellType = ScopeTypeCache.TableCell;
+			var cellType = ScopeTypeCache.TableCell;
 			if (context.Input.Peek() == '!') {
 				context.AdvanceInput();
 				cellType = ScopeTypeCache.TableHeader;
@@ -45,12 +42,11 @@ namespace ButterflyNet.Parser.Strategies {
 			// - we're in a row terminated by a line break and the next char is not a new line (signifying a new row)
 			// - OR we're in a row not terminated by a line break
 			if (
-				context.Input.Peek() != ButterflyStringReader.NoValue 
-					&& (
-						(context.Scopes.ContainsType(ScopeTypeCache.TableRowLine) && context.Input.Peek() != '\n') 
-							|| context.Scopes.ContainsType(ScopeTypeCache.TableRow)
-						)
-				) {
+				context.Input.Peek() != ButterflyStringReader.NoValue && (
+					(context.Scopes.ContainsType(ScopeTypeCache.TableRowLine) && context.Input.Peek() != '\n') 
+					|| context.Scopes.ContainsType(ScopeTypeCache.TableRow)
+				)
+			) {
 				OpenScope(cellType == ScopeTypeCache.TableHeader ? (IScope)new TableHeaderScope() : new TableCellScope(), context);
 			}
 		}

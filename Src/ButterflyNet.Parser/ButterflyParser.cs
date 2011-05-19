@@ -61,7 +61,10 @@ namespace ButterflyNet.Parser {
 
 				var strategy = orderedStrategies.Where(s => s.IsSatisfiedBy(context)).FirstOrDefault();
 				if (strategy == null) {
-					throw new ParseException(string.Format("No strategy found for {0}", context.CurrentChar == ButterflyStringReader.NoValue ? "<EOF>" : ((char)context.CurrentChar).ToString()));
+					throw new ParseException(string.Format(
+						"No strategy found for {0}", 
+						context.CurrentChar == ButterflyStringReader.NoValue ? "<EOF>" : ((char)context.CurrentChar).ToString())
+					);
 				}
 
 				strategy.Execute(context);

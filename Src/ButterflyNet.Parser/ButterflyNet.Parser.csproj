@@ -87,6 +87,8 @@
     <Compile Include="Satisfiers\CurrentScopeMustMatchOrBeParagraphSatisfier.cs" />
     <Compile Include="Strategies\Eol\DefinitionListScopeClosingStrategy.cs" />
     <Compile Include="Strategies\Eol\ListClosingStrategy.cs" />
+    <Compile Include="Strategies\Eol\TableCellClosingStrategy.cs" />
+    <Compile Include="Strategies\Eol\TableClosingStrategy.cs" />
     <Compile Include="Strategies\ExtendedDefinitionStrategy.cs" />
     <Compile Include="Strategies\FunctionalStrategy.cs" />
     <Compile Include="Strategies\Eol\IEolScopeClosingStrategy.cs" />
