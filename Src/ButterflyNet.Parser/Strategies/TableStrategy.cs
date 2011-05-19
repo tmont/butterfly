@@ -1,4 +1,5 @@
-﻿using ButterflyNet.Parser.Satisfiers;
+﻿using System.Linq;
+using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
@@ -30,7 +31,22 @@ namespace ButterflyNet.Parser.Strategies {
 				OpenScope(rowScope, context);
 			} else if (context.Scopes.ContainsType(ScopeTypeCache.TableCell, ScopeTypeCache.TableHeader)) {
 				//close table cell
-				CloseScopeUntil(context, ScopeTypeCache.TableCell, ScopeTypeCache.TableHeader);
+
+				//close paragraphs contained in table cell, if they exist
+				var closableScopes = new[] { ScopeTypeCache.Paragraph };
+				while (!context.Scopes.IsEmpty()) {
+					if (!closableScopes.Contains(context.Scopes.Peek().GetType())) {
+						break;
+					}
+
+					CloseCurrentScope(context);
+				}
+
+				var currentScope = context.Scopes.PeekOrDefault();
+				if (currentScope == null || (currentScope.GetType() != ScopeTypeCache.TableCell && currentScope.GetType() != ScopeTypeCache.TableHeader)) {
+					throw new ParseException("Cannot close table cell until all containing scopes are closed");
+				}
+
 				CloseCurrentScope(context);
 			} else if (!context.Scopes.ContainsType(ScopeTypeCache.TableRow, ScopeTypeCache.TableRowLine)) {
 				OpenScope(rowScope, context);

@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using NUnit.Framework;
 
 namespace ButterflyNet.Parser.Tests {
@@ -20,11 +19,6 @@ namespace ButterflyNet.Parser.Tests {
 				Analyzer = new HtmlAnalyzer(Writer)
 			}.LoadDefaultStrategies(new DefaultParseStrategyFactory());
 
-		}
-
-		[Obsolete("Use Parser.Parse(wikitext) instead")]
-		protected void Convert(string wikitext) {
-			Parser.Parse(wikitext);
 		}
 	}
 }

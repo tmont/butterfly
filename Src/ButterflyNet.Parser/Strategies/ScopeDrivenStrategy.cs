@@ -68,17 +68,6 @@ namespace ButterflyNet.Parser.Strategies {
 			}
 		}
 
-		protected void CloseScopeUntil(ParseContext context, params Type[] scopeTypes) {
-			while (!context.Scopes.IsEmpty()) {
-				var scope = context.Scopes.Peek();
-				if (scopeTypes.Contains(scope.GetType())) {
-					break;
-				}
-
-				CloseCurrentScope(context);
-			}
-		}
-
 		protected void CloseCurrentScope(ParseContext context) {
 			var currentScope = context.Scopes.PeekOrDefault();
 			if (currentScope == null) {

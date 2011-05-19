@@ -87,6 +87,11 @@ oh hai";
 			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<ul><li>foo</li><li>bar</li></ul><p>oh hai</p>");
 		}
 
+		[Test]
+		public void Should_not_close_list_if_inline_scope_is_not_closed() {
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("* __foo\n* bar__"), "<ul><li><strong>foo* bar</strong></li></ul>");
+		}
+
 		
 	}
 }

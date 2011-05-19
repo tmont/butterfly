@@ -48,6 +48,7 @@
     <Compile Include="DefinitionListTests.cs" />
     <Compile Include="HeaderTests.cs" />
     <Compile Include="HtmlEntityTests.cs" />
+    <Compile Include="IllegalScopingTests.cs" />
     <Compile Include="ImageTests.cs" />
     <Compile Include="ContextualTests.cs" />
     <Compile Include="LinkTests.cs" />

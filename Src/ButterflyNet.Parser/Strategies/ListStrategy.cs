@@ -7,6 +7,7 @@ namespace ButterflyNet.Parser.Strategies {
 	public class ListStrategy : ScopeDrivenStrategy {
 		public ListStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
+			AddSatisfier(ctx => !ctx.Scopes.Any(scope => scope.Level == ScopeLevel.Inline));
 			AddSatisfier(new OneOfSeveralTokensSatisfier('*', '#'));
 		}
 
@@ -52,7 +53,25 @@ namespace ButterflyNet.Parser.Strategies {
 				if (difference < 0) {
 					//close lists of a higher depth
 					while (difference < 0) {
-						CloseScopeUntil(context, ScopeTypeCache.UnorderedList, ScopeTypeCache.OrderedList);
+						//close paragraphs and list items
+
+						var closableScopes = new[] { ScopeTypeCache.Paragraph, ScopeTypeCache.ListItem };
+						while (!context.Scopes.IsEmpty()) {
+							if (!closableScopes.Contains(context.Scopes.Peek().GetType())) {
+								break;
+							}
+
+							CloseCurrentScope(context);
+						}
+
+						var currentScope = context.Scopes.Peek();
+						if (currentScope.GetType() != ScopeTypeCache.OrderedList && currentScope.GetType() != ScopeTypeCache.UnorderedList) {
+							//this shouldn't ever actually happen, because the satisfiers guarantee that this strategy isn't executed
+							//unless there are no inline scopes in the stack (and also because block scopes can't be nested inside a list item)
+							//but i'll leave it here just in case i introduce a bug that creates an inconsistent state
+						    throw new ParseException("Cannot close list until all containing scopes have been closed");
+						}
+
 						CloseCurrentScope(context);
 						difference++;
 					}

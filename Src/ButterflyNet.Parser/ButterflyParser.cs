@@ -70,6 +70,11 @@ namespace ButterflyNet.Parser {
 				strategy.Execute(context);
 			} while (!eofHandled);
 
+			if (!context.Scopes.IsEmpty()) {
+				throw new ParseException("Scopes that need to be manually closed were not closed");
+			}
+
+
 			context.Analyzer.OnEnd();
 
 			return new ParseResult(context.ScopeTree, context.Input.Value);
