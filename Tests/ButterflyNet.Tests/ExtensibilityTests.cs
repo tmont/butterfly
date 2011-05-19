@@ -33,11 +33,8 @@ namespace ButterflyNet.Parser.Tests {
 		}
 
 		#region Custom strong strategy
+		[TokenTransformer("??")]
 		public abstract class CustomStrongStrategy : InlineStrategy {
-			protected CustomStrongStrategy() {
-				AddSatisfier(new ExactCharMatchSatisfier("??"));
-			}
-
 			protected override sealed Type Type { get { return ScopeTypeCache.Strong; } }
 		}
 
@@ -87,10 +84,10 @@ namespace ButterflyNet.Parser.Tests {
 			}
 		}
 
+		[TokenTransformer("(((")]
 		public class OpenBlinkStrategy : BlinkStrategy {
 			public OpenBlinkStrategy() {
 				AddSatisfier(new OpenNonNestableInlineScopeSatisfier(Type));
-				AddSatisfier(new ExactCharMatchSatisfier("((("));
 
 			}
 			protected override void DoExecute(ParseContext context) {
@@ -98,10 +95,10 @@ namespace ButterflyNet.Parser.Tests {
 			}
 		}
 
+		[TokenTransformer(")))")]
 		public class CloseBlinkStrategy : BlinkStrategy {
 			public CloseBlinkStrategy() {
 				AddSatisfier(new CurrentScopeMustMatchSatisfier(Type));
-				AddSatisfier(new ExactCharMatchSatisfier(")))"));
 			}
 
 			protected override void DoExecute(ParseContext context) {
