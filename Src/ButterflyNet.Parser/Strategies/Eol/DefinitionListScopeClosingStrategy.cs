@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace ButterflyNet.Parser.Strategies.Eol {
-	public sealed class DefinitionListScopeClosingStrategy : INewlineScopeClosingStrategy {
+	public sealed class DefinitionListScopeClosingStrategy : IEolScopeClosingStrategy {
 		public Type ScopeType { get { return ScopeTypeCache.DefinitionList; } }
 
 		public bool ShouldClose(ParseContext context) {

@@ -16,7 +16,7 @@ namespace ButterflyNet.Parser.Strategies {
 		private class ClosingStrategyMap {
 			private readonly IDictionary<Type, Func<ParseContext, bool>> scopeClosingStrategyMap = new Dictionary<Type, Func<ParseContext, bool>>();
 
-			public ClosingStrategyMap(IEnumerable<INewlineScopeClosingStrategy> scopeClosingStrategies) {
+			public ClosingStrategyMap(IEnumerable<IEolScopeClosingStrategy> scopeClosingStrategies) {
 				foreach (var strategy in scopeClosingStrategies ?? DefaultScopeClosingStrategies) {
 					scopeClosingStrategyMap[strategy.ScopeType] = strategy.ShouldClose;
 				}
@@ -31,13 +31,13 @@ namespace ButterflyNet.Parser.Strategies {
 
 		public EndOfLineStrategy() : this(null) { }
 
-		public EndOfLineStrategy(IEnumerable<INewlineScopeClosingStrategy> scopeClosingStrategies) {
+		public EndOfLineStrategy(IEnumerable<IEolScopeClosingStrategy> scopeClosingStrategies) {
 			closingStrategyMap = new ClosingStrategyMap(scopeClosingStrategies);
 			AddSatisfier<EolSatisfier>();
 			AddSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Preformatted)));
 		}
 
-		public static IEnumerable<INewlineScopeClosingStrategy> DefaultScopeClosingStrategies {
+		public static IEnumerable<IEolScopeClosingStrategy> DefaultScopeClosingStrategies {
 			get {
 				yield return new ParagraphClosingStrategy();
 				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.Header);

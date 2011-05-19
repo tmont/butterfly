@@ -4,7 +4,7 @@ using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies.Eol {
 
-	public abstract class ListScopeClosingStrategy : INewlineScopeClosingStrategy {
+	public abstract class ListScopeClosingStrategy : IEolScopeClosingStrategy {
 		public abstract Type ScopeType { get; }
 
 		public bool ShouldClose(ParseContext context) {

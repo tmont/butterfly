@@ -89,7 +89,7 @@
     <Compile Include="Strategies\Eol\ListClosingStrategy.cs" />
     <Compile Include="Strategies\ExtendedDefinitionStrategy.cs" />
     <Compile Include="Strategies\FunctionalStrategy.cs" />
-    <Compile Include="Strategies\Eol\INewlineScopeClosingStrategy.cs" />
+    <Compile Include="Strategies\Eol\IEolScopeClosingStrategy.cs" />
     <Compile Include="Strategies\InlineStrategy.cs" />
     <Compile Include="ISatisfier.cs" />
     <Compile Include="IScope.cs" />
