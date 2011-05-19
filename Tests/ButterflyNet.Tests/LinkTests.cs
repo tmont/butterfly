@@ -40,7 +40,7 @@ namespace ButterflyNet.Parser.Tests {
 
 		[Test]
 		public void Should_allow_escaped_close_bracket_inside_link() {
-			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("[foo|foo]]"), "<p><a href=\"/foo\">foo]</a></p>");
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("[foo|foo]]]"), "<p><a href=\"/foo\">foo]</a></p>");
 		}
 	}
 }

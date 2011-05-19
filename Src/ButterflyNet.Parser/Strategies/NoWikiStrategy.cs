@@ -16,7 +16,7 @@ namespace ButterflyNet.Parser.Strategies {
 				throw new ParseException("NoWiki scope never closes");
 			}
 
-			var text = match.Groups[1].Value;
+			var text = match.Groups[1].Value.Replace("]]", "]");
 			context.Input.Read(match.Value.Length);
 			context.UpdateCurrentChar();
 			context.Analyzer.WriteAndEscape(text);

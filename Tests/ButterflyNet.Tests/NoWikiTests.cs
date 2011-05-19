@@ -18,5 +18,11 @@ namespace ButterflyNet.Parser.Tests {
 			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<p>foo oh hai!* not a list| not a table |</p>");
 		}
 
+		[Test]
+		public void Should_escape_close_bracket() {
+			const string text = @"[!foo]]]";
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<p>foo]</p>");
+		}
+
 	}
 }

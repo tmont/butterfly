@@ -6,6 +6,7 @@ namespace ButterflyNet.Parser.Strategies {
 	public class CloseLinkStrategy : InlineStrategy {
 		public CloseLinkStrategy() {
 			AddSatisfier(new CurrentScopeMustMatchSatisfier(ScopeTypeCache.Link));
+			AddSatisfier<NextCharacterIsNotTheSameSatisfier>();
 		}
 
 		protected override void DoExecute(ParseContext context) {

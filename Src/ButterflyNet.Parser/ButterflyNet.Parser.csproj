@@ -182,6 +182,7 @@
     <Compile Include="Strategies\StrongStrategy.cs" />
     <Compile Include="Strategies\TableStrategy.cs" />
     <Compile Include="Strategies\TeletypeStrategy.cs" />
+    <Compile Include="Strategies\WriteEscapedBracketStrategy.cs" />
     <Compile Include="TokenTransformerAttribute.cs" />
     <Compile Include="Strategies\UnderlineStrategy.cs" />
     <Compile Include="Strategies\WriteCharacterStrategy.cs" />
