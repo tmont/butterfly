@@ -89,5 +89,14 @@ namespace ButterflyNet.Parser.Strategies {
 			}
 		}
 
+		protected void CloseParagraphIfNecessary(ParseContext context) {
+			var scope = context.Scopes.PeekOrDefault();
+			if (scope == null || scope.GetType() != ScopeTypeCache.Paragraph) {
+				return;
+			}
+
+			CloseCurrentScope(context);
+		}
+
 	}
 }

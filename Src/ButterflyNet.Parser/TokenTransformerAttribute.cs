@@ -7,7 +7,5 @@ namespace ButterflyNet.Parser {
 		}
 
 		public string Token { get; private set; }
-
-		public bool RegexMatch { get; set; }
 	}
 }

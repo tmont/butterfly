@@ -1,11 +1,13 @@
-﻿using ButterflyNet.Parser.Satisfiers;
+﻿using System;
+using System.Text.RegularExpressions;
+using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	[TokenTransformer(@"^----(?:\n|$)", RegexMatch = true)]
 	public class HorizontalRulerStrategy : ScopeDrivenStrategy {
 		public HorizontalRulerStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
+			AddSatisfier<HRuleSatisfier>();
 		}
 
 		//needs to be less than strike through, which is three dashes in a row
@@ -17,6 +19,13 @@ namespace ButterflyNet.Parser.Strategies {
 
 			OpenScope(new HorizontalRulerScope(), context);
 			CloseCurrentScope(context);
+		}
+
+		private class HRuleSatisfier : ISatisfier {
+			private static readonly Regex regex = new Regex(@"^----(?:\n|$)");
+			public bool IsSatisfiedBy(ParseContext context) {
+				return regex.IsMatch(context.Input.Substring);
+			}
 		}
 	}
 }

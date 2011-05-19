@@ -1,8 +1,11 @@
-﻿namespace ButterflyNet.Parser.Strategies {
+﻿using ButterflyNet.Parser.Satisfiers;
+
+namespace ButterflyNet.Parser.Strategies {
 	public class WriteCharacterStrategy : ParseStrategy {
 		private ParseStrategy paragraphStrategy;
 
 		public WriteCharacterStrategy() {
+			AddSatisfier<NegatingSatisfier<EofSatisfier>>();
 			AddSatisfier<CanNestTextSatisfier>();
 		}
 

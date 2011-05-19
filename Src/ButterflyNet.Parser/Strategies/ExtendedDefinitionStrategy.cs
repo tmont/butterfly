@@ -17,7 +17,12 @@ namespace ButterflyNet.Parser.Strategies {
 
 	[TokenTransformer("}:")]
 	public class CloseMultiLineDefinitionStrategy : ScopeDrivenStrategy {
+		public CloseMultiLineDefinitionStrategy() {
+			AddSatisfier(new CurrentScopeMustMatchOrBeParagraphSatisfier(ScopeTypeCache.MultiLineDefinition));
+		}
+
 		protected override void DoExecute(ParseContext context) {
+			CloseParagraphIfNecessary(context);
 			CloseCurrentScope(context);
 		}
 	}

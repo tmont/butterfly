@@ -26,14 +26,27 @@ namespace ButterflyNet.Parser.Strategies {
 
 		public bool ShouldClose(ParseContext context) {
 			//if the next char opens another term, then we don't close the list
-			return context.Input.Peek() != ';' && context.Input.Peek() != ':';
+			var peek = context.Input.Peek();
+			return peek != ';' && peek != ':';
 		}
 	}
 
-	[TokenTransformer("\n")]
-	public class NewlineStrategy : ScopeDrivenStrategy {
+	public sealed class ParagraphClosingStrategy : INewlineScopeClosingStrategy {
+		public Type ScopeType { get { return ScopeTypeCache.Paragraph; } }
+
+		public bool ShouldClose(ParseContext context) {
+			return context.Input.IsEof || context.Input.Peek() == ButterflyStringReader.NoValue || context.Input.Peek() == '\n';
+		}
+	}
+
+	public class EndOfLineStrategy : ScopeDrivenStrategy {
 		private readonly ClosingStrategyMap closingStrategyMap;
-		private readonly ParseStrategy paragraphStrategy = new OpenParagraphStrategy();
+
+		private class EolSatisfier : ISatisfier {
+			public bool IsSatisfiedBy(ParseContext context) {
+				return context.CurrentChar == '\n' || context.Input.IsEof;
+			}
+		}
 
 		private class ClosingStrategyMap {
 			private readonly IDictionary<Type, Func<ParseContext, bool>> scopeClosingStrategyMap = new Dictionary<Type, Func<ParseContext, bool>>();
@@ -51,15 +64,17 @@ namespace ButterflyNet.Parser.Strategies {
 			}
 		}
 
-		public NewlineStrategy() : this(null) { }
+		public EndOfLineStrategy() : this(null) { }
 
-		public NewlineStrategy(IEnumerable<INewlineScopeClosingStrategy> scopeClosingStrategies) {
+		public EndOfLineStrategy(IEnumerable<INewlineScopeClosingStrategy> scopeClosingStrategies) {
 			closingStrategyMap = new ClosingStrategyMap(scopeClosingStrategies);
-			AddSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.PreformattedLine, ScopeTypeCache.Preformatted)));
+			AddSatisfier<EolSatisfier>();
+			AddSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Preformatted)));
 		}
 
 		public static IEnumerable<INewlineScopeClosingStrategy> DefaultScopeClosingStrategies {
 			get {
+				yield return new ParagraphClosingStrategy();
 				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.Header);
 				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.Definition);
 				yield return new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.DefinitionTerm);
@@ -80,6 +95,8 @@ namespace ButterflyNet.Parser.Strategies {
 			//- definition terms
 			//- definition lists
 			//- preformatted
+			//- headers
+			//- paragraphs
 
 			while (!context.Scopes.IsEmpty()) {
 				var shouldCloseScope = closingStrategyMap[context.Scopes.Peek().GetType()];
@@ -90,27 +107,8 @@ namespace ButterflyNet.Parser.Strategies {
 				CloseCurrentScope(context);
 			}
 
-			if (context.Input.Peek() == '\n') {
-				//consecutive line breaks means close a paragraph
-				CloseParagraph(context);
-			}
-		}
-
-		private void CloseParagraph(ParseContext context) {
-			context.AdvanceInput();
-
-			paragraphStrategy.ExecuteIfSatisfied(context);
-
-			var currentScope = context.Scopes.PeekOrDefault();
-
-			if (currentScope != null && currentScope.GetType() == ScopeTypeCache.Paragraph) {
-				//close the current paragraph, but only if all other scopes are closed
-				CloseCurrentScope(context);
-
-				//ignore the next consecutive linebreaks
-				while (context.Input.Peek() == '\n') {
-					context.AdvanceInput();
-				}
+			while (context.Input.Peek() == '\n') {
+				context.AdvanceInput();
 			}
 		}
 	}

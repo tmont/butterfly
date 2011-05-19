@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Strategies;
 
 namespace ButterflyNet.Parser {
@@ -16,12 +15,7 @@ namespace ButterflyNet.Parser {
 		protected ParseStrategy() {
 			var tokenAttribute = GetType().GetAttributes<TokenTransformerAttribute>().FirstOrDefault();
 			if (tokenAttribute != null) {
-				if (tokenAttribute.RegexMatch) {
-					AddSatisfier(new CharMatchSatisfier(tokenAttribute.Token));
-				} else {
-					AddSatisfier(new ExactCharMatchSatisfier(tokenAttribute.Token));
-				}
-
+				AddSatisfier(new ExactCharMatchSatisfier(tokenAttribute.Token));
 				BeforeExecute += AdvanceInputForToken(tokenAttribute.Token);
 			}
 		}

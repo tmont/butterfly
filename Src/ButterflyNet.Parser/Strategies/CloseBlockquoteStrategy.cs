@@ -9,6 +9,7 @@ namespace ButterflyNet.Parser.Strategies {
 		}
 
 		protected override void DoExecute(ParseContext context) {
+			CloseParagraphIfNecessary(context);
 			CloseCurrentScope(context);
 		}
 	}

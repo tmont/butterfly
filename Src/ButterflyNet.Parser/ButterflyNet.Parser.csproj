@@ -81,7 +81,6 @@
     <Compile Include="Scopes\MacroScope.cs" />
     <Compile Include="ScopeTypeCache.cs" />
     <Compile Include="ServiceProviderParseStrategyFactory.cs" />
-    <Compile Include="Satisfiers\CharMatchSatisfier.cs" />
     <Compile Include="Strategies\CloseParagraphStrategy.cs" />
     <Compile Include="Satisfiers\ExactCharMatchSatisfier.cs" />
     <Compile Include="Satisfiers\CurrentScopeMustMatchOrBeParagraphSatisfier.cs" />
@@ -113,7 +112,7 @@
     <Compile Include="Scopes\ScopeBase.cs" />
     <Compile Include="Strategies\MacroStrategy.cs" />
     <Compile Include="Scopes\MultiLineDefinitionScope.cs" />
-    <Compile Include="Strategies\NewlineStrategy.cs" />
+    <Compile Include="Strategies\EndOfLineStrategy.cs" />
     <Compile Include="Strategies\ScopeDrivenStrategy.cs" />
     <Compile Include="Scopes\BigScope.cs" />
     <Compile Include="Scopes\BlockquoteScope.cs" />
@@ -159,7 +158,6 @@
     <Compile Include="Strategies\DefinitionListStrategy.cs" />
     <Compile Include="Strategies\DefinitionStrategy.cs" />
     <Compile Include="Strategies\EmphasisStrategy.cs" />
-    <Compile Include="Strategies\EofStrategy.cs" />
     <Compile Include="Strategies\HeaderStrategy.cs" />
     <Compile Include="Strategies\HorizontalRulerStrategy.cs" />
     <Compile Include="Strategies\ListStrategy.cs" />

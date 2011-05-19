@@ -26,7 +26,7 @@ multiple lines}:";
 		}
 
 		[Test]
-		public void Should_allow_formatting() {
+		public void Should_allow_formatting_in_multiline_definition() {
 			const string text = @";term
 :{__definition__}:";
 
