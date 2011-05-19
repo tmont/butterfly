@@ -10,16 +10,29 @@ namespace ButterflyNet.Parser.Strategies {
 
 		protected ScopeDrivenStrategy() {
 			BeforeScopeOpens += CreateParagraphIfNecessary;
+			BeforeScopeOpens += CloseParagraphForBlockScopes;
 			AfterScopeOpens += UpdateScopeTreeAfterOpen;
 			AfterScopeCloses += UpdateScopeTreeAfterClose;
 		}
 
 		#region Event delegates
-		private static void CreateParagraphIfNecessary(IScope scope, ParseContext context) {
-			if (scope.GetType() == ScopeTypeCache.Paragraph) {
+		private void CloseParagraphForBlockScopes(IScope scope, ParseContext context) {
+			if (scope.Level != ScopeLevel.Block) {
 				return;
 			}
 
+			if (!context.Scopes.ContainsType(ScopeTypeCache.Paragraph)) {
+				return;
+			}
+
+			if (context.Scopes.Peek().GetType() != ScopeTypeCache.Paragraph) {
+				throw new ParseException("Cannot nest a block level scope inside a paragraph. Did you forget to close something?");
+			}
+
+			CloseCurrentScope(context);
+		}
+
+		private static void CreateParagraphIfNecessary(IScope scope, ParseContext context) {
 			if (scope.Level == ScopeLevel.Inline) {
 				new OpenParagraphStrategy().ExecuteIfSatisfied(context);
 			}

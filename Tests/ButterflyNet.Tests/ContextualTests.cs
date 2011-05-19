@@ -6,18 +6,12 @@ namespace ButterflyNet.Parser.Tests {
 
 		[Test]
 		public void Should_close_list_when_followed_by_block_scope() {
-			Convert(@"* lulz
-! oh hai!");
-
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), "<ul><li>lulz</li></ul><h1>oh hai!</h1>");
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("* lulz\n! oh hai!"), "<ul><li>lulz</li></ul><h1>oh hai!</h1>");
 		}
 
 		[Test]
 		public void Should_close_paragraph_before_opening_block_scope() {
-			Convert(@"foo
-*lulz");
-
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), "<p>foo</p><ul><li>lulz</li></ul>");
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("foo\n*lulz"), "<p>foo</p><ul><li>lulz</li></ul>");
 		}
 
 		[Test]
@@ -32,10 +26,25 @@ foo";
 		public void Should_close_definition_list_before_opening_paragraph() {
 			const string text = @";term
 :definition
-foo
-* lol";
+foo";
 
-			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<dl><dt>term</dt><dd>definition</dd></dl><p>foo</p><ul><li>lol</li></ul>");
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<dl><dt>term</dt><dd>definition</dd></dl><p>foo</p>");
+		}
+
+		[Test]
+		public void Should_close_paragraph_before_opening_list() {
+			const string text = @"foo
+* list";
+
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<p>foo</p><ul><li>list</li></ul>");
+		}
+
+		[Test]
+		public void Should_close_paragraph_before_opening_definition_list() {
+			const string text = @"foo
+;list";
+
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<p>foo</p><dl><dt>list</dt></dl>");
 		}
 
 		[Test]

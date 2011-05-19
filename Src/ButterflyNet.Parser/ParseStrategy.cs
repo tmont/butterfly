@@ -20,6 +20,7 @@ namespace ButterflyNet.Parser {
 			}
 		}
 
+		#region event delegates
 		private static Action<ParseContext> AdvanceInputForToken(string token) {
 			return context => {
 				if (token.Length <= 1) {
@@ -29,6 +30,7 @@ namespace ButterflyNet.Parser {
 				context.AdvanceInput(token.Length - 1);
 			};
 		}
+		#endregion
 
 		#region can't get no satisfaction
 		private class LambdaDrivenSatisfier : ISatisfier {
