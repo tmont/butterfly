@@ -81,7 +81,6 @@
     <Compile Include="Scopes\LineBreakScope.cs" />
     <Compile Include="Scopes\MacroScope.cs" />
     <Compile Include="ScopeTypeCache.cs" />
-    <Compile Include="ServiceProviderParseStrategyFactory.cs" />
     <Compile Include="Strategies\Eol\AlwaysTrueScopeClosingStrategy.cs" />
     <Compile Include="Strategies\CloseParagraphStrategy.cs" />
     <Compile Include="Satisfiers\ExactCharMatchSatisfier.cs" />
@@ -193,7 +192,6 @@
     <Compile Include="ScopeLevel.cs" />
     <Compile Include="ScopeTree.cs" />
     <Compile Include="ScopeTreeNode.cs" />
-    <Compile Include="ServiceProviderFactory.cs" />
     <Compile Include="StackExtensions.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="SyntaxHighlightingLibrary.cs" />
