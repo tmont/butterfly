@@ -211,7 +211,155 @@ public class MyClass : ICloneable {
 }
 }}}
 
+!! Blockquotes
+
+Blockquotes are opened with ==<<== at the beginning of a line, and closed with ==>>==.
+
+{{{{plaintext
+<<this is a blockquote>>
+
+<<
+so is this
+>>
+
+<<
+you can have
+
+* markup
+* as well as __textual styles__
+** inside a blockquote
+>>
+}}}}
+
+<<this is a blockquote>>
+
+<<
+so is this
+>>
+
+<<
+you can have
+
+* markup
+* as well as __textual styles__
+** inside a blockquote
+>>
+
+!! Horizontal Ruler
+You can insert a horizontal ruler by creating a line consisting of four dashes ==[!----]==.
+
+{{{{plaintext
+this is some text
+----
+here is more text
+}}}}
+
+this is some text
+----
+here is more text
+
+!! Modules
+Modules are extensions to the parser that allow for injecting user-defined functionality in the form 
+of function calls. Each module has a unique name, and can be passed arguments.
+
+!!! Images
+In __Butterfly__, Images are implemented as modules.
+
+|! Markup|! Output|
+| ==[![:image|url=butterfly.png]]]==| [:image|url=butterfly.png]|
+| ==[![:image|url=butterfly.png|title=A pretty butterfly|width=100|height=150]]]==| [:image|url=butterfly.png|title=A pretty butterfly|width=100|height=150]|
+| ==[![:image|url=nonexistent.png|alt=[an image]]]]]]]==| [:image|url=nonexistent.png|alt=[an image]]]|
+
+!!! HTML Entities
+Since __Butterfly__ escapes all output (when it transforms to HTML), you can't render an HTML entity 
+(the ==&== gets encoded to ==&amp;==). To get around this you can use the HTML entity module to render 
+an HTML entity.
+
+|! Markup|! Output|
+| ==[![:entity|value=copy]]]==| [:entity|value=copy]|
+| ==[![:entity|value=#169]]]==| [:entity|value=#169]|
+| ==[![:entity|value=#xa9]]]==| [:entity|value=#xa9]|
+
+!! Unicode
+
+__Butterfly__ is unicode-safe, so you can just use straight-up Unicode and it will render as Unicode (unencoded). 
+Make sure that you are rendering your page in UTF-8.
+
+<<Один главный процесс и несколько рабочих, рабочие процессы работают под непривилегированным пользователем>>
+
+!! Forced Line Breaks
+
+To force a line break, use ==[!%%%]==.
+
+{{{{plaintext
+this text will
+be on the same line
+
+but this text %%% has a line break
+}}}}
+
+this text will 
+be on the same line
+
+but this text %%% has a line break
+
+!! Tables
+To render a table, start a line with ==|==. Each cell is separated by a ==|==. Use ==|!== 
+to render a table header instead of a table cell.
+
+{{{{plaintext
+|! cell 1 |! cell 2 |
+| row 2 cell 1 | row 2 cell 2|
+| row 3 cell 1 | row 3 cell 2| row 3 cell 3 |
+}}}}
+
+becomes
+
+|! cell 1 |! cell 2 |
+| row 2 cell 1 | row 2 cell 2|
+| row 3 cell 1 | row 3 cell 2| row 3 cell 3 |
+
+Table rows are separated by linefeeds. If you need more complicated markup inside a table row, 
+you can open a multiline table row with ==|{== and close it with ==}|==.
+
+{{{{plaintext
+|! header |! header2 |
+|{ this is a multiline row 
+You can have all kinds of markup in here.
+
+* like a list
+** and even a nested list!
+
+| cells are still separated by a [!|] 
+
+<<I'm sexy
+
+[:entity|value=mdash] [http://tommymontgomery.com/|Tommy Montgomery]
+>>
+}|
+}}}}
+
+becomes
+
+|! header |! header2 |
+|{ this is a multiline row 
+You can have all kinds of markup in here.
+
+* like a list
+** and even a nested list!
+
+| cells are still separated by a [!|] 
+
+<<I'm sexy
+
+[:entity|value=mdash] [http://tommymontgomery.com/|Tommy Montgomery]
+>>
+}|
+
 ";
+
+			var parser = new ButterflyParser().LoadDefaultStrategies();
+			parser.LocalImageBaseUrl = "";
 
 			var fileContext = string.Format(@"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN""
 ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">
@@ -265,6 +413,11 @@ public class MyClass : ICloneable {
 			th {{
 				background-color: #CBB1CA;
 			}}
+			blockquote {{
+				border-left: 2px solid #666666;
+				background-color: #EEEEEE;
+				padding: 5px;
+			}}
 		</style>
 		<link rel=""stylesheet"" type=""text/css"" href=""http://dl.sunlightjs.com/latest/themes/sunlight.default.css""/>
 	</head>
@@ -277,7 +430,7 @@ public class MyClass : ICloneable {
 			typeof(Sunlight) !== ""undefined"" && Sunlight.highlightAll();
 		//]]></script>
 	</body>
-</html>", new ButterflyParser().LoadDefaultStrategies().ParseAndReturn(helpMarkup));
+</html>", parser.ParseAndReturn(helpMarkup));
 
 			File.WriteAllText(@"..\..\formatting.html", fileContext, Encoding.UTF8);
 		}

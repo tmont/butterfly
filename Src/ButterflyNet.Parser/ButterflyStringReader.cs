@@ -78,7 +78,7 @@ namespace ButterflyNet.Parser {
 				nextReadIncreasesLineCount = true;
 			}
 
-			return value.IsValidWikiChar() ? value : Read();
+			return value;
 		}
 
 		public string Read(int count) {
@@ -129,10 +129,6 @@ namespace ButterflyNet.Parser {
 	}
 
 	public static class TextReaderExtensions {
-		public static bool IsValidWikiChar(this int i) {
-			return (i >= 0x20 && i < 0x7F) || i == '\t' || i == '\n';
-		}
-
 		public static bool IsWhitespace(this int i) {
 			return i == '\t' || i == ' ';
 		}

@@ -1,15 +1,8 @@
-﻿using ButterflyNet.Parser.Modules;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace ButterflyNet.Parser.Tests {
 	[TestFixture]
 	public class HtmlEntityTests : WikiToHtmlTest {
-
-		[SetUp]
-		public override void SetUp() {
-			base.SetUp();
-			Parser.ModuleFactory = new ActivatorFactory<IButterflyModule>(new NamedTypeRegistry<IButterflyModule>().RegisterType<HtmlEntityModule>("entity"));
-		}
 
 		[Test]
 		public void Should_display_named_html_entity() {
