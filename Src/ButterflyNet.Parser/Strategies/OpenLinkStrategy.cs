@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using ButterflyNet.Parser.Satisfiers;
+using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
 	[TokenTransformer("[")]
@@ -19,7 +20,7 @@ namespace ButterflyNet.Parser.Strategies {
 			var closer = context.Input.Read(); //| or ]
 			var url = urlBuilder.ToString();
 
-			OpenScope(new Scopes.LinkScope(url), context);
+			OpenScope(new LinkScope(url, context.LocalLinkBaseUrl), context);
 
 			if (closer == ']') {
 				//the text is the same as the URL, so we can close the scope immediately

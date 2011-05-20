@@ -1,21 +1,20 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 
 namespace ButterflyNet.Parser {
-	public sealed class ParseContext {
-		public ParseContext(
-			ButterflyStringReader input, 
-			ButterflyAnalyzer analyzer, 
-			INamedFactory<IButterflyModule> moduleFactory, 
-			INamedFactory<IButterflyMacro> macroFactory
-		) {
+	public sealed class ParseContext : IParserOptions {
+		internal ParseContext(ButterflyStringReader input, IParserOptions options) {
 			Input = input;
 			Scopes = new Stack<IScope>();
-			Analyzer = analyzer;
-			ModuleFactory = moduleFactory;
-			MacroFactory = macroFactory;
+			LocalLinkBaseUrl = options.LocalLinkBaseUrl;
+			LocalImageBaseUrl = options.LocalImageBaseUrl;
+			Analyzer = options.Analyzer ?? new HtmlAnalyzer();
+			ModuleFactory = options.ModuleFactory ?? new DefaultModuleFactory(LocalImageBaseUrl, new NamedTypeRegistry<IButterflyModule>().LoadDefaults());
+			MacroFactory = options.MacroFactory ?? new ActivatorFactory<IButterflyMacro>(new NamedTypeRegistry<IButterflyMacro>().LoadDefaults());
 			ScopeTree = new ScopeTree();
 		}
+
+		public string LocalLinkBaseUrl { get; private set; }
+		public string LocalImageBaseUrl { get; private set; }
 
 		public int CurrentChar { get; set; }
 		public ButterflyStringReader Input { get; private set; }

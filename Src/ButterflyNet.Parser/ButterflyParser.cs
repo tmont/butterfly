@@ -1,17 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 
 namespace ButterflyNet.Parser {
-	public class ButterflyParser {
+
+	internal interface IParserOptions {
+		string LocalLinkBaseUrl { get; }
+		string LocalImageBaseUrl { get; }
+		ButterflyAnalyzer Analyzer { get; }
+		INamedFactory<IButterflyMacro> MacroFactory { get; }
+		INamedFactory<IButterflyModule> ModuleFactory { get; }
+	}
+
+	public class ButterflyParser : IParserOptions {
 		private readonly ICollection<ParseStrategy> strategies = new Collection<ParseStrategy>();
 
 		public ButterflyParser() {
-			Analyzer = new HtmlAnalyzer(new StringWriter());
+			Analyzer = new HtmlAnalyzer();
+			LocalLinkBaseUrl = "/";
+			LocalImageBaseUrl = "/";
 		}
 
 		public ButterflyAnalyzer Analyzer { get; set; }
+		public string LocalLinkBaseUrl { get; set; }
+		public string LocalImageBaseUrl { get; set; }
+
 		public IEnumerable<ParseStrategy> Strategies { get { return strategies; } }
 		public INamedFactory<IButterflyModule> ModuleFactory { get; set; }
 		public INamedFactory<IButterflyMacro> MacroFactory { get; set; }
@@ -43,12 +56,7 @@ namespace ButterflyNet.Parser {
 		#endregion
 
 		public ParseResult Parse(string wikitext) {
-			var context = new ParseContext(
-				new ButterflyStringReader(wikitext ?? string.Empty),
-				Analyzer,
-				ModuleFactory ?? new ActivatorFactory<IButterflyModule>(new NamedTypeRegistry<IButterflyModule>().LoadDefaults()),
-				MacroFactory ?? new ActivatorFactory<IButterflyMacro>(new NamedTypeRegistry<IButterflyMacro>().LoadDefaults())
-			);
+			var context = new ParseContext(new ButterflyStringReader(wikitext ?? string.Empty), this);
 
 			var orderedStrategies = Strategies.OrderBy(strategy => strategy.Priority);
 			bool eofHandled;
@@ -62,7 +70,7 @@ namespace ButterflyNet.Parser {
 				var strategy = orderedStrategies.Where(s => s.IsSatisfiedBy(context)).FirstOrDefault();
 				if (strategy == null) {
 					throw new ParseException(string.Format(
-						"No strategy found for {0}", 
+						"No strategy found for {0}",
 						context.CurrentChar == ButterflyStringReader.NoValue ? "<EOF>" : ((char)context.CurrentChar).ToString())
 					);
 				}
@@ -73,7 +81,6 @@ namespace ButterflyNet.Parser {
 			if (!context.Scopes.IsEmpty()) {
 				throw new ParseException("Scopes that need to be manually closed were not closed");
 			}
-
 
 			context.Analyzer.OnEnd();
 

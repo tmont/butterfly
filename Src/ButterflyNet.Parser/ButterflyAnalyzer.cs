@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace ButterflyNet.Parser {
 
@@ -52,7 +51,7 @@ namespace ButterflyNet.Parser {
 		public virtual void OpenBigText() { }
 		public virtual void CloseBigText() { }
 
-		public virtual void OpenLink(string url) { }
+		public virtual void OpenLink(string url, string baseUrl) { }
 		public virtual void CloseLink() { }
 
 		public virtual void OpenModule(IButterflyModule module) { }

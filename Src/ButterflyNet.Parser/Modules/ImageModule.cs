@@ -4,6 +4,12 @@ using System.Text;
 
 namespace ButterflyNet.Parser.Modules {
 	public class ImageModule : IButterflyModule {
+		private readonly string baseUrl;
+
+		public ImageModule(string baseUrl) {
+			this.baseUrl = baseUrl;
+		}
+
 		public string Url { get; set; }
 		public string Alt { get; set; }
 		public string Title { get; set; }
@@ -34,7 +40,7 @@ namespace ButterflyNet.Parser.Modules {
 			}
 
 			if (!Url.IsExternalUrl()) {
-				Url = "/media/images/" + Url;
+				Url = baseUrl + Url;
 			}
 
 			writer.Write(String.Format("<img src=\"{0}\" alt=\"{1}\" title=\"{2}\"{3} />", Url, Alt, Title, otherAttributes.ToString().TrimEnd(' ')));

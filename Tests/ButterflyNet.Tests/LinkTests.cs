@@ -42,5 +42,11 @@ namespace ButterflyNet.Parser.Tests {
 		public void Should_allow_escaped_close_bracket_inside_link() {
 			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("[foo|foo]]]"), "<p><a href=\"/foo\">foo]</a></p>");
 		}
+
+		[Test]
+		public void Should_use_base_url() {
+			Parser.LocalLinkBaseUrl = "/base/";
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("[foo|bar]"), "<p><a href=\"/base/foo\">bar</a></p>");
+		}
 	}
 }

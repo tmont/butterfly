@@ -1,10 +1,8 @@
-﻿using System.IO;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace ButterflyNet.Parser.Tests {
 	[TestFixture]
 	public abstract class WikiToHtmlTest {
-		protected StringWriter Writer { get; private set; }
 		protected ButterflyParser Parser { get; private set; }
 
 		protected static void AssertWithNoRegardForLineBreaks(string actual, string text) {
@@ -13,12 +11,7 @@ namespace ButterflyNet.Parser.Tests {
 
 		[SetUp]
 		public virtual void SetUp() {
-			Writer = new StringWriter();
-			Parser = new ButterflyParser {
-				ModuleFactory = new ActivatorFactory<IButterflyModule>(new NamedTypeRegistry<IButterflyModule>().LoadDefaults()),
-				Analyzer = new HtmlAnalyzer(Writer)
-			}.LoadDefaultStrategies(new DefaultParseStrategyFactory());
-
+			Parser = new ButterflyParser().LoadDefaultStrategies();
 		}
 	}
 }

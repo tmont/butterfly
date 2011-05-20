@@ -34,6 +34,11 @@ your own analyzer by injecting a custom implementation of ==ButterflyNet.Parser.
 | Big| ==[!this text is (+big and (+huge+)+)]==| this text is (+big and (+huge+)+)|
 | Small| ==[!this text is (-small and (-tiny-)-)]==| this text is (-small and (-tiny-)-)|
 
+!!Links
+Hyperlinks are surrounded by brackets. You can specify the text by separating it from the URL with a ==|==.
+
+| ==[![link]]]==| [link]|
+
 !! Lists
 !!! Bullet Lists
 
@@ -41,7 +46,7 @@ Bulleted lists are opened by a ==*== (unordered) or a ==#== (ordered) at the sta
 level, add more asterisks or hashes. You cannot mix list types at the same depth.
 
 The following markup:
-{{{{
+{{{{plaintext
 * Countries
 *# United States
 *#* West Coast
@@ -77,6 +82,26 @@ Gets transformed into:
 *# Mexico
 * See also
 ** Wikipedia: [http://en.wikipedia.org/wiki/List_of_sovereign_states]
+
+!!! Definition Lists
+Definition terms are opened by a ==;== at the start of a line. Definitions of those terms are opened by a ==:== at 
+the start of the subsequent line.
+
+e.g.
+
+{{{{plaintext
+;Elephant
+:Big grey animals that have superstitiously accurate memories
+;Baby elephant
+:Baby elephants are called ''calves'', apparently
+}}}}
+
+transforms into
+
+;Elephant
+:Big grey animals that have superstitiously accurate memories
+;Baby elephant
+:Baby elephants are called ''calves'', apparently
 
 ";
 
@@ -127,9 +152,13 @@ Gets transformed into:
 				background-color: #CBB1CA;
 			}}
 		</style>
+		<link rel=""stylesheet"" type=""text/css"" href=""http://dl.sunlightjs.com/latest/themes/sunlight.default.css""/>
 	</head>
 	<body>
 {0}
+
+		<script type=""text/javascript"" src=""http://dl.sunlightjs.com/latest/sunlight-min.js""></script>
+		<script type=""text/javascript"">typeof(Sunlight) !== ""undefined"" && Sunlight.highlightAll();</script>
 	</body>
 </html>", new ButterflyParser().LoadDefaultStrategies().ParseAndReturn(helpMarkup));
 

@@ -103,11 +103,11 @@ namespace ButterflyNet.Parser {
 			Writer.Write("<p>");
 		}
 
-		public override void OpenLink(string url) {
+		public override void OpenLink(string url, string baseUrl) {
 			var cls = "class=\"external\" ";
 			if (!url.IsExternalUrl()) {
 				cls = "";
-				url = "/" + url;
+				url = baseUrl + url;
 			}
 
 			Writer.Write(string.Format("<a {1}href=\"{0}\">", HttpUtility.HtmlEncode(url), cls));
