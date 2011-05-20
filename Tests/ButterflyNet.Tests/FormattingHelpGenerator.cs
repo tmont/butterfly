@@ -25,7 +25,7 @@ your own analyzer by injecting a custom implementation of ==ButterflyNet.Parser.
 ==ButterflyNet.Parser.ButterflyParser== instance.
 
 !! Text Formatting
-|! Style|! Example|! Result|
+|! Style|! Markup|! Output|
 | Bold| ==[!this text is __bold__]==| this text is __bold__|
 | Emphasis| ==[!this text is ''emphasized'']==| this text is ''emphasized''|
 | Teletype| ==[!this text is ==reminiscient of a typewriter==]==| this text is ==reminiscient of a typewriter==|
@@ -37,7 +37,26 @@ your own analyzer by injecting a custom implementation of ==ButterflyNet.Parser.
 !!Links
 Hyperlinks are surrounded by brackets. You can specify the text by separating it from the URL with a ==|==.
 
+|! Markup|! Output|
 | ==[![link]]]==| [link]|
+| ==[![link|totally ''awesome'' link, brah!]]]==| [link|totally ''awesome'' link, brah!]|
+| ==[![http://example.com/]]]==| [http://example.com/]|
+| ==[![http://example.com/|external link]]]==| [http://example.com/|external link]|
+| ==[![link.html|link text with [bracket]]]]]]]==| [link.html|link text with [bracket]]]|
+
+!!Headers
+
+Headers start with a variable number of ==!== at the beginning of a line.
+
+{{{{plaintext
+!Header level 1
+!!Header level 2
+!!! !Header that starts with an exclamation point!
+}}}}
+
+!Header level 1
+!!Header level 2
+!!! !Header that starts with an exclamation point!
 
 !! Lists
 !!! Bullet Lists
@@ -63,7 +82,6 @@ The following markup:
 * See also
 ** Wikipedia: [http://en.wikipedia.org/wiki/List_of_sovereign_states]
 }}}}
-
 
 Gets transformed into:
 
@@ -103,6 +121,96 @@ transforms into
 ;Baby elephant
 :Baby elephants are called ''calves'', apparently
 
+!! Preformatted Text
+!!! Single-line
+
+For single line snippets of preformatted text, start a line with a space.
+
+{{{{plaintext
+Not preformatted
+ preformatted
+}}}}
+
+Not preformatted
+ preformatted
+
+!!! Multi-line
+For multiline preformatted text, surround with =={{{== and ==}}}==. Note that markup is allowed 
+inside these blocks.
+
+{{{{plaintext
+{{{
+this is
+preformatted
+text and line breaks
+and             whitespace
+are preserved (and so is __markup__)
+}}}
+}}}}
+
+{{{
+this is
+preformatted
+text and line breaks
+and             whitespace
+are preserved (and so is __markup__)
+}}}
+
+!!! Preformatted Code
+For chunks of code, surround with =={{{{== and ==}}}}==. All this does is disable formatting.
+
+{{{plaintext
+[!{{{{
+this is
+preformatted
+text and line breaks
+and             whitespace
+are preserved (and so is __markup__)
+}}}}]
+}}}
+
+{{{{
+this is
+preformatted
+text and line breaks
+and             whitespace
+are preserved (and so is __markup__)
+}}}}
+
+!!!Specifying a programming language with syntax highlighting
+You can specify a programming language immediately after the opening =={{{== or =={{{{==. By default, 
+__Butterfly__ uses [http://sunlightjs.com/|Sunlight] for syntax highlighting, but it also supports 
+[http://code.google.com/p/google-code-prettify/|Prettify], [http://softwaremaniacs.org/soft/highlight/en/|Highlight.js]
+and [http://alexgorbatchev.com/SyntaxHighlighter/|Syntax Highlighter].
+
+{{{{plaintext
+{{{csharp
+public class MyClass : ICloneable {
+	public string GetSomething(int i) {
+		if (i < 0) {
+			return string.Empty;
+		}
+
+		return string.Format(""i: {0}"", i);
+	}
+}
+}}}
+}}}}
+
+becomes
+
+{{{csharp
+public class MyClass : ICloneable {
+	public string GetSomething(int i) {
+		if (i < 0) {
+			return string.Empty;
+		}
+
+		return string.Format(""i: {0}"", i);
+	}
+}
+}}}
+
 ";
 
 			var fileContext = string.Format(@"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN""
@@ -140,6 +248,12 @@ transforms into
 			a:hover {{
 				background-color: #EEEEEE;
 			}}
+			a.external {{
+				padding-right: 14px;
+				background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwQAADsEBuJFr7QAAABl0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuN6eEncwAAABASURBVChTY2AYOiBtZtp/GMbm6v9AQWQMVkNIA4pBIMUwTbhsgIvDFOMLQLBpWEyEi6NrxiVBXQ3oIQXjU5YWADmkKHLJiLiZAAAAAElFTkSuQmCC);
+				background-position: right center;
+				background-repeat: no-repeat;
+			}}
 
 			table {{
 				border-collapse: collapse;
@@ -158,7 +272,10 @@ transforms into
 {0}
 
 		<script type=""text/javascript"" src=""http://dl.sunlightjs.com/latest/sunlight-min.js""></script>
-		<script type=""text/javascript"">typeof(Sunlight) !== ""undefined"" && Sunlight.highlightAll();</script>
+		<script type=""text/javascript"" src=""http://dl.sunlightjs.com/latest/lang/sunlight.csharp-min.js""></script>
+		<script type=""text/javascript"">//<![CDATA[
+			typeof(Sunlight) !== ""undefined"" && Sunlight.highlightAll();
+		//]]></script>
 	</body>
 </html>", new ButterflyParser().LoadDefaultStrategies().ParseAndReturn(helpMarkup));
 
