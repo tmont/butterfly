@@ -38,7 +38,7 @@ namespace ButterflyNet.Parser.Tests {
 			parser.MacroFactory = new ActivatorFactory<IButterflyMacro>(new NamedTypeRegistry<IButterflyMacro>().RegisterType<TimestampMacro>("timestamp"));
 
 			var text = parser.ParseAndReturn("[::timestamp]");
-			Assert.That(text, Is.StringMatching(@"<p>\d{4}-\d\d-\d\d \d\d:\d\d:\d\d</p>"));
+			Assert.That(text, Is.StringMatching(@"<p>\d{4}-\d\d-\d\d \d\d:\d\d:\d\dZ</p>"));
 		}
 
 		[Test]

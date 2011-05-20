@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Text;
 using NUnit.Framework;
 
@@ -356,10 +358,56 @@ You can have all kinds of markup in here.
 >>
 }|
 
+!! Unparsed Text
+Surround text with ==[![!]== and ==]== to make the parser ignore it.
+
+{{{{plaintext
+[! this will __not__ be parsed
+* not a list
+
+| not a table |
+]
+}}}}
+
+becomes
+
+[! this will __not__ be parsed
+* not a list
+
+| not a table |
+]
+
+__Note__ that newlines are ignored as well, so a chunk of text inside ==[![!]]]== will 
+always be one single paragraph.
+
+!! Macros
+Macros are another extensibility point. Macros are similar to modules, except that they are 
+completely deterministic, whereas a module can render (or not render at all) in a variety of 
+ways depending on context. A macro evaluates to a hard value.
+
+Macros are surrounded by ==[![::]== and ==]==.
+
+!!! Current Timestamp
+The ==timestamp== macro prints the current timestamp in a variety of formats designated by the 
+[http://msdn.microsoft.com/en-us/library/az4se3k1.aspx|.NET date formats]. If no format 
+is given, it defaults to [http://msdn.microsoft.com/en-us/library/az4se3k1.aspx#UniversalSortable|the 
+Universal Sortable format].
+
+|! Markup|! Output|
+| ==[![::timestamp]]]==| [::timestamp]|
+| ==[![::timestamp|format=dddd, MMMM dd yyyy]]]==| [::timestamp|format=dddd, MMMM dd yyyy]|
+
+
 ";
 
 			var parser = new ButterflyParser().LoadDefaultStrategies();
 			parser.LocalImageBaseUrl = "";
+
+			var stopWatch = Stopwatch.StartNew();
+			var html = parser.ParseAndReturn(helpMarkup);
+			stopWatch.Stop();
+			Console.WriteLine("elapsed parsing time: {0}ms", stopWatch.ElapsedMilliseconds);
+
 
 			var fileContext = string.Format(@"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN""
 ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">
@@ -430,7 +478,7 @@ You can have all kinds of markup in here.
 			typeof(Sunlight) !== ""undefined"" && Sunlight.highlightAll();
 		//]]></script>
 	</body>
-</html>", parser.ParseAndReturn(helpMarkup));
+</html>", html);
 
 			File.WriteAllText(@"..\..\formatting.html", fileContext, Encoding.UTF8);
 		}
