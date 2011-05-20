@@ -6,7 +6,7 @@ namespace ButterflyNet.Parser.Strategies {
 
 	[TokenTransformer("==")]
 	public abstract class TeletypeStrategy : InlineStrategy {
-		protected override sealed Type Type { get { return ScopeTypeCache.Teletype; } }
+		protected Type Type { get { return ScopeTypeCache.Teletype; } }
 	}
 
 	public class OpenTeletypeStrategy : TeletypeStrategy {

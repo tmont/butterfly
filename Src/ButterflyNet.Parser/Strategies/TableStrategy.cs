@@ -6,6 +6,7 @@ namespace ButterflyNet.Parser.Strategies {
 	[TokenTransformer("|")]
 	public class TableStrategy : ScopeDrivenStrategy {
 		public TableStrategy() {
+			AddSatisfier<CannotNestInsideInlineSatisfier>();
 			AddSatisfier<TableSatisfier>();
 		}
 
@@ -31,17 +32,6 @@ namespace ButterflyNet.Parser.Strategies {
 				OpenScope(rowScope, context);
 			} else if (context.Scopes.ContainsType(ScopeTypeCache.TableCell, ScopeTypeCache.TableHeader)) {
 				//close table cell
-
-				//close paragraphs contained in table cell, if they exist
-				var closableScopes = new[] { ScopeTypeCache.Paragraph };
-				while (!context.Scopes.IsEmpty()) {
-					if (!closableScopes.Contains(context.Scopes.Peek().GetType())) {
-						break;
-					}
-
-					CloseCurrentScope(context);
-				}
-
 				var currentScope = context.Scopes.PeekOrDefault();
 				if (currentScope == null || (currentScope.GetType() != ScopeTypeCache.TableCell && currentScope.GetType() != ScopeTypeCache.TableHeader)) {
 					throw new ParseException("Cannot close table cell until all containing scopes are closed");

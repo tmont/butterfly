@@ -5,7 +5,7 @@ using ButterflyNet.Parser.Scopes;
 namespace ButterflyNet.Parser.Strategies {
 	[TokenTransformer("__")]
 	public abstract class StrongStrategy : InlineStrategy {
-		protected override sealed Type Type { get { return ScopeTypeCache.Strong; } }
+		protected Type Type { get { return ScopeTypeCache.Strong; } }
 	}
 
 	public class OpenStrongStrategy : StrongStrategy {

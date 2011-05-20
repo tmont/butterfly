@@ -6,7 +6,7 @@ namespace ButterflyNet.Parser.Strategies {
 
 	[TokenTransformer("''")]
 	public abstract class EmphasisStrategy : InlineStrategy {
-		protected override sealed Type Type { get { return ScopeTypeCache.Emphasis; } }
+		protected Type Type { get { return ScopeTypeCache.Emphasis; } }
 	}
 
 	public class OpenEmphasisStrategy : EmphasisStrategy {

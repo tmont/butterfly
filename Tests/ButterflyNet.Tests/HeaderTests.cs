@@ -26,5 +26,10 @@ namespace ButterflyNet.Parser.Tests {
 			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("! lol __bold and ''italic''__"), "<h1>lol <strong>bold and <em>italic</em></strong></h1>");
 		}
 
+		[Test]
+		public void Should_not_create_header_if_inline_scope_is_not_closed() {
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("__foo\n!header__"), "<p><strong>foo!header</strong></p>");
+		}
+
 	}
 }

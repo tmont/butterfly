@@ -6,6 +6,7 @@ namespace ButterflyNet.Parser.Strategies {
 	public class OpenBlockquoteStrategy : ScopeDrivenStrategy {
 		public OpenBlockquoteStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
+			AddSatisfier<CannotNestInsideInlineSatisfier>();
 		}
 
 		protected override void DoExecute(ParseContext context) {

@@ -21,11 +21,7 @@ namespace ButterflyNet.Parser.Tests {
 			Parser.Parse("|{ __foo }|");
 		}
 
-		[Test]
-		[ExpectedException(typeof(ParseException), ExpectedMessage = "Cannot close table cell until all containing scopes are closed")]
-		public void Should_throw_if_containg_scopes_in_table_cell_are_not_closed() {
-			Parser.Parse("| __foo | bar |");
-		}
+		
 
 	}
 }

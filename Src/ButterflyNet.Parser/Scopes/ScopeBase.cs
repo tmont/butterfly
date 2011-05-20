@@ -1,7 +1,6 @@
 ﻿namespace ButterflyNet.Parser.Scopes {
 	public abstract class ScopeBase : IScope {
 		public abstract ScopeLevel Level { get; }
-		public virtual bool ManuallyClosing { get { return false; } }
 		public virtual bool CanNestParagraph { get { return false; } }
 		public virtual bool CanNestText { get { return true; } }
 

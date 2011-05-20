@@ -1,5 +1,4 @@
-﻿using System;
-using ButterflyNet.Parser.Scopes;
+﻿using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
 	[TokenTransformer("%%%")]
@@ -8,7 +7,5 @@ namespace ButterflyNet.Parser.Strategies {
 			OpenScope(new LineBreakScope(), context);
 			CloseCurrentScope(context);
 		}
-
-		protected override Type Type { get { return ScopeTypeCache.LineBreak; } }
 	}
 }

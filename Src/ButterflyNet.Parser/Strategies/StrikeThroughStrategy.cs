@@ -6,7 +6,7 @@ namespace ButterflyNet.Parser.Strategies {
 	[TokenTransformer("---")]
 	public abstract class StrikeThroughStrategy : InlineStrategy {
 		public override sealed int Priority { get { return DefaultPriority - 1; } }
-		protected override sealed Type Type { get { return ScopeTypeCache.StrikeThrough; } }
+		protected Type Type { get { return ScopeTypeCache.StrikeThrough; } }
 	}
 
 	public class OpenStrikeThroughStrategy : StrikeThroughStrategy {

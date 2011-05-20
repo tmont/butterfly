@@ -63,12 +63,8 @@ namespace ButterflyNet.Parser.Strategies {
 		protected abstract IScope CreateScope(string name, IDictionary<string, string> data, ParseContext context);
 
 		private static void ParseOptions(string optionString, IDictionary<string, string> data) {
-			if (optionString.Length == 0) {
-				throw new ParseException("Module options cannot be empty");
-			}
-			var equals = Math.Max(0, optionString.IndexOf('='));
-
-			data[optionString.Substring(0, equals)] = optionString.Substring(Math.Min(equals + 1, optionString.Length));
+			var equalsIndex = Math.Max(0, optionString.IndexOf('='));
+			data[optionString.Substring(0, equalsIndex)] = optionString.Substring(Math.Min(equalsIndex + 1, optionString.Length));
 		}
 	}
 }

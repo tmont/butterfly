@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
@@ -7,6 +6,7 @@ namespace ButterflyNet.Parser.Strategies {
 	public class HorizontalRulerStrategy : ScopeDrivenStrategy {
 		public HorizontalRulerStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
+			AddSatisfier<CannotNestInsideInlineSatisfier>();
 			AddSatisfier<HRuleSatisfier>();
 		}
 

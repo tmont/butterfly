@@ -6,6 +6,7 @@ namespace ButterflyNet.Parser.Strategies {
 	public class HeaderStrategy : ScopeDrivenStrategy {
 		public HeaderStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
+			AddSatisfier<CannotNestInsideInlineSatisfier>();
 		}
 
 		protected override void DoExecute(ParseContext context) {

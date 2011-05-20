@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using ButterflyNet.Parser.Satisfiers;
 
 namespace ButterflyNet.Parser.Strategies {
@@ -28,7 +27,5 @@ namespace ButterflyNet.Parser.Strategies {
 				CloseCurrentScope(context);
 			}
 		}
-
-		protected override Type Type { get { return ScopeTypeCache.Link; } }
 	}
 }

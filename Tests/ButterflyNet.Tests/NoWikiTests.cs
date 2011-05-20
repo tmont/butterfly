@@ -20,8 +20,13 @@ namespace ButterflyNet.Parser.Tests {
 
 		[Test]
 		public void Should_escape_close_bracket() {
-			const string text = @"[!foo]]]";
-			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<p>foo]</p>");
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(@"[!foo]]]"), "<p>foo]</p>");
+		}
+
+		[Test]
+		[ExpectedException(typeof(ParseException), ExpectedMessage = "NoWiki scope never closes")]
+		public void Should_throw_when_nowiki_never_closes() {
+			Parser.ParseAndReturn(@"[!foo");
 		}
 
 	}

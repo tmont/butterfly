@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using ButterflyNet.Parser.Scopes;
+
 namespace ButterflyNet.Parser.Strategies {
 	[TokenTransformer(Token)]
 	public class MacroStrategy : FunctionalStrategy {
@@ -36,8 +36,6 @@ namespace ButterflyNet.Parser.Strategies {
 				return DefaultPriority - 2;
 			}
 		}
-
-		protected override Type Type { get { return ScopeTypeCache.Macro; } }
 
 		protected override IScope CreateScope(string name, IDictionary<string, string> data, ParseContext context) {
 			var macro = context.MacroFactory.Create(name);

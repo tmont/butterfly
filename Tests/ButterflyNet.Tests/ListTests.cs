@@ -21,7 +21,9 @@ namespace ButterflyNet.Parser.Tests {
 #* nested
 #** nested again
 #** lulz
-#* back to depth=2";
+#*** one more
+#** back to depth=3
+# and all the way back";
 
 			var expected = Regex.Replace(@"
 <ol>
@@ -30,12 +32,17 @@ namespace ButterflyNet.Parser.Tests {
 			<li>nested
 				<ul>
 					<li>nested again</li>
-					<li>lulz</li>
+					<li>lulz
+						<ul>
+							<li>one more</li>
+						</ul>
+					</li>
+					<li>back to depth=3</li>
 				</ul>
 			</li>
-			<li>back to depth=2</li>
 		</ul>
 	</li>
+	<li>and all the way back</li>
 </ol>", @"^\s*", "", RegexOptions.Multiline).Replace(Environment.NewLine, "");
 
 			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), expected);
@@ -59,8 +66,13 @@ namespace ButterflyNet.Parser.Tests {
 		[Test]
 		[ExpectedException(typeof(ParseException), ExpectedMessage = "Nested lists cannot skip levels: expected a depth of less than or equal to 2 but got 3")]
 		public void Should_catch_invalid_nesting_levels() {
-			Parser.Parse(@"# lol
-### lol");
+			Parser.Parse("# lol\n### lol");
+		}
+
+		[Test]
+		[ExpectedException(typeof(ParseException), ExpectedMessage = "Cannot start a list with a depth greater than one")]
+		public void Should_not_allow_starting_a_list_with_a_depth_greater_than_one() {
+			Parser.Parse("** lol");
 		}
 
 		[Test]
@@ -91,6 +103,8 @@ oh hai";
 		public void Should_not_close_list_if_inline_scope_is_not_closed() {
 			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("* __foo\n* bar__"), "<ul><li><strong>foo* bar</strong></li></ul>");
 		}
+
+
 
 		
 	}

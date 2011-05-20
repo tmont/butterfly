@@ -6,6 +6,7 @@ namespace ButterflyNet.Parser.Strategies {
 	public class DefinitionListStrategy : ScopeDrivenStrategy {
 		public DefinitionListStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
+			AddSatisfier<CannotNestInsideInlineSatisfier>();
 			AddSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.DefinitionTerm)));
 		}
 

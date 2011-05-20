@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace ButterflyNet.Parser.Strategies {
 	public abstract class ScopeDrivenStrategy : ParseStrategy {

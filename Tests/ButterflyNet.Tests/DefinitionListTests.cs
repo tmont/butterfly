@@ -32,5 +32,10 @@ multiple lines}:";
 
 			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<dl><dt>term</dt><dd><p><strong>definition</strong></p></dd></dl>");
 		}
+
+		[Test]
+		public void Should_not_create_list_if_inline_scope_is_not_closed() {
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("__foo\n;term__"), "<p><strong>foo;term</strong></p>");
+		}
 	}
 }

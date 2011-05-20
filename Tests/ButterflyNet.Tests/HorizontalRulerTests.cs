@@ -14,5 +14,9 @@ namespace ButterflyNet.Parser.Tests {
 			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("----\nlulz"), "<hr /><p>lulz</p>");
 		}
 
+		[Test]
+		public void Should_not_allow_horizontal_ruler_inside_inline_scope() {
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("__foo\n----\nbar---__"), "<p><strong>foo<del>-bar</del></strong></p>");
+		}
 	}
 }

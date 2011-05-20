@@ -54,5 +54,10 @@ bal
 
 			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), expected.Replace("\r", "").Replace("\n", ""));
 		}
+
+		[Test]
+		public void Should_not_create_table_cell_if_inline_scope_is_not_closed() {
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("| __foo | bar |__"), "<table><tr><td><strong>foo | bar |</strong></td></tr></table>");
+		}
 	}
 }

@@ -35,7 +35,7 @@ namespace ButterflyNet.Parser.Tests {
 		#region Custom strong strategy
 		[TokenTransformer("??")]
 		public abstract class CustomStrongStrategy : InlineStrategy {
-			protected override sealed Type Type { get { return ScopeTypeCache.Strong; } }
+			protected Type Type { get { return ScopeTypeCache.Strong; } }
 		}
 
 		public class CustomOpenStrongStrategy : CustomStrongStrategy {
@@ -61,7 +61,7 @@ namespace ButterflyNet.Parser.Tests {
 
 		#region Blink strategy ftw
 		public abstract class BlinkStrategy : InlineStrategy {
-			protected override sealed Type Type { get { return typeof(BlinkScope); } }
+			protected Type Type { get { return typeof(BlinkScope); } }
 		}
 
 		public class BlinkScope : InlineScope {

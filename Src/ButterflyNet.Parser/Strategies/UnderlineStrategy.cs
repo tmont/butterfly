@@ -5,7 +5,7 @@ using ButterflyNet.Parser.Scopes;
 namespace ButterflyNet.Parser.Strategies {
 	[TokenTransformer("--")]
 	public abstract class UnderlineStrategy : InlineStrategy {
-		protected override sealed Type Type { get { return ScopeTypeCache.Underline; } }
+		protected Type Type { get { return ScopeTypeCache.Underline; } }
 	}
 
 	public class OpenUnderlineStrategy : UnderlineStrategy {

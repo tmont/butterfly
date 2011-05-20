@@ -1,5 +1,4 @@
-﻿using System;
-using ButterflyNet.Parser.Satisfiers;
+﻿using ButterflyNet.Parser.Satisfiers;
 
 namespace ButterflyNet.Parser.Strategies {
 	[TokenTransformer("]")]
@@ -12,7 +11,5 @@ namespace ButterflyNet.Parser.Strategies {
 		protected override void DoExecute(ParseContext context) {
 			CloseCurrentScope(context);
 		}
-
-		protected override Type Type { get { return ScopeTypeCache.Link; } }
 	}
 }

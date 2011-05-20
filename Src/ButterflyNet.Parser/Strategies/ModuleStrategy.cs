@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
@@ -11,8 +10,6 @@ namespace ButterflyNet.Parser.Strategies {
 				return DefaultPriority - 1;
 			}
 		}
-
-		protected override Type Type { get { return ScopeTypeCache.Module; } }
 
 		protected override IScope CreateScope(string name, IDictionary<string, string> data, ParseContext context) {
 			var module = context.ModuleFactory.Create(name);
