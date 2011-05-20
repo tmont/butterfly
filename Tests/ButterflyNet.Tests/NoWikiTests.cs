@@ -19,6 +19,12 @@ namespace ButterflyNet.Parser.Tests {
 		}
 
 		[Test]
+		public void Should_break_at_first_closing_bracket() {
+			const string text = @"[!oh hai!] __bold__]";
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<p>oh hai! <strong>bold</strong>]</p>");
+		}
+
+		[Test]
 		public void Should_escape_close_bracket() {
 			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(@"[!foo]]]"), "<p>foo]</p>");
 		}
@@ -26,7 +32,7 @@ namespace ButterflyNet.Parser.Tests {
 		[Test]
 		[ExpectedException(typeof(ParseException), ExpectedMessage = "NoWiki scope never closes")]
 		public void Should_throw_when_nowiki_never_closes() {
-			Parser.ParseAndReturn(@"[!foo");
+			Parser.Parse(@"[!foo");
 		}
 
 	}

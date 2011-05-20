@@ -4,7 +4,7 @@ using ButterflyNet.Parser.Scopes;
 namespace ButterflyNet.Parser.Strategies {
 	[TokenTransformer("[!")]
 	public class NoWikiStrategy : ScopeDrivenStrategy {
-		private static readonly Regex nowikiTextRegex = new Regex(@"(.*)](?!])", RegexOptions.Singleline);
+		private static readonly Regex nowikiTextRegex = new Regex(@"(.*?)](?!])", RegexOptions.Singleline);
 		
 		public override int Priority { get { return DefaultPriority - 1; } }
 

@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0B02D23C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ButterflyNet.WebApi", "Src\ButterflyNet.WebApi\ButterflyNet.WebApi.csproj", "{B44FF641-26C4-450E-A23F-0FB2899EBFA5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Items", "Items", "{2A6FE2CF-4E46-4D76-A4E3-4ADA7686DDA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

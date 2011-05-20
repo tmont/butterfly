@@ -46,5 +46,16 @@ lulz
 		public void Should_parse_preformatted_line_and_close_on_line_break() {
 			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(" text\nlol"), "<pre>text</pre><p>lol</p>");
 		}
+
+		[Test]
+		public void Should_ignore_formatting_inside_preformatted_code() {
+			Assert.That(Parser.ParseAndReturn("{{{{\n__bold__\n}}}}").TrimEnd(), Is.EqualTo("<pre>__bold__\n</pre>"));
+		}
+
+		[Test]
+		[ExpectedException(typeof(ParseException), ExpectedMessage = "Preformatted scope never closes")]
+		public void Should_throw_when_preformatted_code_never_closes() {
+			Parser.Parse(@"{{{{oh hai!");
+		}
 	}
 }

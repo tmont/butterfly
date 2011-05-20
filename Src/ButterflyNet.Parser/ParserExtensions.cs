@@ -27,14 +27,14 @@ namespace ButterflyNet.Parser {
 		/// <summary>
 		/// Loads the default parse strategies (everything from the <c>ButterflyNet.Parser.Strategies</c> namespace)
 		/// </summary>
-		public static ButterflyParser LoadDefaultStrategies(this ButterflyParser parser, IParseStrategyFactory strategyFactory) {
+		public static ButterflyParser LoadDefaultStrategies(this ButterflyParser parser, IParseStrategyFactory strategyFactory = null) {
 			var strongType = typeof(StrongStrategy);
 			var types = Assembly
 				.GetAssembly(strongType)
 				.GetTypes()
 				.Where(type => type.Namespace == strongType.Namespace && !type.HasAttribute<NonDefaultAttribute>() && !type.HasAttribute<ExcludeAttribute>());
 
-			return parser.LoadStrategiesFromTypes(strategyFactory, types);
+			return parser.LoadStrategiesFromTypes(strategyFactory ?? new DefaultParseStrategyFactory(), types);
 		}
 
 		/// <summary>

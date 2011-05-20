@@ -46,6 +46,7 @@
     <Compile Include="BlockquoteTests.cs" />
     <Compile Include="ExtensibilityTests.cs" />
     <Compile Include="DefinitionListTests.cs" />
+    <Compile Include="FormattingHelpGenerator.cs" />
     <Compile Include="HeaderTests.cs" />
     <Compile Include="HtmlEntityTests.cs" />
     <Compile Include="IllegalScopingTests.cs" />

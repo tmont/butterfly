@@ -7,6 +7,7 @@ namespace ButterflyNet.Parser.Tests {
 		public void Should_parse_tableheaders_and_tablerow_lines() {
 			const string text = @"|! foo |! bar |
 | baz | bat |
+| qux | meh |
 ";
 
 			const string expected = @"
@@ -18,6 +19,10 @@ namespace ButterflyNet.Parser.Tests {
 <tr>
 <td>baz </td>
 <td>bat </td>
+</tr>
+<tr>
+<td>qux </td>
+<td>meh </td>
 </tr>
 </table>
 ";
