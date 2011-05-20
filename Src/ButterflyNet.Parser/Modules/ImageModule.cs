@@ -12,7 +12,7 @@ namespace ButterflyNet.Parser.Modules {
 
 		public void Render(TextWriter writer) {
 			if (string.IsNullOrEmpty(Url)) {
-				throw new ModuleException("For images, the Url must be specified");
+				throw new ModuleException("For images, the URL must be specified");
 			}
 
 			if (string.IsNullOrEmpty(Alt)) {

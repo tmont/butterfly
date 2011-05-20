@@ -7,18 +7,6 @@ using ButterflyNet.Parser.Strategies;
 namespace ButterflyNet.Parser {
 	public static class ParserExtensions {
 		/// <summary>
-		/// Verifies that the wikitext is valid without analyzing the text. Any parse errors will bubble
-		/// up as normal through raised exceptions.
-		/// </summary>
-		public static ParseResult Lint(this ButterflyParser parser, string wikitext) {
-			var tempAnalyzer = parser.Analyzer;
-			parser.Analyzer = null;
-			var parseResult = parser.Parse(wikitext);
-			parser.Analyzer = tempAnalyzer;
-			return parseResult;
-		}
-
-		/// <summary>
 		/// Convenience method for quickly getting the textual result of a previous parse analysis
 		/// </summary>
 		public static string FlushAndReturn(this ButterflyParser parser) {

@@ -41,7 +41,7 @@ namespace ButterflyNet.Parser {
 		public string Substring { get { return index < Length ? input.Substring(index) : string.Empty; } }
 		public string PeekSubstring { get { return index + 1 < Length ? input.Substring(index + 1) : string.Empty; } }
 
-		public string Peek(int charsToRead, bool throwOnEof = false) {
+		public string Peek(int charsToRead) {
 			var count = 0;
 			var chars = new StringBuilder();
 			while (count < charsToRead) {
@@ -50,10 +50,6 @@ namespace ButterflyNet.Parser {
 				}
 
 				chars.Append(input[index + 1 + count++]);
-			}
-
-			if (throwOnEof && charsToRead != count) {
-				throw new Exception("Unexpected EOF");
 			}
 
 			return chars.ToString();
@@ -85,17 +81,13 @@ namespace ButterflyNet.Parser {
 			return value.IsValidWikiChar() ? value : Read();
 		}
 
-		public string Read(int count, bool throwOnEof = false) {
+		public string Read(int count) {
 			if (count <= 0) {
 				throw new ArgumentOutOfRangeException("count", "count must be greater than zero");
 			}
 
 			var buffer = new char[count];
 			var charsRead = Read(buffer, 0, count);
-
-			if (throwOnEof && charsRead != count) {
-				throw new Exception("Unexpected EOF");
-			}
 
 			return buffer.ToString();
 		}

@@ -48,5 +48,11 @@ namespace ButterflyNet.Parser.Tests {
 		public void Should_parse_image_with_title() {
 			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("[:image|url=foo.png|title=lulz]"), "<p><img src=\"/media/images/foo.png\" alt=\"foo.png\" title=\"lulz\" /></p>");
 		}
+
+		[Test]
+		[ExpectedException(typeof(ModuleException), ExpectedMessage = "For images, the URL must be specified")]
+		public void Should_require_url() {
+			Parser.Parse("[:image]");
+		}
 	}
 }
