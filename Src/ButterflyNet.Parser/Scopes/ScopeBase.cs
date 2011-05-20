@@ -6,7 +6,7 @@
 		public virtual bool CanNestText { get { return true; } }
 
 		public virtual void Open(ButterflyAnalyzer analyzers) { }
-		public virtual void Close(ButterflyAnalyzer analyzers) { }
+		public virtual void Close(ButterflyAnalyzer analyzer) { }
 
 		public override string ToString() {
 			return string.Format("Scope(Type={0}, Level={1})", GetType().GetFriendlyName(false), Level);

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace ButterflyNet.Parser {
 
@@ -104,5 +105,8 @@ namespace ButterflyNet.Parser {
 
 		public virtual void OpenMultiLineDefinition() { }
 		public virtual void CloseMultiLineDefinition() { }
+
+		public virtual void OpenLineBreak() {}
+		public virtual void CloseLineBreak() {}
 	}
 }

@@ -78,6 +78,7 @@
     <Compile Include="ParseResult.cs" />
     <Compile Include="PortoaExtensions.cs" />
     <Compile Include="ScopeExtensions.cs" />
+    <Compile Include="Scopes\LineBreakScope.cs" />
     <Compile Include="Scopes\MacroScope.cs" />
     <Compile Include="ScopeTypeCache.cs" />
     <Compile Include="ServiceProviderParseStrategyFactory.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Satisfiers\OpenNonNestableInlineScopeSatisfier.cs" />
     <Compile Include="Satisfiers\StartOfLineSatisfier.cs" />
     <Compile Include="Scopes\ScopeBase.cs" />
+    <Compile Include="Strategies\LineBreakStrategy.cs" />
     <Compile Include="Strategies\MacroStrategy.cs" />
     <Compile Include="Scopes\MultiLineDefinitionScope.cs" />
     <Compile Include="Strategies\EndOfLineStrategy.cs" />

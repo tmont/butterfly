@@ -18,6 +18,7 @@ namespace ButterflyNet.Parser {
 		public static readonly Type Link = typeof(LinkScope);
 		public static readonly Type Module = typeof(ModuleScope);
 		public static readonly Type Macro = typeof(MacroScope);
+		public static readonly Type LineBreak = typeof(LineBreakScope);
  
 		public static readonly Type HorizontalRuler = typeof(HorizontalRulerScope);
 		public static readonly Type Paragraph = typeof(ParagraphScope);

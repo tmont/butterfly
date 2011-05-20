@@ -4,6 +4,6 @@
 		bool CanNestParagraph { get; }
 		bool CanNestText { get; }
 		void Open(ButterflyAnalyzer analyzers);
-		void Close(ButterflyAnalyzer analyzers);
+		void Close(ButterflyAnalyzer analyzer);
 	}
 }

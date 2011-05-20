@@ -259,5 +259,9 @@ namespace ButterflyNet.Parser {
 			OpenDefinition();
 		}
 
+		public override void OpenLineBreak() {
+			Writer.Write("<br />");
+		}
+
 	}
 }
