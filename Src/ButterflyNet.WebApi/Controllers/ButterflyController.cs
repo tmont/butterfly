@@ -3,14 +3,11 @@ using System.IO;
 using System.Text;
 using System.Web.Mvc;
 using ButterflyNet.Parser;
-using log4net;
 using Newtonsoft.Json;
 
 namespace ButterflyNet.WebApi.Controllers {
 
 	public class ButterflyController : Controller {
-
-		private static ILog logger = LogManager.GetLogger("butterfly");
 
 		protected new ActionResult Json(object data) {
 			return new ContentResult {
