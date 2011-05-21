@@ -46,6 +46,8 @@ Hyperlinks are surrounded by brackets. You can specify the text by separating it
 | ==[![http://example.com/|external link]]]==| [http://example.com/|external link]|
 | ==[![link.html|link text with [bracket]]]]]]]==| [link.html|link text with [bracket]]]|
 
+You can change the base URL of local links by modifying the ==ButterflyParser.LocalLinkBaseUrl== property.
+
 !!Headers
 
 Headers start with a variable number of ==!== at the beginning of a line.
@@ -265,12 +267,14 @@ Modules are extensions to the parser that allow for injecting user-defined funct
 of function calls. Each module has a unique name, and can be passed arguments.
 
 !!! Images
-In __Butterfly__, Images are implemented as modules.
+In __Butterfly__, images are implemented as modules.
 
 |! Markup|! Output|
 | ==[![:image|url=butterfly.png]]]==| [:image|url=butterfly.png]|
 | ==[![:image|url=butterfly.png|title=A pretty butterfly|width=100|height=150]]]==| [:image|url=butterfly.png|title=A pretty butterfly|width=100|height=150]|
 | ==[![:image|url=nonexistent.png|alt=[an image]]]]]]]==| [:image|url=nonexistent.png|alt=[an image]]]|
+
+You can change the base URL of local images by modifying the ==ButterflyParser.LocalImageBaseUrl== property.
 
 !!! HTML Entities
 Since __Butterfly__ escapes all output (when it transforms to HTML), you can't render an HTML entity 
@@ -396,7 +400,6 @@ Universal Sortable format].
 |! Markup|! Output|
 | ==[![::timestamp]]]==| [::timestamp]|
 | ==[![::timestamp|format=dddd, MMMM dd yyyy]]]==| [::timestamp|format=dddd, MMMM dd yyyy]|
-
 
 ";
 
