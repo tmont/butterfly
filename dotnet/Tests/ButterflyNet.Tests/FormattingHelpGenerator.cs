@@ -412,7 +412,7 @@ Universal Sortable format].
 			Console.WriteLine("elapsed parsing time: {0}ms", stopWatch.ElapsedMilliseconds);
 
 
-			var fileContext = string.Format(@"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN""
+			var fileContents = string.Format(@"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN""
 ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">
 
 <html xmlns=""http://www.w3.org/1999/xhtml"" lang=""en-US"">
@@ -483,7 +483,7 @@ Universal Sortable format].
 	</body>
 </html>", html);
 
-			File.WriteAllText(@"..\..\formatting.html", fileContext, Encoding.UTF8);
+			File.WriteAllText(@"..\..\..\..\..\formatting.html", fileContents, Encoding.UTF8);
 		}
 
 	}
