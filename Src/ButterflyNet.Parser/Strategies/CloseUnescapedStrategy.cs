@@ -2,22 +2,15 @@
 
 namespace ButterflyNet.Parser.Strategies {
 	[NonDefault]
-	public class CloseUnescapedStrategy : ScopeDrivenStrategy, ITokenProvider {
+	[TokenTransformer("]")]
+	public class CloseUnescapedStrategy : ScopeDrivenStrategy {
 		public CloseUnescapedStrategy() {
 			AddSatisfier(new CurrentScopeMustMatchSatisfier(ScopeTypeCache.Unescaped));
 			AddSatisfier<NextCharacterIsNotTheSameSatisfier>();
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			CloseCurrentScope(context);
 		}
-
-		protected override bool Scopable {
-			get {
-				return false;
-			}
-		}
-
-		public string Token { get { return "]"; } }
 	}
 }

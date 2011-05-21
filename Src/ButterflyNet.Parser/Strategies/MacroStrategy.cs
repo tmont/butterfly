@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
+	[TokenTransformer(Token)]
 	public class MacroStrategy : FunctionalStrategy {
+		public const string Token = "[::";
+
 		public MacroStrategy() {
 			SetEventDelegates();
 		}
 
 		private void SetEventDelegates() {
-			int startIndex = -1;
+			var startIndex = -1;
 
 			BeforeExecute += context => {
 				startIndex = context.Input.Index - (Token.Length - 1);
@@ -22,16 +24,9 @@ namespace ButterflyNet.Parser.Strategies {
 				//replace the macro declaration with its value
 				var value = ((MacroScope)scope).Macro.GetValue();
 				var endIndex = context.Input.Index + 1;
-				//var beginning = context.Input.Value.Substring(0, startIndex + context.MacroOffset);
-				//var end = endIndex + context.MacroOffset < context.Input.Value.Length ? context.Input.Value.Substring(endIndex + context.MacroOffset) : string.Empty;
-
 				context.Input.Replace(startIndex, endIndex, value);// = beginning + value + end;
 				context.Input.Seek(startIndex);
-
-				//context.MacroOffset += value.Length - (endIndex - startIndex);
 				startIndex = -1;
-
-				//context.Parser.PartialParse(context.InputAfterMacros, endIndex, endIndex + value.Length, context.Scopes);
 			};
 		}
 
@@ -42,14 +37,10 @@ namespace ButterflyNet.Parser.Strategies {
 			}
 		}
 
-		protected override Type Type { get { return ScopeTypeCache.Macro; } }
-
 		protected override IScope CreateScope(string name, IDictionary<string, string> data, ParseContext context) {
 			var macro = context.MacroFactory.Create(name);
 			macro.Load(data);
 			return new MacroScope(macro);
 		}
-
-		public override string Token { get { return "[::"; } }
 	}
 }

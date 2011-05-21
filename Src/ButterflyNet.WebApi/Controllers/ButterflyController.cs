@@ -3,14 +3,11 @@ using System.IO;
 using System.Text;
 using System.Web.Mvc;
 using ButterflyNet.Parser;
-using log4net;
 using Newtonsoft.Json;
 
 namespace ButterflyNet.WebApi.Controllers {
 
 	public class ButterflyController : Controller {
-
-		private static ILog logger = LogManager.GetLogger("butterfly");
 
 		protected new ActionResult Json(object data) {
 			return new ContentResult {
@@ -41,7 +38,7 @@ namespace ButterflyNet.WebApi.Controllers {
 		public ActionResult Index(ParseModel model) {
 			var parser = new ButterflyParser();
 			parser.LoadDefaultStrategies(new DefaultParseStrategyFactory());
-			parser.AddAnalyzer(new HtmlAnalyzer(new StringWriter()));
+			parser.Analyzer = new HtmlAnalyzer(new StringWriter());
 
 			try {
 				return Json(new { error = (string)null, html = parser.ParseAndReturn(model.MarkUp) });

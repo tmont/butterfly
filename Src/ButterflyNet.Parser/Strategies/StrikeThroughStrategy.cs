@@ -3,10 +3,10 @@ using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public abstract class StrikeThroughStrategy : InlineStrategy, ITokenProvider {
+	[TokenTransformer("---")]
+	public abstract class StrikeThroughStrategy : InlineStrategy {
 		public override sealed int Priority { get { return DefaultPriority - 1; } }
-		public string Token { get { return "---"; } }
-		protected override sealed Type Type { get { return ScopeTypeCache.StrikeThrough; } }
+		protected Type Type { get { return ScopeTypeCache.StrikeThrough; } }
 	}
 
 	public class OpenStrikeThroughStrategy : StrikeThroughStrategy {
@@ -14,7 +14,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new OpenNonNestableInlineScopeSatisfier(Type));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			OpenScope(new StrikeThroughScope(), context);
 		}
 	}
@@ -24,7 +24,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new CurrentScopeMustMatchSatisfier(Type));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			CloseCurrentScope(context);
 		}
 	}

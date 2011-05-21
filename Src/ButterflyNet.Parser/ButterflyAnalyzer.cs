@@ -16,8 +16,10 @@ namespace ButterflyNet.Parser {
 		public virtual void OnStart() { }
 		public virtual void OnEnd() { }
 
-		public virtual void WriteAndEscapeString(string text) { }
+		public virtual void WriteAndEscape(string text) { }
+		public virtual void WriteAndEscape(char c) { }
 		public virtual void WriteUnescapedString(string text) { }
+		public virtual void WriteUnescapedChar(char c) { }
 
 		public virtual void OpenStrongText() { }
 		public virtual void CloseStrongText() { }
@@ -49,7 +51,7 @@ namespace ButterflyNet.Parser {
 		public virtual void OpenBigText() { }
 		public virtual void CloseBigText() { }
 
-		public virtual void OpenLink(string url) { }
+		public virtual void OpenLink(string url, string baseUrl) { }
 		public virtual void CloseLink() { }
 
 		public virtual void OpenModule(IButterflyModule module) { }
@@ -102,5 +104,8 @@ namespace ButterflyNet.Parser {
 
 		public virtual void OpenMultiLineDefinition() { }
 		public virtual void CloseMultiLineDefinition() { }
+
+		public virtual void OpenLineBreak() {}
+		public virtual void CloseLineBreak() {}
 	}
 }

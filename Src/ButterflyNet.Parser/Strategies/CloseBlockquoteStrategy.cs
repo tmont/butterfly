@@ -1,17 +1,16 @@
 ﻿using ButterflyNet.Parser.Satisfiers;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class CloseBlockquoteStrategy : BlockStrategy, ITokenProvider {
+	[TokenTransformer(">>")]
+	public class CloseBlockquoteStrategy : ScopeDrivenStrategy {
 		public CloseBlockquoteStrategy() {
 			AddSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Blockquote));
-			AddSatisfier(new LastNonContextualScopeSatisfier(ScopeTypeCache.Blockquote));
+			AddSatisfier(new CurrentScopeMustMatchOrBeParagraphSatisfier(ScopeTypeCache.Blockquote));
 		}
 
-		protected override void Execute(ParseContext context) {
-			CloseContextualScopes(context);
+		protected override void DoExecute(ParseContext context) {
+			CloseParagraphIfNecessary(context);
 			CloseCurrentScope(context);
 		}
-
-		public string Token { get { return ">>"; } }
 	}
 }

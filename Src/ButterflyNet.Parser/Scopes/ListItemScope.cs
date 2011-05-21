@@ -1,13 +1,16 @@
 ﻿namespace ButterflyNet.Parser.Scopes {
 	public class ListItemScope : BlockScope {
-		public override bool ManuallyClosing { get { return false; } }
-		public override bool CloseOnSingleLineBreak { get { return true; } }
+		public ListItemScope(int depth) {
+			Depth = depth;
+		}
 
-		protected override void OpenAndAnalyze(ButterflyAnalyzer analyzer) {
+		public int Depth { get; private set; }
+
+		public override void Open(ButterflyAnalyzer analyzer) {
 			analyzer.OpenListItem();
 		}
 
-		protected override void CloseAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Close(ButterflyAnalyzer analyzer) {
 			analyzer.CloseListItem();
 		}
 	}

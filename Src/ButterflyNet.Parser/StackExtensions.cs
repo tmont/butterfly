@@ -8,16 +8,16 @@ namespace ButterflyNet.Parser {
 			return stack.Count == 0;
 		}
 
-		public static T PeekOrDefault<T>(this Stack<T> stack) {
-			return stack.IsEmpty() ? default(T) : stack.Peek();
+		public static T PeekOrDefault<T>(this Stack<T> stack, int index = 0) {
+			if (stack.IsEmpty() || index >= stack.Count) {
+				return default(T);
+			}
+
+			return index <= 0 ? stack.Peek() : stack.Skip(stack.Count - index - 1).First();
 		}
 
 		public static bool ContainsType(this Stack<IScope> stack, params Type[] types) {
 			return stack.Any(scope => types.Contains(scope.GetType()));
-		}
-
-		public static IScope LastNonContextualScope(this Stack<IScope> stack) {
-			return stack.SkipWhile(scope => scope.ClosesOnContext).FirstOrDefault();
 		}
 	}
 }

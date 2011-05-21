@@ -43,12 +43,20 @@ namespace ButterflyNet.Parser {
 			Writer.Write("</h" + depth + ">\n");
 		}
 
-		public override void WriteAndEscapeString(string text) {
+		public override void WriteAndEscape(string text) {
 			Writer.Write(HttpUtility.HtmlEncode(text));
+		}
+
+		public override void WriteAndEscape(char c) {
+			WriteAndEscape(c.ToString());
 		}
 
 		public override void WriteUnescapedString(string text) {
 			Writer.Write(text);
+		}
+
+		public override void WriteUnescapedChar(char c) {
+			Writer.Write(c);
 		}
 
 		public override void CloseParagraph() {
@@ -95,11 +103,11 @@ namespace ButterflyNet.Parser {
 			Writer.Write("<p>");
 		}
 
-		public override void OpenLink(string url) {
+		public override void OpenLink(string url, string baseUrl) {
 			var cls = "class=\"external\" ";
 			if (!url.IsExternalUrl()) {
 				cls = "";
-				url = "/" + url;
+				url = baseUrl + url;
 			}
 
 			Writer.Write(string.Format("<a {1}href=\"{0}\">", HttpUtility.HtmlEncode(url), cls));
@@ -249,6 +257,10 @@ namespace ButterflyNet.Parser {
 
 		public override void OpenMultiLineDefinition() {
 			OpenDefinition();
+		}
+
+		public override void OpenLineBreak() {
+			Writer.Write("<br />");
 		}
 
 	}

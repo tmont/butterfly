@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
+	[TokenTransformer("[:")]
 	public class ModuleStrategy : FunctionalStrategy {
 		public override int Priority {
 			get {
@@ -11,15 +11,11 @@ namespace ButterflyNet.Parser.Strategies {
 			}
 		}
 
-		protected override Type Type { get { return ScopeTypeCache.Module; } }
-
 		protected override IScope CreateScope(string name, IDictionary<string, string> data, ParseContext context) {
 			var module = context.ModuleFactory.Create(name);
 			module.Load(data);
 
 			return new ModuleScope(module);
 		}
-
-		public override string Token { get { return "[:"; } }
 	}
 }

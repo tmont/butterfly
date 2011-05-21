@@ -1,13 +1,12 @@
 ﻿namespace ButterflyNet.Parser.Scopes {
 	public class ParagraphScope : ScopeBase {
 		public override ScopeLevel Level { get { return ScopeLevel.Block; } }
-		public override bool ClosesOnContext { get { return true; } }
-
-		protected override void OpenAndAnalyze(ButterflyAnalyzer analyzer) {
+		
+		public override void Open(ButterflyAnalyzer analyzer) {
 			analyzer.OpenParagraph();
 		}
 
-		protected override void CloseAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Close(ButterflyAnalyzer analyzer) {
 			analyzer.CloseParagraph();
 		}
 	}

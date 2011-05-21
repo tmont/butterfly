@@ -5,9 +5,10 @@ namespace ButterflyNet.Parser.Tests {
 	public class TableTests : WikiToHtmlTest {
 		[Test]
 		public void Should_parse_tableheaders_and_tablerow_lines() {
-			Convert(@"|! foo |! bar |
+			const string text = @"|! foo |! bar |
 | baz | bat |
-");
+| qux | meh |
+";
 
 			const string expected = @"
 <table>
@@ -19,22 +20,26 @@ namespace ButterflyNet.Parser.Tests {
 <td>baz </td>
 <td>bat </td>
 </tr>
+<tr>
+<td>qux </td>
+<td>meh </td>
+</tr>
 </table>
 ";
 
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), expected.Replace("\r", "").Replace("\n", ""));
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), expected.Replace("\r", "").Replace("\n", ""));
 		}
 
 		[Test]
 		public void Should_parse_table_with_multiline_rows() {
-			Convert(@"|{! foo | bar
+			const string text = @"|{! foo | bar
 | bat 
 | boo |
 bal
 
 }|
 | baz | bat |
-");
+";
 
 			const string expected = @"
 <table>
@@ -52,7 +57,12 @@ bal
 </table>
 ";
 
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), expected.Replace("\r", "").Replace("\n", ""));
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), expected.Replace("\r", "").Replace("\n", ""));
+		}
+
+		[Test]
+		public void Should_not_create_table_cell_if_inline_scope_is_not_closed() {
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("| __foo | bar |__"), "<table><tr><td><strong>foo | bar |</strong></td></tr></table>");
 		}
 	}
 }

@@ -1,10 +1,10 @@
 ﻿namespace ButterflyNet.Parser.Scopes {
 	public class HorizontalRulerScope : BlockScope {
-		protected override void OpenAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Open(ButterflyAnalyzer analyzer) {
 			analyzer.OpenHorizontalRuler();
 		}
 
-		protected override void CloseAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Close(ButterflyAnalyzer analyzer) {
 			analyzer.CloseHorizontalRuler();
 		}
 	}

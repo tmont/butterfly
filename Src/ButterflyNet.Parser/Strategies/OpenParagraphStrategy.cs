@@ -7,7 +7,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier<CanNestParagraphSatisfier>();
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			OpenScope(new ParagraphScope(), context);
 		}
 

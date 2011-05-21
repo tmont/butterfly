@@ -1,14 +1,15 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using ButterflyNet.Parser.Satisfiers;
+using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class OpenLinkStrategy : InlineStrategy, ITokenProvider {
+	[TokenTransformer("[")]
+	public class OpenLinkStrategy : InlineStrategy {
 		public OpenLinkStrategy() {
 			AddSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Link)));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			var peek = context.Input.Peek();
 			var urlBuilder = new StringBuilder();
 			while (peek != ButterflyStringReader.NoValue && peek != '|' && peek != ']') {
@@ -19,17 +20,13 @@ namespace ButterflyNet.Parser.Strategies {
 			var closer = context.Input.Read(); //| or ]
 			var url = urlBuilder.ToString();
 
-			OpenScope(new Scopes.LinkScope(url), context);
+			OpenScope(new LinkScope(url, context.LocalLinkBaseUrl), context);
 
 			if (closer == ']') {
 				//the text is the same as the URL, so we can close the scope immediately
-				context.Analyzers.Walk(converter => converter.WriteAndEscapeString(url));
+				context.Analyzer.WriteAndEscape(url);
 				CloseCurrentScope(context);
 			}
 		}
-
-		protected override Type Type { get { return ScopeTypeCache.Link; } }
-
-		public string Token { get { return "["; } }
 	}
 }

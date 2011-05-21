@@ -2,30 +2,28 @@
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class OpenMultiLineDefinitionStrategy : BlockStrategy, ITokenProvider {
+	[TokenTransformer(":{")]
+	public class OpenMultiLineDefinitionStrategy : ScopeDrivenStrategy {
 		public OpenMultiLineDefinitionStrategy() {
 			AddSatisfier<DependentSatisfier<DefinitionStrategy>>();
 		}
 
 		public override int Priority { get { return DefaultPriority - 1; } }
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			OpenScope(new MultiLineDefinitionScope(), context);
 		}
-
-		public string Token { get { return ":{"; } }
 	}
 
-	public class CloseMultiLineDefinitionStrategy : BlockStrategy, ITokenProvider {
+	[TokenTransformer("}:")]
+	public class CloseMultiLineDefinitionStrategy : ScopeDrivenStrategy {
 		public CloseMultiLineDefinitionStrategy() {
-			AddSatisfier(new LastNonContextualScopeSatisfier(ScopeTypeCache.MultiLineDefinition));
+			AddSatisfier(new CurrentScopeMustMatchOrBeParagraphSatisfier(ScopeTypeCache.MultiLineDefinition));
 		}
 
-		protected override void Execute(ParseContext context) {
-			CloseContextualScopes(context);
+		protected override void DoExecute(ParseContext context) {
+			CloseParagraphIfNecessary(context);
 			CloseCurrentScope(context);
 		}
-
-		public string Token { get { return "}:"; } }
 	}
 }

@@ -1,18 +1,14 @@
-﻿using System;
-using ButterflyNet.Parser.Satisfiers;
+﻿using ButterflyNet.Parser.Satisfiers;
 
 namespace ButterflyNet.Parser.Strategies {
-	public sealed class CloseBigStrategy : InlineStrategy, ITokenProvider {
+	[TokenTransformer("+)")]
+	public sealed class CloseBigStrategy : InlineStrategy {
 		public CloseBigStrategy() {
-			AddSatisfier(new InScopeStackSatisfier(Type));
-			AddPreExecuteSatisfier(new CurrentScopeMustMatchSatisfier(Type));
+			AddSatisfier(new CurrentScopeMustMatchSatisfier(ScopeTypeCache.Big));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			CloseCurrentScope(context);
 		}
-
-		protected override Type Type { get { return ScopeTypeCache.Big; } }
-		public string Token { get { return "+)"; } }
 	}
 }

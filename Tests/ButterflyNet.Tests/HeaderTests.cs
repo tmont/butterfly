@@ -6,25 +6,29 @@ namespace ButterflyNet.Parser.Tests {
 
 		[Test]
 		public void Should_parse_headers_with_depth_one_through_six() {
-			Convert(@"! one
+			const string text = @"! one
 !! two
 !!! three
 !!!! four
 !!!!! five
-!!!!!! six");
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), "<h1>one</h1><h2>two</h2><h3>three</h3><h4>four</h4><h5>five</h5><h6>six</h6>");
+!!!!!! six";
+
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<h1>one</h1><h2>two</h2><h3>three</h3><h4>four</h4><h5>five</h5><h6>six</h6>");
 		}
 		
 		[Test]
 		public void Should_treat_depth_greater_than_six_as_six() {
-			Convert("!!!!!!! lol");
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), "<h6>lol</h6>");
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("!!!!!!! lol"), "<h6>lol</h6>");
 		}
 
 		[Test]
 		public void Should_allow_formatting_in_header() {
-			Convert("! lol __bold and ''italic''__");
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), "<h1>lol <strong>bold and <em>italic</em></strong></h1>");
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("! lol __bold and ''italic''__"), "<h1>lol <strong>bold and <em>italic</em></strong></h1>");
+		}
+
+		[Test]
+		public void Should_not_create_header_if_inline_scope_is_not_closed() {
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("__foo\n!header__"), "<p><strong>foo!header</strong></p>");
 		}
 
 	}

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace ButterflyNet.Parser.Strategies {
-	public abstract class FunctionalStrategy : InlineStrategy, ITokenProvider {
-		protected override sealed void Execute(ParseContext context) {
+	public abstract class FunctionalStrategy : InlineStrategy {
+		protected override sealed void DoExecute(ParseContext context) {
 			var peek = context.Input.Peek();
 			var functionNameBuilder = new StringBuilder();
 			while (peek != ButterflyStringReader.NoValue && peek != '|' && peek != ']') {
@@ -63,14 +63,8 @@ namespace ButterflyNet.Parser.Strategies {
 		protected abstract IScope CreateScope(string name, IDictionary<string, string> data, ParseContext context);
 
 		private static void ParseOptions(string optionString, IDictionary<string, string> data) {
-			if (optionString.Length == 0) {
-				throw new ParseException("Module options cannot be empty");
-			}
-			var equals = Math.Max(0, optionString.IndexOf('='));
-
-			data[optionString.Substring(0, equals)] = optionString.Substring(Math.Min(equals + 1, optionString.Length));
+			var equalsIndex = Math.Max(0, optionString.IndexOf('='));
+			data[optionString.Substring(0, equalsIndex)] = optionString.Substring(Math.Min(equalsIndex + 1, optionString.Length));
 		}
-
-		public abstract string Token { get; }
 	}
 }

@@ -2,15 +2,14 @@
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class OpenPreformattedLineStrategy : BlockStrategy, ITokenProvider {
+	[TokenTransformer(" ")]
+	public class OpenPreformattedLineStrategy : ScopeDrivenStrategy {
 		public OpenPreformattedLineStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			OpenScope(new PreformattedLineScope(), context);
 		}
-
-		public string Token { get { return " "; } }
 	}
 }

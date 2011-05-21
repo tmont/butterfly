@@ -1,24 +1,17 @@
-﻿using ButterflyNet.Parser.Modules;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace ButterflyNet.Parser.Tests {
 	[TestFixture]
 	public class HtmlEntityTests : WikiToHtmlTest {
 
-		[SetUp]
-		public override void SetUp() {
-			base.SetUp();
-			Parser.ModuleFactory = new ActivatorFactory<IButterflyModule>(new NamedTypeRegistry<IButterflyModule>().RegisterType<HtmlEntityModule>("entity"));
-		}
-
 		[Test]
 		public void Should_display_named_html_entity() {
-			Assert.That(Parser.ParseAndReturn("[:entity|value=hellip]"), Is.EqualTo("<p>&hellip;</p>"));
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("[:entity|value=hellip]"), "<p>&hellip;</p>");
 		}
 
 		[Test]
 		public void Should_display_numbered_html_entity() {
-			Assert.That(Parser.ParseAndReturn("[:entity|value=#8567]"), Is.EqualTo("<p>&#8567;</p>"));
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("[:entity|value=#8567]"), "<p>&#8567;</p>");
 		}
 
 		[Test]
@@ -34,9 +27,9 @@ namespace ButterflyNet.Parser.Tests {
 		}
 
 		[Test]
-		[ExpectedException(typeof(ModuleException), ExpectedMessage = "\"foo!\" is not a valid HTML entity")]
+		[ExpectedException(typeof(ModuleException), ExpectedMessage = "\"<script>malicious code</script>\" is not a valid HTML entity")]
 		public void Should_validate_entity_value() {
-			Parser.Parse("[:entity|value=foo!]");
+			Parser.Parse("[:entity|value=<script>malicious code</script>]");
 		}
 	}
 }

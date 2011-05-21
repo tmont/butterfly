@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace ButterflyNet.Parser {
 	public static class StringExtensions {
@@ -10,12 +9,8 @@ namespace ButterflyNet.Parser {
 		}
 
 		public static string NormalizeEol(this string input) {
-			if (input == null) {
-				throw new ArgumentNullException("input");
-			}
-
 			//Unix line endings ftw
-			return input.Replace("\r\n", "\n").Replace('\r', '\n');
+			return input == null ? string.Empty : input.Replace("\r\n", "\n").Replace('\r', '\n');
 		}
 	}
 }

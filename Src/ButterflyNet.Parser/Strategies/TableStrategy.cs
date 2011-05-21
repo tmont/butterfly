@@ -1,23 +1,23 @@
-﻿using System;
+﻿using System.Linq;
 using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class TableStrategy : BlockStrategy, ITokenProvider {
+	[TokenTransformer("|")]
+	public class TableStrategy : ScopeDrivenStrategy {
 		public TableStrategy() {
+			AddSatisfier<CannotNestInsideInlineSatisfier>();
 			AddSatisfier<TableSatisfier>();
 		}
 
-		protected override void Execute(ParseContext context) {
-			IScope rowScope;
+		protected override void DoExecute(ParseContext context) {
+			IScope rowScope = new TableRowLineScope();
 			if (context.Input.Peek() == '{') {
 				context.AdvanceInput();
 				rowScope = new TableRowScope();
-			} else {
-				rowScope = new TableRowLineScope();
 			}
 
-			Type cellType = ScopeTypeCache.TableCell;
+			var cellType = ScopeTypeCache.TableCell;
 			if (context.Input.Peek() == '!') {
 				context.AdvanceInput();
 				cellType = ScopeTypeCache.TableHeader;
@@ -32,7 +32,11 @@ namespace ButterflyNet.Parser.Strategies {
 				OpenScope(rowScope, context);
 			} else if (context.Scopes.ContainsType(ScopeTypeCache.TableCell, ScopeTypeCache.TableHeader)) {
 				//close table cell
-				CloseScopeUntil(context, ScopeTypeCache.TableCell, ScopeTypeCache.TableHeader);
+				var currentScope = context.Scopes.PeekOrDefault();
+				if (currentScope == null || (currentScope.GetType() != ScopeTypeCache.TableCell && currentScope.GetType() != ScopeTypeCache.TableHeader)) {
+					throw new ParseException("Cannot close table cell until all containing scopes are closed");
+				}
+
 				CloseCurrentScope(context);
 			} else if (!context.Scopes.ContainsType(ScopeTypeCache.TableRow, ScopeTypeCache.TableRowLine)) {
 				OpenScope(rowScope, context);
@@ -44,12 +48,11 @@ namespace ButterflyNet.Parser.Strategies {
 			// - we're in a row terminated by a line break and the next char is not a new line (signifying a new row)
 			// - OR we're in a row not terminated by a line break
 			if (
-				context.Input.Peek() != ButterflyStringReader.NoValue 
-					&& (
-						(context.Scopes.ContainsType(ScopeTypeCache.TableRowLine) && context.Input.Peek() != '\n') 
-							|| context.Scopes.ContainsType(ScopeTypeCache.TableRow)
-						)
-				) {
+				context.Input.Peek() != ButterflyStringReader.NoValue && (
+					(context.Scopes.ContainsType(ScopeTypeCache.TableRowLine) && context.Input.Peek() != '\n') 
+					|| context.Scopes.ContainsType(ScopeTypeCache.TableRow)
+				)
+			) {
 				OpenScope(cellType == ScopeTypeCache.TableHeader ? (IScope)new TableHeaderScope() : new TableCellScope(), context);
 			}
 		}
@@ -62,7 +65,5 @@ namespace ButterflyNet.Parser.Strategies {
 				return startOfLine.IsSatisfiedBy(context) || containsTableScope.IsSatisfiedBy(context);
 			}
 		}
-
-		public string Token { get { return "|"; } }
 	}
 }

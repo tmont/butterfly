@@ -4,9 +4,9 @@ using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
 
-	public abstract class TeletypeStrategy : InlineStrategy, ITokenProvider {
-		public string Token { get { return "=="; } }
-		protected override sealed Type Type { get { return ScopeTypeCache.Teletype; } }
+	[TokenTransformer("==")]
+	public abstract class TeletypeStrategy : InlineStrategy {
+		protected Type Type { get { return ScopeTypeCache.Teletype; } }
 	}
 
 	public class OpenTeletypeStrategy : TeletypeStrategy {
@@ -14,7 +14,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new OpenNonNestableInlineScopeSatisfier(Type));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			OpenScope(new TeletypeScope(), context);
 		}
 	}
@@ -24,7 +24,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new CurrentScopeMustMatchSatisfier(Type));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			CloseCurrentScope(context);
 		}
 	}

@@ -1,18 +1,18 @@
-﻿using System;
-
-namespace ButterflyNet.Parser.Scopes {
+﻿namespace ButterflyNet.Parser.Scopes {
 	public class LinkScope : InlineScope {
-		public string Url { get; private set; }
-
-		public LinkScope(string url) {
+		public LinkScope(string url, string baseUrl) {
 			Url = url;
+			BaseUrl = baseUrl;
 		}
 
-		protected override void OpenAndAnalyze(ButterflyAnalyzer analyzer) {
-			analyzer.OpenLink(Url);
+		public string Url { get; private set; }
+		public string BaseUrl { get; private set; }
+
+		public override void Open(ButterflyAnalyzer analyzer) {
+			analyzer.OpenLink(Url, BaseUrl);
 		}
 
-		protected override void CloseAndAnalyze(ButterflyAnalyzer analyzer) {
+		public override void Close(ButterflyAnalyzer analyzer) {
 			analyzer.CloseLink();
 		}
 	}

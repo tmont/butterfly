@@ -1,12 +1,15 @@
 ﻿using ButterflyNet.Parser.Satisfiers;
+using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class HeaderStrategy : ScopeDrivenStrategy, ITokenProvider {
+	[TokenTransformer("!")]
+	public class HeaderStrategy : ScopeDrivenStrategy {
 		public HeaderStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
+			AddSatisfier<CannotNestInsideInlineSatisfier>();
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			var depth = 1;
 			while (context.Input.Peek() == '!') {
 				depth++;
@@ -15,9 +18,7 @@ namespace ButterflyNet.Parser.Strategies {
 
 			context.Input.SeekToNonWhitespace(); //ignore spaces/tabs
 			context.UpdateCurrentChar();
-			OpenScope(new Scopes.HeaderScope(depth), context);
+			OpenScope(new HeaderScope(depth), context);
 		}
-
-		public string Token { get { return "!"; } }
 	}
 }

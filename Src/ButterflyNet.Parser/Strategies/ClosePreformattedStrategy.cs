@@ -1,17 +1,15 @@
 ﻿using ButterflyNet.Parser.Satisfiers;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class ClosePreformattedStrategy : BlockStrategy, ITokenProvider {
+	[TokenTransformer("}}}")]
+	public class ClosePreformattedStrategy : ScopeDrivenStrategy {
 
 		public ClosePreformattedStrategy() {
-			AddSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Preformatted));
+			AddSatisfier(new CurrentScopeMustMatchSatisfier(ScopeTypeCache.Preformatted));
 		}
 
-		protected override void Execute(ParseContext context) {
-			CloseScopeUntil(context, ScopeTypeCache.Preformatted);
+		protected override void DoExecute(ParseContext context) {
 			CloseCurrentScope(context);
 		}
-
-		public string Token { get { return "}}}"; } }
 	}
 }

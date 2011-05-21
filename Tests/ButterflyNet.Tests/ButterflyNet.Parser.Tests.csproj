@@ -44,13 +44,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlockquoteTests.cs" />
-    <Compile Include="MultiLineDefinitionTests.cs" />
     <Compile Include="ExtensibilityTests.cs" />
     <Compile Include="DefinitionListTests.cs" />
+    <Compile Include="FormattingHelpGenerator.cs" />
     <Compile Include="HeaderTests.cs" />
     <Compile Include="HtmlEntityTests.cs" />
+    <Compile Include="IllegalScopingTests.cs" />
     <Compile Include="ImageTests.cs" />
     <Compile Include="ContextualTests.cs" />
+    <Compile Include="LineBreakTests.cs" />
     <Compile Include="LinkTests.cs" />
     <Compile Include="ListTests.cs" />
     <Compile Include="HorizontalRulerTests.cs" />

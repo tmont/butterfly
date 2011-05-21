@@ -1,100 +1,39 @@
 ﻿using System;
-using System.Linq;
 
 namespace ButterflyNet.Parser.Strategies {
-	public abstract class ScopeDrivenStrategy : ParseStrategyBase {
-		private readonly IParseStrategy bufferingStrategy;
-
+	public abstract class ScopeDrivenStrategy : ParseStrategy {
 		public event Action<IScope, ParseContext> BeforeScopeOpens;
 		public event Action<IScope, ParseContext> AfterScopeOpens;
 		public event Action<IScope, ParseContext> BeforeScopeCloses;
 		public event Action<IScope, ParseContext> AfterScopeCloses;
 
-		protected ScopeDrivenStrategy(IParseStrategy bufferingStrategy) {
-			this.bufferingStrategy = bufferingStrategy;
-
-			BeforeScopeOpens += CloseContextualScopes;
+		protected ScopeDrivenStrategy() {
 			BeforeScopeOpens += CreateParagraphIfNecessary;
-			BeforeScopeOpens += CloseNonManuallyClosingScopes;
-			BeforeScopeOpens += EmptyBufferAndCloseParagraph;
+			BeforeScopeOpens += CloseParagraphForBlockScopes;
 			AfterScopeOpens += UpdateScopeTreeAfterOpen;
-			BeforeScopeCloses += EmptyBufferOnClose;
 			AfterScopeCloses += UpdateScopeTreeAfterClose;
 		}
 
-		internal ScopeDrivenStrategy() : this(WriteStringStrategy.Instance) { }
-
 		#region Event delegates
-		private void CloseContextualScopes(IScope scope, ParseContext context) {
-			while (!context.Scopes.IsEmpty()) {
-				var currentScope = context.Scopes.Peek();
-				if (!currentScope.ClosesOnContext || !currentScope.ShouldClose(scope)) {
-					break;
-				}
-
-				CloseCurrentScope(context);
-			}
-		}
-
-		private void CreateParagraphIfNecessary(IScope scope, ParseContext context) {
-			if (scope.GetType() == ScopeTypeCache.Paragraph) {
+		private void CloseParagraphForBlockScopes(IScope scope, ParseContext context) {
+			if (scope.Level != ScopeLevel.Block) {
 				return;
 			}
 
+			if (!context.Scopes.ContainsType(ScopeTypeCache.Paragraph)) {
+				return;
+			}
+
+			if (context.Scopes.Peek().GetType() != ScopeTypeCache.Paragraph) {
+				throw new ParseException("Cannot nest a block level scope inside a paragraph. Did you forget to close something?");
+			}
+
+			CloseCurrentScope(context);
+		}
+
+		private static void CreateParagraphIfNecessary(IScope scope, ParseContext context) {
 			if (scope.Level == ScopeLevel.Inline) {
 				new OpenParagraphStrategy().ExecuteIfSatisfied(context);
-			} else {
-				bufferingStrategy.ExecuteIfSatisfied(context);
-			}
-		}
-
-		private void EmptyBufferOnClose(IScope scope, ParseContext context) {
-			if (!bufferingStrategy.IsSatisfiedBy(context)) {
-				return;
-			}
-
-			var preEmptyCount = context.Scopes.Count;
-			bufferingStrategy.Execute(context);
-			if (context.Scopes.Count > preEmptyCount) {
-				while (context.Scopes.Count > preEmptyCount) {
-					CloseCurrentScope(context);
-				}
-			}
-		}
-
-		private void EmptyBufferAndCloseParagraph(IScope scope, ParseContext context) {
-			if (scope.GetType() != ScopeTypeCache.Paragraph) {
-				var preBufferScopeCount = context.Scopes.Count;
-				BufferingStrategy.ExecuteIfSatisfied(context);
-				if (scope.Level == ScopeLevel.Block) {
-					//we don't want to nest block level scopes inside a paragraph
-					switch (context.Scopes.Count - preBufferScopeCount) {
-						case 0:
-							break;
-						case 1:
-							if (context.Scopes.Peek().GetType() != ScopeTypeCache.Paragraph) {
-								throw new NotSupportedException("Buffering strategy created a non-paragraph scope");
-							}
-
-							CloseCurrentScope(context);
-							break;
-						default:
-							throw new NotSupportedException("Buffering strategy created more than one scope while emptying the buffer");
-					}
-				}
-			}
-		}
-
-		private void CloseNonManuallyClosingScopes(IScope scope, ParseContext context) {
-			if (scope.Level == ScopeLevel.Block) {
-				while (!context.Scopes.IsEmpty()) {
-					var previousScope = context.Scopes.Peek();
-					if ((previousScope.ManuallyClosing || !previousScope.ShouldClose(scope)) && previousScope.GetType() != ScopeTypeCache.Paragraph) {
-						break;
-					}
-
-					CloseCurrentScope(context);
-				}
 			}
 		}
 
@@ -121,25 +60,10 @@ namespace ButterflyNet.Parser.Strategies {
 			}
 
 			context.Scopes.Push(scope);
-			scope.Open(context.Analyzers);
+			scope.Open(context.Analyzer);
 
 			if (AfterScopeOpens != null) {
 				AfterScopeOpens.Invoke(scope, context);
-			}
-		}
-
-		protected void CloseScopeUntil(ParseContext context, params Type[] scopeTypes) {
-			while (!context.Scopes.IsEmpty()) {
-				var scope = context.Scopes.Peek();
-				if (scopeTypes.Contains(scope.GetType())) {
-					break;
-				}
-
-				if (scope.ManuallyClosing) {
-					throw new ParseException(string.Format("The scope \"{0}\" must be manually closed", scope.GetType().GetFriendlyName(false)));
-				}
-
-				CloseCurrentScope(context);
 			}
 		}
 
@@ -159,13 +83,21 @@ namespace ButterflyNet.Parser.Strategies {
 
 			//cannot pop scope until after BeforeScopeCloses is invoked; among other things, it screws up paragraph creation logic
 			context.Scopes.Pop();
-			currentScope.Close(context.Analyzers);
+			currentScope.Close(context.Analyzer);
 
 			if (AfterScopeCloses != null) {
 				AfterScopeCloses.Invoke(currentScope, context);
 			}
 		}
 
-		protected virtual IParseStrategy BufferingStrategy { get { return bufferingStrategy; } }
+		protected void CloseParagraphIfNecessary(ParseContext context) {
+			var scope = context.Scopes.PeekOrDefault();
+			if (scope == null || scope.GetType() != ScopeTypeCache.Paragraph) {
+				return;
+			}
+
+			CloseCurrentScope(context);
+		}
+
 	}
 }

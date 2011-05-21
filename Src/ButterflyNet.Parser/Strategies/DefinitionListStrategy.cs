@@ -2,20 +2,20 @@
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class DefinitionListStrategy : BlockStrategy, ITokenProvider {
+	[TokenTransformer(";")]
+	public class DefinitionListStrategy : ScopeDrivenStrategy {
 		public DefinitionListStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
-			AddPreExecuteSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.DefinitionTerm)));
+			AddSatisfier<CannotNestInsideInlineSatisfier>();
+			AddSatisfier(new NegatingSatisfier(new InScopeStackSatisfier(ScopeTypeCache.DefinitionTerm)));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			if (!context.Scopes.ContainsType(ScopeTypeCache.DefinitionList)) {
 				OpenScope(new DefinitionListScope(), context);
 			}
 
 			OpenScope(new DefinitionTermScope(), context);
 		}
-
-		public string Token { get { return ";"; } }
 	}
 }

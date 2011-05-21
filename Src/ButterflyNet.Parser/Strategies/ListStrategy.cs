@@ -4,13 +4,14 @@ using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class ListStrategy : BlockStrategy {
+	public class ListStrategy : ScopeDrivenStrategy {
 		public ListStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
+			AddSatisfier<CannotNestInsideInlineSatisfier>();
 			AddSatisfier(new OneOfSeveralTokensSatisfier('*', '#'));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			var peek = context.Input.Peek();
 
 			var listText = new StringBuilder(((char)context.CurrentChar).ToString(), 3);
@@ -49,14 +50,7 @@ namespace ButterflyNet.Parser.Strategies {
 				//a list has already been opened
 				var difference = depth - openLists;
 
-				if (difference < 0) {
-					//close lists of a higher depth
-					while (difference < 0) {
-						CloseScopeUntil(context, ScopeTypeCache.UnorderedList, ScopeTypeCache.OrderedList);
-						CloseCurrentScope(context);
-						difference++;
-					}
-				} else if (difference == 1) {
+				if (difference == 1) {
 					//start a new list at a higher depth
 					OpenScope(newScope, context);
 				} else if (difference > 1) {
@@ -78,7 +72,8 @@ namespace ButterflyNet.Parser.Strategies {
 				}
 			}
 
-			OpenScope(new ListItemScope(), context);
+			OpenScope(new ListItemScope(depth), context);
 		}
 	}
+
 }

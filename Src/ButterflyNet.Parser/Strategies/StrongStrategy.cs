@@ -3,9 +3,9 @@ using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public abstract class StrongStrategy : InlineStrategy, ITokenProvider {
-		public string Token { get { return "__"; } }
-		protected override sealed Type Type { get { return ScopeTypeCache.Strong; } }
+	[TokenTransformer("__")]
+	public abstract class StrongStrategy : InlineStrategy {
+		protected Type Type { get { return ScopeTypeCache.Strong; } }
 	}
 
 	public class OpenStrongStrategy : StrongStrategy {
@@ -13,7 +13,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new OpenNonNestableInlineScopeSatisfier(Type));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			OpenScope(new StrongScope(), context);
 		}
 	}
@@ -23,7 +23,7 @@ namespace ButterflyNet.Parser.Strategies {
 			AddSatisfier(new CurrentScopeMustMatchSatisfier(Type));
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			CloseCurrentScope(context);
 		}
 	}

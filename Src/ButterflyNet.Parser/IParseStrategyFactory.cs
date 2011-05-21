@@ -2,12 +2,12 @@
 
 namespace ButterflyNet.Parser {
 	public interface IParseStrategyFactory {
-		IParseStrategy Create(Type type);
+		ParseStrategy Create(Type type);
 	}
 
 	public sealed class DefaultParseStrategyFactory : IParseStrategyFactory {
-		public IParseStrategy Create(Type type) {
-			return (IParseStrategy)Activator.CreateInstance(type);
+		public ParseStrategy Create(Type type) {
+			return (ParseStrategy)Activator.CreateInstance(type);
 		}
 	}
 }

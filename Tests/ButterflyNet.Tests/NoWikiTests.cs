@@ -6,17 +6,33 @@ namespace ButterflyNet.Parser.Tests {
 
 		[Test]
 		public void Should_escape_wiki_syntax_inside_inline_scope() {
-			Convert("__bold [!==not teletype==]__");
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), "<p><strong>bold ==not teletype==</strong></p>");
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("__bold [!==not teletype==]__"), "<p><strong>bold ==not teletype==</strong></p>");
 		}
 
 		[Test]
 		public void Should_allow_multiline_escaping() {
-			Convert(@"foo [!oh hai!
+			const string text = @"foo [!oh hai!
 * not a list
 | not a table |
-]");
-			AssertWithNoRegardForLineBreaks(Writer.ToString(), "<p>foo oh hai!* not a list| not a table |</p>");
+]";
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<p>foo oh hai!* not a list| not a table |</p>");
+		}
+
+		[Test]
+		public void Should_break_at_first_closing_bracket() {
+			const string text = @"[!oh hai!] __bold__]";
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(text), "<p>oh hai! <strong>bold</strong>]</p>");
+		}
+
+		[Test]
+		public void Should_escape_close_bracket() {
+			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn(@"[!foo]]]"), "<p>foo]</p>");
+		}
+
+		[Test]
+		[ExpectedException(typeof(ParseException), ExpectedMessage = "NoWiki scope never closes")]
+		public void Should_throw_when_nowiki_never_closes() {
+			Parser.Parse(@"[!foo");
 		}
 
 	}

@@ -1,19 +1,19 @@
-﻿using ButterflyNet.Parser.Satisfiers;
+﻿using System;
+using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
-	public class DefinitionStrategy : BlockStrategy, ITokenProvider {
+	[TokenTransformer(":")]
+	public class DefinitionStrategy : ScopeDrivenStrategy {
 		public DefinitionStrategy() {
 			AddSatisfier<StartOfLineSatisfier>();
 			AddSatisfier(new InScopeStackSatisfier(ScopeTypeCache.DefinitionList));
-			AddPreExecuteSatisfier<TermMustBePreviousNodeSatisfier>();
+			AddSatisfier<TermMustBePreviousNodeSatisfier>();
 		}
 
-		protected override void Execute(ParseContext context) {
+		protected override void DoExecute(ParseContext context) {
 			OpenScope(new DefinitionScope(), context);
 		}
-
-		public string Token { get { return ":"; } }
 
 		private class TermMustBePreviousNodeSatisfier : ISatisfier {
 			public bool IsSatisfiedBy(ParseContext context) {
