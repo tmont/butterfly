@@ -1,0 +1,132 @@
+<project name="Butterfly" basedir="." default="help">
+
+	<property name="dotnet.dir" value="${basedir}/dotnet"/>
+	<property name="dotnetsrc.dir" value="${dotnet.dir}/Src"/>
+	<property name="js.dir" value="${basedir}/js"/>
+	<property name="jssrc.dir" value="${js.dir}"/>
+	<property name="product.name" value="Butterfly"/>
+	<property name="product.shortname" value="butterfly"/>
+	<property name="product.version" value="2.1"/>
+	<property name="build.dir" value="${basedir}/build"/>
+	<property name="build.dist" value="${build.dir}/dist"/>
+	<property name="temp.dir" value="${build.dir}/temp"/>
+	<property environment="env"/>
+	<property name="msbuildpath" value="${env.windir}/Microsoft.NET/Framework/v4.0.30319/msbuild.exe"/>
+	
+	<path id="task.classpath">
+		<pathelement location="lib/yuicompressor-2.4.2.jar" />
+		<pathelement location="lib/yui-compressor-ant-task-0.5.jar" />
+	</path>
+	
+	<taskdef name="yui-compressor" classname="net.noha.tools.ant.yuicompressor.tasks.YuiCompressorTask">
+		<classpath refid="task.classpath"/>
+	</taskdef>
+	
+	<target name="build" depends="clean, set-product-revision, compress" description="Builds .NET binaries and compresses JavaScript">
+		<exec executable="${msbuildpath}">
+			<arg value="/property:Configuration=Release" />
+			<arg value="${dotnet.dir}/ButterflyNet.sln" />
+		</exec>
+	</target>
+	
+	<target name="release" depends="build" description="Creates deployment packages">
+		<mkdir dir="${build.dist}"/>
+		
+		<property name="package.source" value="${product.shortname}-src-${product.version}.${product.revision}"/>
+		<property name="package.release" value="${product.shortname}-${product.version}.${product.revision}"/>
+
+		<!-- uncompressed javascript, .NET source and tests -->
+		<tar destfile="${build.dist}/${package.source}.tar.gz" compression="gzip" longfile="gnu">
+			<tarfileset dir="${basedir}" includes="dotnet/**,js/**,CHANGELOG,COPYING,README" excludes="**/bin/**,**/obj/**,**/*.user,**/*.suo" prefix="${package.source}"/>
+		</tar>
+		
+		<!-- compressed javascript, .NET binaries -->
+		<mkdir dir="${build.dir}/bin" />
+		<mkdir dir="${build.dir}/bin/js" />
+		<mkdir dir="${build.dir}/bin/dotnet" />
+		<copy todir="${build.dir}/bin/js">
+			<fileset dir="${build.dir}/js" includes="**/*"/>
+		</copy>
+		<copy todir="${build.dir}/bin/dotnet">
+			<fileset dir="${basedir}/bin/dotnet/Release" includes="**/*"/>
+		</copy>
+		
+		<tar destfile="${build.dist}/${package.release}.tar.gz" compression="gzip" longfile="gnu">
+			<tarfileset dir="${build.dir}/bin" includes="**/*" prefix="${package.release}"/>
+			<tarfileset dir="${basedir}" includes="CHANGELOG,COPYING,README" prefix="${package.release}"/>
+		</tar>
+	</target>
+	
+	<target name="clean" depends="init" description="Deletes directories and files created by the build sequence">
+		<delete dir="${build.dir}"/>
+	</target>
+	
+	<target name="compress" depends="init, clean, copy-uncompressed" description="Compresses JavaScript source files using YUI compressor">
+		<mkdir dir="${build.dir}/js" />
+		
+		<!-- combine all javascript files -->
+		<concat destfile="${temp.dir}/butterfly-combined.js" encoding="UTF-8" eol="lf">
+			<header>(function(window, undefined){</header>
+			<footer>}(this));</footer>
+			
+			<fileset dir="${temp.dir}" includes="extend.js"/>
+			<fileset dir="${temp.dir}" includes="Event.js"/>
+			<fileset dir="${temp.dir}" includes="ScopeTree.js"/>
+			<fileset dir="${temp.dir}" includes="ButterflyAnalyzer.js"/>
+			<fileset dir="${temp.dir}" includes="ButterflyStringReader.js"/>
+			<fileset dir="${temp.dir}" includes="Macro.js"/>
+			<fileset dir="${temp.dir}" includes="Module.js"/>
+			<fileset dir="${temp.dir}" includes="ParseContext.js"/>
+			<fileset dir="${temp.dir}" includes="ParseStrategy.js"/>
+			<fileset dir="${temp.dir}" includes="ButterflyParser.js"/>
+		</concat>
+		
+		<yui-compressor warn="true" munge="true" jsSuffix="-min.js" charset="UTF-8" fromdir="${temp.dir}" todir="${build.dir}/js">
+			<include name="butterfly-combined.js"/>
+		</yui-compressor>
+		
+		<move file="${build.dir}/js/butterfly-combined-min.js" tofile="${build.dir}/js/butterfly-min.js" />
+		
+		<!-- delete temporary files -->
+		<delete dir="${temp.dir}"/>
+	</target>
+	
+	<target name="help" depends="set-exe-suffix" description="Displays information about available targets">
+		<exec executable="ant${exe.suffix}" failonerror="true">
+			<arg value="-p"/>
+		</exec>
+	</target>
+	
+	<!-- 
+		######################################################
+		internal targets only below
+		######################################################
+	-->
+	
+	<target name="copy-uncompressed">
+		<mkdir dir="${temp.dir}"/>
+		<copy todir="${temp.dir}">
+			<fileset dir="${jssrc.dir}" includes="*.js"/>
+		</copy>
+	</target>
+	
+	<target name="init">
+		<tstamp>
+			<format property="TIMESTAMP" pattern="yyyy-MM-dd HH:mm:ss"/>
+		</tstamp>
+		<echo level="info">Beginning build for ${product.name} ${product.version}</echo>
+		<echo level="info">  ${TIMESTAMP}</echo>
+		<echo level="info"/>
+	</target>
+	
+	<target name="set-exe-suffix">
+		<condition property="exe.suffix" value=".bat" else="">
+			<os family="winnt"/>
+		</condition>
+	</target>
+	
+	<target name="set-product-revision">
+		<exec executable="svnversion" outputproperty="product.revision" failonerror="true"/>
+		<echo level="info">Product revision set to ${product.revision}</echo>
+	</target>
+</project>
