@@ -87,7 +87,7 @@ namespace ButterflyNet.Parser {
 			}
 
 			var buffer = new char[count];
-			var charsRead = Read(buffer, 0, count);
+			Read(buffer, 0, count);
 
 			return buffer.ToString();
 		}
