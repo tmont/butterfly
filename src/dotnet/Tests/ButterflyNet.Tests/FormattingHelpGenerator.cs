@@ -483,7 +483,7 @@ Universal Sortable format].
 	</body>
 </html>", html);
 
-			File.WriteAllText(@"..\..\..\..\..\formatting.html", fileContents, Encoding.UTF8);
+			File.WriteAllText(@"..\..\..\..\..\..\formatting.html", fileContents, Encoding.UTF8);
 		}
 
 	}
