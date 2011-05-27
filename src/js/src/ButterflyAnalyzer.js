@@ -1,13 +1,16 @@
 var EMPTY = function() {};
 
-function ButterflyAnalyzer(buffer) {
-	this.buffer = buffer;
-	this.flush = function() {
-		buffer = "";
-	}
+function ButterflyAnalyzer(writer) {
+	this.writer = writer || new AppendStringWriter();
 }
 
 ButterflyAnalyzer.prototype = {
+	writer: null,
+	
+	flush: function() {
+		this.writer && this.writer.flush();
+	},
+	
 	onStart: EMPTY,
 	onEnd: EMPTY,
 	

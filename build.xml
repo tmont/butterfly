@@ -71,6 +71,7 @@
 			
 			<fileset dir="${temp.dir}" includes="extend.js"/>
 			<fileset dir="${temp.dir}" includes="Event.js"/>
+			<fileset dir="${temp.dir}" includes="Satisfier.js"/>
 			<fileset dir="${temp.dir}" includes="ScopeTree.js"/>
 			<fileset dir="${temp.dir}" includes="ButterflyAnalyzer.js"/>
 			<fileset dir="${temp.dir}" includes="ButterflyStringReader.js"/>

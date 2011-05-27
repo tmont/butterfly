@@ -1,3 +1,6 @@
+function last(thing) {
+	return thing.charAt ? thing.charAt(thing.length - 1) : thing[thing.length - 1];
+}
 
 //stolen from sunlight
 function ButterflyStringReader(text) {
@@ -32,7 +35,7 @@ function ButterflyStringReader(text) {
 	this.substring = function() { return text.substring(index); };
 	this.peekSubstring = function() { return text.substring(index + 1); };
 
-	this.read = function(count) {
+	this.read = function (count) {
 		var value = getCharacters(count),
 			newlineCount,
 			lastChar;

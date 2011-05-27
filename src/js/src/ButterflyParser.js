@@ -44,4 +44,21 @@ function ButterflyParser(options) {
 		
 		context.analyzer.onEnd();
 	};
-}	
+}
+
+//extensions
+ButterflyParser.prototype.parseAndReturn = function(markup) {
+	this.parse(markup);
+	return this.flushAndReturn();
+};
+
+ButterflyParser.prototype.flushAndReturn = function() {
+	var data = this.analyzer.buffer;
+	this.analyzer.flush();
+	return data;
+};
+
+ButterflyParser.prototype.loadDefaultStrategies = function() {
+	
+	return this;
+};
