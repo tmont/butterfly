@@ -11,7 +11,7 @@ function htmlEncode(text) {
 }
 
 function isExternalUrl(url) {
-	return /^[^\/]:/.test(url || "");
+	return /^[^\/]*:\/\//.test(url || "");
 }
 
 function HtmlAnalyzer(writer) {
