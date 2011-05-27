@@ -228,7 +228,7 @@ namespace ButterflyNet.Parser {
 		}
 
 		public override void OpenDefinitionList() {
-			Writer.Write("<dl>");
+			Writer.Write("<dl>\n");
 		}
 
 		public override void CloseDefinitionList() {
