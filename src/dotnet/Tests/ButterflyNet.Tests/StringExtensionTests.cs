@@ -3,8 +3,6 @@
 namespace ButterflyNet.Parser.Tests {
 	[TestFixture]
 	public class StringExtensionTests {
-		
-
 		[Test]
 		public void Http_urls_as_external_urls() {
 			Assert.That("http://example.com/".IsExternalUrl(), Is.True);
