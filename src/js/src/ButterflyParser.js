@@ -6,7 +6,7 @@ function ButterflyParser(options) {
 	
 	this.localLinkBaseUrl = options.localLinkBaseUrl;
 	this.localImageBaseUrl = options.localImageBaseUrl;
-	this.analyzer = options.analyzer;
+	this.analyzer = options.analyzer || new HtmlAnalyzer();
 	this.moduleFactory = options.moduleFactory;
 	this.macroFactory = options.macroFactory;
 	
@@ -46,6 +46,8 @@ function ButterflyParser(options) {
 	};
 }
 
+
+
 //extensions
 ButterflyParser.prototype.parseAndReturn = function(markup) {
 	this.parse(markup);
@@ -59,6 +61,6 @@ ButterflyParser.prototype.flushAndReturn = function() {
 };
 
 ButterflyParser.prototype.loadDefaultStrategies = function() {
-	
+	this.addStrategy(new WriteCharacterStrategy());
 	return this;
 };

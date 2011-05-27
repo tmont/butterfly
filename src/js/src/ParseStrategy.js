@@ -1,6 +1,12 @@
 function ParseStrategy() {
 	var satisfiers = [];
 	
+	function LambdaDrivenSatisfier(lambda) {
+		this.isSatisfiedBy = function(context) {
+			return lambda(context);
+		};
+	}
+	
 	this.beforeExecute = new Event();
 	this.afterExecute = new Event();
 	this.priority = ParseStrategy.defaultPriority;
@@ -11,6 +17,10 @@ function ParseStrategy() {
 	};
 	
 	this.addSatisfier = function(satisfier) {
+		if (typeof(satisfier) === "function") {
+			satisfier = new LambdaDrivenSatisfier(satisfier);
+		}
+		
 		satisfiers.push(satisfier);
 	};
 	

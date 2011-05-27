@@ -1,9 +1,9 @@
 function createParser() {
-	return new Butterfly.Parser({
-		
-	});
+	var parser = new Butterfly.Parser();
+	parser.loadDefaultStrategies();
+	return parser;
 }
 
 function trimLf(text) {
-	return text.replace(/\n/g, "");
+	return text && text.replace(/\n/g, "");
 }
