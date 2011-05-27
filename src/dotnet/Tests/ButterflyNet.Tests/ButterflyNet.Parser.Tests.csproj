@@ -56,6 +56,7 @@
     <Compile Include="ParagraphTests.cs" />
     <Compile Include="PreformattedTests.cs" />
     <Compile Include="ScopeTreeTests.cs" />
+    <Compile Include="StringExtensionTests.cs" />
     <Compile Include="TableTests.cs" />
     <Compile Include="TextFormattingTests.cs" />
     <Compile Include="UnescapedTests.cs" />

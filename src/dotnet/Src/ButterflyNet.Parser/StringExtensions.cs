@@ -2,7 +2,7 @@
 
 namespace ButterflyNet.Parser {
 	public static class StringExtensions {
-		private static readonly Regex externalUrlRegex = new Regex("https?://", RegexOptions.IgnoreCase);
+		private static readonly Regex externalUrlRegex = new Regex("^[^/]*://");
 
 		public static bool IsExternalUrl(this string s) {
 			return !string.IsNullOrEmpty(s) && externalUrlRegex.IsMatch(s);
