@@ -2,9 +2,17 @@ function Framework_tests() {
 	return [
 		function Stack_tests() {
 			return [
-				function Should_be_indexable_like_an_array() {
+				function Cannot_set_item_using_array_indexers() {
 					var stack = new Stack();
 					stack[0] = "foo";
+					
+					Assert.that(stack.isEmpty(), Is.equalTo(true));
+					Assert.that(stack, Has.property(0).equalTo("foo"));
+				},
+				
+				function Should_be_indexable_like_an_array_when_retrieving_values() {
+					var stack = new Stack();
+					stack.push("foo");
 					
 					Assert.that(stack, Has.property(0).equalTo("foo"));
 				},
@@ -13,6 +21,9 @@ function Framework_tests() {
 					var stack = new Stack();
 					stack.push("foo");
 					
+					Assert.that(stack, Is.not.empty);
+					Assert.that(stack, Has.property("length").equalTo(1));
+					Assert.that(stack.isEmpty(), Is.identicalTo(false));
 					Assert.that(stack.peek(), Is.equalTo("foo"));
 					Assert.that(stack, Has.property(0).equalTo("foo"));
 				},
