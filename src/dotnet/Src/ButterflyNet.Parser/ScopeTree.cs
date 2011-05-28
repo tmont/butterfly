@@ -12,10 +12,6 @@ namespace ButterflyNet.Parser {
 			nodes.Add(node);
 		}
 
-		public void Clear() {
-			nodes.Clear();
-		}
-
 		public IEnumerable<ScopeTreeNode> Nodes { get { return nodes; } }
 		public int Count { get { return nodes.Count + nodes.Sum(node => node.Count); } }
 

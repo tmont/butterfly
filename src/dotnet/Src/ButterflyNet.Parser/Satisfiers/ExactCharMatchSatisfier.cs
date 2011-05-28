@@ -8,10 +8,10 @@
 
 		public bool IsSatisfiedBy(ParseContext context) {
 			if (chars.Length == 1) {
-				return chars[0] == context.Input.Current;
+				return chars[0] == context.CurrentChar;
 			}
 
-			return (char)context.Input.Current + context.Input.Peek(chars.Length - 1) == chars;
+			return (char)context.CurrentChar + context.Input.Peek(chars.Length - 1) == chars;
 		}
 	}
 }

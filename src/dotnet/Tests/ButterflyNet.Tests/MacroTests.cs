@@ -14,7 +14,7 @@ namespace ButterflyNet.Parser.Tests {
 			var result = parser.Parse("[::foo] foo [::foo]");
 			var text = parser.FlushAndReturn();
 
-			Assert.That(result.WikiText, Is.EqualTo("bar foo bar"));
+			Assert.That(result.Markup, Is.EqualTo("bar foo bar"));
 			AssertWithNoRegardForLineBreaks(text, "<p>bar foo bar</p>");
 		}
 
@@ -27,7 +27,7 @@ namespace ButterflyNet.Parser.Tests {
 			var result = parser.Parse("[::bar]");
 			var text = parser.FlushAndReturn();
 
-			Assert.That(result.WikiText, Is.EqualTo("__bold__"));
+			Assert.That(result.Markup, Is.EqualTo("__bold__"));
 			AssertWithNoRegardForLineBreaks(text, "<p><strong>bold</strong></p>");
 		}
 

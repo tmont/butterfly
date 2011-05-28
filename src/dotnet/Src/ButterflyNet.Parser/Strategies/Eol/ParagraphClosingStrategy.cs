@@ -5,7 +5,8 @@ namespace ButterflyNet.Parser.Strategies.Eol {
 		public Type ScopeType { get { return ScopeTypeCache.Paragraph; } }
 
 		public bool ShouldClose(ParseContext context) {
-			return context.Input.IsEof || context.Input.Peek() == ButterflyStringReader.NoValue || context.Input.Peek() == '\n';
+			var peek = context.Input.Peek();
+			return context.Input.IsEof || peek == ButterflyStringReader.NoValue || peek == '\n';
 		}
 	}
 }
