@@ -58,6 +58,10 @@ var textFormattingTests = function() {
 				
 				function Can_have_small_closer_without_opener() {
 					Assert.that(trimLf(parser.parseAndReturn("foo-)")), Is.equalTo("<p>foo-)</p>"));
+				},
+				
+				function Should_properly_parse_strikethrough_followed_by_underline() {
+					Assert.that(trimLf(parser.parseAndReturn("-----text-----")), Is.equalTo("<p><del><ins>text</ins></del></p>"));
 				}
 			];
 		}
