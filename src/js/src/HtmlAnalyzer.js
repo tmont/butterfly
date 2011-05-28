@@ -18,11 +18,11 @@ function HtmlAnalyzer(writer) {
 	HtmlAnalyzer.$parent.call(this, writer);
 	
 	function convertToString(value) {
-		if (typeof(text) === "number") {
-			text = String.fromCharCode(text);
+		if (typeof(value) === "number") {
+			value = String.fromCharCode(value);
 		}
 		
-		return text;
+		return value;
 	}
 	
 	this.syntaxHighlighter = SyntaxHighlightingLibrary.sunlight;
@@ -145,5 +145,3 @@ function HtmlAnalyzer(writer) {
 }
 
 extend(ButterflyAnalyzer, HtmlAnalyzer);
-
-

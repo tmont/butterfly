@@ -25,14 +25,17 @@ function ButterflyParser(options) {
 		context.analyzer.onStart();
 		
 		do {
+			strategy = null;
 			context.advanceInput();
 			eofHandled = context.input.isEof();
 			
 			for (i = 0; i < strategies.length; i++) {
-				strategy = strategies[i];
-				if (strategy.isSatisfiedBy(context)) {
-					break;
+				if (!strategies[i].isSatisfiedBy(context)) {
+					continue;
 				}
+				
+				strategy = strategies[i];
+				break;
 			}
 			
 			if (!strategy) {
@@ -46,8 +49,6 @@ function ButterflyParser(options) {
 	};
 }
 
-
-
 //extensions
 ButterflyParser.prototype.parseAndReturn = function(markup) {
 	this.parse(markup);
@@ -55,7 +56,7 @@ ButterflyParser.prototype.parseAndReturn = function(markup) {
 };
 
 ButterflyParser.prototype.flushAndReturn = function() {
-	var data = this.analyzer.buffer;
+	var data = this.analyzer.writer.toString();
 	this.analyzer.flush();
 	return data;
 };

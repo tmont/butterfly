@@ -4,7 +4,7 @@ function last(thing) {
 
 //stolen from sunlight
 function ButterflyStringReader(text) {
-	var index = 0,
+	var index = -1,
 		line = 1,
 		column = 1,
 		length,

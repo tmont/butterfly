@@ -1,7 +1,7 @@
 function ParseContext(reader, options) {
 	this.input = reader;
-	this.currentChar = null;
-	this.scopes = [];
+	this.currentChar = this.input.current();
+	this.scopes = new Stack();
 	this.localLinkBaseUrl = options.localLinkBaseUrl;
 	this.localImageBaseUrl = options.localImageBaseUrl;
 	this.analyzer = options.analyzer || new HtmlAnalyzer();

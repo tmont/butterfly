@@ -32,6 +32,11 @@ function ParseStrategy() {
 extend(Satisfier, ParseStrategy);
 
 ParseStrategy.prototype.doExecute = function(context) {};
+ParseStrategy.prototype.executeIfSatisfied = function(context) {
+	if (this.isSatisfiedBy(context)) {
+		this.execute(context);
+	}
+};
 
 ParseStrategy.$override("isSatisfiedBy", function(context) {
 	var satisfiers = this.getSatisfiers();
