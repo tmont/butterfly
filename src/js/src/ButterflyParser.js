@@ -58,6 +58,7 @@ function ButterflyParser(options) {
 		context.analyzer.onEnd();
 		
 		if (!context.scopes.isEmpty()) {
+			console.dir(context.scopes);
 			throw new ParseException("Scopes that need to be manually closed were not closed");
 		}
 		
@@ -78,14 +79,24 @@ ButterflyParser.prototype.flushAndReturn = function() {
 };
 
 ButterflyParser.prototype.loadDefaultStrategies = function() {
-	this.addStrategy(new WriteCharacterStrategy());
-	this.addStrategy(new EndOfLineStrategy());
-	this.addStrategy(new OpenStrongStrategy());
-	this.addStrategy(new CloseStrongStrategy());
-	this.addStrategy(new OpenEmphasisStrategy());
-	this.addStrategy(new CloseEmphasisStrategy());
-	return this;
-};
+	function addStrategiesForNonNestableInline(scopeType, token, ctor, priority) {
+		this.addStrategy(new OpenNonNestableInlineStrategy(scopeType, token, ctor, priority));
+		this.addStrategy(new CloseNonNestableInlineStrategy(scopeType, token, priority));
+	}
+	
+	return function() {
+		this.addStrategy(new WriteCharacterStrategy());
+		this.addStrategy(new EndOfLineStrategy());
+		
+		addStrategiesForNonNestableInline.call(this, ScopeTypeCache.strong, "__", StrongScope);
+		addStrategiesForNonNestableInline.call(this, ScopeTypeCache.emphasis, "''", EmphasisScope);
+		addStrategiesForNonNestableInline.call(this, ScopeTypeCache.teletype, "==", TeletypeScope);
+		addStrategiesForNonNestableInline.call(this, ScopeTypeCache.underline, "--", UnderlineScope);
+		addStrategiesForNonNestableInline.call(this, ScopeTypeCache.strikeThrough, "---", StrikeThroughScope, ParseStrategy.defaultPriority - 1);
+		
+		return this;
+	};
+}();
 
 function ParseResult(tree, value) {
 	this.scopeTree = tree;
