@@ -94,6 +94,11 @@ ButterflyParser.prototype.loadDefaultStrategies = function() {
 		addStrategiesForNonNestableInline.call(this, ScopeTypeCache.underline, "--", UnderlineScope);
 		addStrategiesForNonNestableInline.call(this, ScopeTypeCache.strikeThrough, "---", StrikeThroughScope, ParseStrategy.defaultPriority - 1);
 		
+		this.addStrategy(new OpenBigStrategy());
+		this.addStrategy(new CloseBigStrategy());
+		this.addStrategy(new OpenSmallStrategy());
+		this.addStrategy(new CloseSmallStrategy());
+		
 		return this;
 	};
 }();

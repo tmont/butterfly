@@ -34,6 +34,30 @@ var textFormattingTests = function() {
 				
 				function Should_parse_formatted_string_within_formatted_string() {
 					Assert.that(trimLf(parser.parseAndReturn("__text ''foo''__")), Is.equalTo("<p><strong>text <em>foo</em></strong></p>"));
+				},
+				
+				function Should_parse_big_text() {
+					Assert.that(trimLf(parser.parseAndReturn("(+text+)")), Is.equalTo("<p><big>text</big></p>"));
+				},
+				
+				function Should_parse_nested_big_text() {
+					Assert.that(trimLf(parser.parseAndReturn("(+text (+bigger+)+)")), Is.equalTo("<p><big>text <big>bigger</big></big></p>"));
+				},
+				
+				function Should_parse_small_text() {
+					Assert.that(trimLf(parser.parseAndReturn("(-text-)")), Is.equalTo("<p><small>text</small></p>"));
+				},
+				
+				function Should_parse_nested_small_text() {
+					Assert.that(trimLf(parser.parseAndReturn("(-text (-smaller-)-)")), Is.equalTo("<p><small>text <small>smaller</small></small></p>"));
+				},
+				
+				function Can_have_big_closer_without_opener() {
+					Assert.that(trimLf(parser.parseAndReturn("foo+)")), Is.equalTo("<p>foo+)</p>"));
+				},
+				
+				function Can_have_small_closer_without_opener() {
+					Assert.that(trimLf(parser.parseAndReturn("foo-)")), Is.equalTo("<p>foo-)</p>"));
 				}
 			];
 		}
