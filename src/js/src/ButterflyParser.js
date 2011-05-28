@@ -50,6 +50,12 @@ function ButterflyParser(options) {
 		} while (!eofHandled);
 		
 		context.analyzer.onEnd();
+		
+		if (!context.scopes.isEmpty()) {
+			throw new ParseException("Scopes that need to be manually closed were not closed");
+		}
+		
+		return new ParseResult(context.scopeTree, context.input.value);
 	};
 }
 
@@ -70,5 +76,12 @@ ButterflyParser.prototype.loadDefaultStrategies = function() {
 	this.addStrategy(new EndOfLineStrategy());
 	this.addStrategy(new OpenStrongStrategy());
 	this.addStrategy(new CloseStrongStrategy());
+	this.addStrategy(new OpenEmphasisStrategy());
+	this.addStrategy(new CloseEmphasisStrategy());
 	return this;
 };
+
+function ParseResult(tree, value) {
+	this.scopeTree = tree;
+	this.markup = value;
+}
