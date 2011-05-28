@@ -1,9 +1,10 @@
 <project name="Butterfly" basedir="." default="help">
 
-	<property name="dotnet.dir" value="${basedir}/dotnet"/>
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="dotnet.dir" value="${src.dir}/dotnet"/>
 	<property name="dotnetsrc.dir" value="${dotnet.dir}/Src"/>
-	<property name="js.dir" value="${basedir}/js"/>
-	<property name="jssrc.dir" value="${js.dir}"/>
+	<property name="js.dir" value="${src.dir}/js"/>
+	<property name="jssrc.dir" value="${js.dir}/src"/>
 	<property name="product.name" value="Butterfly"/>
 	<property name="product.shortname" value="butterfly"/>
 	<property name="product.version" value="2.1"/>
@@ -37,22 +38,17 @@
 
 		<!-- uncompressed javascript, .NET source and tests -->
 		<tar destfile="${build.dist}/${package.source}.tar.gz" compression="gzip" longfile="gnu">
-			<tarfileset dir="${basedir}" includes="dotnet/**,js/**,CHANGELOG,COPYING,README" excludes="**/bin/**,**/obj/**,**/*.user,**/*.suo" prefix="${package.source}"/>
+			<tarfileset dir="${basedir}" includes="src/**,CHANGELOG,COPYING,README" excludes="**/bin/**,**/obj/**,**/*.user,**/*.suo" prefix="${package.source}"/>
 		</tar>
 		
 		<!-- compressed javascript, .NET binaries -->
-		<mkdir dir="${build.dir}/bin" />
-		<mkdir dir="${build.dir}/bin/js" />
-		<mkdir dir="${build.dir}/bin/dotnet" />
-		<copy todir="${build.dir}/bin/js">
-			<fileset dir="${build.dir}/js" includes="**/*"/>
-		</copy>
-		<copy todir="${build.dir}/bin/dotnet">
-			<fileset dir="${basedir}/bin/dotnet/Release" includes="**/*"/>
+		<mkdir dir="${build.dir}/dotnet" />
+		<copy todir="${build.dir}/dotnet">
+			<fileset dir="${dotnet.dir}/bin/Release" includes="**/*"/>
 		</copy>
 		
 		<tar destfile="${build.dist}/${package.release}.tar.gz" compression="gzip" longfile="gnu">
-			<tarfileset dir="${build.dir}/bin" includes="**/*" prefix="${package.release}"/>
+			<tarfileset dir="${build.dir}" includes="js/**,dotnet/**" prefix="${package.release}"/>
 			<tarfileset dir="${basedir}" includes="CHANGELOG,COPYING,README" prefix="${package.release}"/>
 		</tar>
 	</target>
@@ -71,15 +67,44 @@
 			
 			<fileset dir="${temp.dir}" includes="extend.js"/>
 			<fileset dir="${temp.dir}" includes="Event.js"/>
+			<fileset dir="${temp.dir}" includes="Writer.js"/>
+			<fileset dir="${temp.dir}" includes="Stack.js"/>
+			
+			<fileset dir="${temp.dir}" includes="ScopeTypeCache.js"/>
+			
 			<fileset dir="${temp.dir}" includes="Satisfier.js"/>
+			<fileset dir="${temp.dir}" includes="satisfiers/NegatingSatisfier.js"/>
+			<fileset dir="${temp.dir}" includes="satisfiers/EofSatisfier.js"/>
+			<fileset dir="${temp.dir}" includes="satisfiers/InScopeStackSatisfier.js"/>
+			<fileset dir="${temp.dir}" includes="satisfiers/OpenNonNestableInlineScopeSatisfier.js"/>
+			<fileset dir="${temp.dir}" includes="satisfiers/CurrentScopeMustMatchSatisfier.js"/>
+			<fileset dir="${temp.dir}" includes="satisfiers/ExactCharMatchSatisfier.js"/>
+			
+			<fileset dir="${temp.dir}" includes="ParseException.js"/>
+			
+			
 			<fileset dir="${temp.dir}" includes="ScopeTree.js"/>
+			<fileset dir="${temp.dir}" includes="ScopeLevel.js"/>
+			
+			<fileset dir="${temp.dir}" includes="Scope.js"/>
+			<fileset dir="${temp.dir}" includes="scopes/*"/>
+			
+			
 			<fileset dir="${temp.dir}" includes="ButterflyAnalyzer.js"/>
+			<fileset dir="${temp.dir}" includes="HtmlAnalyzer.js"/>
+			
 			<fileset dir="${temp.dir}" includes="ButterflyStringReader.js"/>
 			<fileset dir="${temp.dir}" includes="Macro.js"/>
 			<fileset dir="${temp.dir}" includes="Module.js"/>
 			<fileset dir="${temp.dir}" includes="ParseContext.js"/>
+			
 			<fileset dir="${temp.dir}" includes="ParseStrategy.js"/>
+			<fileset dir="${temp.dir}" includes="strategies/eol/*"/>
+			<fileset dir="${temp.dir}" includes="strategies/*"/>
+			
 			<fileset dir="${temp.dir}" includes="ButterflyParser.js"/>
+			
+			<fileset dir="${temp.dir}" includes="export.js"/>
 		</concat>
 		
 		<yui-compressor warn="true" munge="true" jsSuffix="-min.js" charset="UTF-8" fromdir="${temp.dir}" todir="${build.dir}/js">
