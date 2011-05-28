@@ -9,9 +9,6 @@ function WriteCharacterStrategy() {
 	this.priority = Infinity;
 	
 	this.doExecute = function(context) {
-		if (context.input.isEof()) {
-			console.log("eof");
-		}
 		var c = this.getChar(context);
 		
 		if (context.currentNode && context.currentNode.scope.type === ScopeTypeCache.unescaped) {
