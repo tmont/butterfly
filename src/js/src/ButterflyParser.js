@@ -20,7 +20,13 @@ function ButterflyParser(options) {
 			strategy,
 			i;
 		
-		strategies.sort(function(a, b) { return a.priority > b.priority; });
+		strategies.sort(function(a, b) { 
+			if (a.priority === b.priority) {
+				return 0;
+			}
+			
+			return a.priority > b.priority ? 1 : -1; 
+		});
 		
 		context.analyzer.onStart();
 		
