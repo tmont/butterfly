@@ -7,6 +7,18 @@ function ParseStrategy() {
 		};
 	}
 	
+	this.priority = ParseStrategy.defaultPriority;
+	
+	function advanceInputForToken(token) {
+		return function(context) {
+			if (token.length <= 1) {
+				return;
+			}
+			
+			context.advanceInput(token.length - 1);
+		};
+	}
+	
 	this.beforeExecute = new Event();
 	this.afterExecute = new Event();
 	this.priority = ParseStrategy.defaultPriority;
@@ -26,6 +38,11 @@ function ParseStrategy() {
 	
 	this.getSatisfiers = function() {
 		return satisfiers.slice(0);
+	};
+	
+	this.setAsTokenTransformer = function(token) {
+		this.addSatisfier(new ExactCharMatchSatisfier(token));
+		this.beforeExecute.attach(advanceInputForToken(token));
 	};
 }
 

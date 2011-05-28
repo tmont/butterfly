@@ -68,5 +68,7 @@ ButterflyParser.prototype.flushAndReturn = function() {
 ButterflyParser.prototype.loadDefaultStrategies = function() {
 	this.addStrategy(new WriteCharacterStrategy());
 	this.addStrategy(new EndOfLineStrategy());
+	this.addStrategy(new OpenStrongStrategy());
+	this.addStrategy(new CloseStrongStrategy());
 	return this;
 };
