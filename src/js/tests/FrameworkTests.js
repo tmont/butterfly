@@ -22,6 +22,17 @@ function Framework_tests() {
 					
 					Assert.that(stack.isEmpty(), Is.identicalTo(true));
 					Assert.that(stack.peek(), Is.undefined);
+				},
+				
+				function Stack_should_contain_type() {
+					var stack = new Stack();
+					stack.push({ type: "foo" });
+					stack.push({ type: "bar" });
+					
+					Assert.that(stack.containsType("foo"), Is.equalTo(true));
+					Assert.that(stack.containsType("bar"), Is.equalTo(true));
+					Assert.that(stack.containsType("lol", "bar"), Is.equalTo(true));
+					Assert.that(stack.containsType("lol"), Is.equalTo(false));
 				}
 			];
 		},
