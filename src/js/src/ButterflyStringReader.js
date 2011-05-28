@@ -103,6 +103,7 @@ function ButterflyStringReader(text) {
 	};
 	this.isEol = function() { return nextReadBeginsLine; };
 	this.current = function() { return currentChar; }
+	this.getIndex = function() { return index; };
 };
 
 ButterflyStringReader.EOF = -1;

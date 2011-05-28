@@ -69,7 +69,7 @@ function ScopeDrivenStrategy() {
 			throw new ParseException("Stack is empty, unable to find scope to close");
 		}
 		
-		this.beforeScopeCloses.fire(scope, context);
+		this.beforeScopeCloses.fire(currentScope, context);
 		
 		if (context.scopes.peek() !== currentScope) {
 			throw new ParseException("ScopeDrivenStrategy.beforeScopeCloses invocations created an inconsistent state");

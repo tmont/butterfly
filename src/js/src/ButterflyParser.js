@@ -39,7 +39,11 @@ function ButterflyParser(options) {
 			}
 			
 			if (!strategy) {
-				throw "No strategy found for " + (context.currentChar === ButterflyStringReader.EOF ? "<EOF>" : context.currentChar);
+				throw new ParseException(
+					"No strategy found for " +
+					(context.currentChar === ButterflyStringReader.EOF ? "<EOF>" : context.currentChar) + 
+					" at index " + context.input.getIndex()
+				);
 			}
 			
 			strategy.execute(context);
