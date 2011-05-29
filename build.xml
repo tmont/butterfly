@@ -66,6 +66,7 @@
 			<footer>}(this));</footer>
 			
 			<fileset dir="${temp.dir}" includes="extend.js"/>
+			<fileset dir="${temp.dir}" includes="util.js"/>
 			<fileset dir="${temp.dir}" includes="Event.js"/>
 			<fileset dir="${temp.dir}" includes="Writer.js"/>
 			<fileset dir="${temp.dir}" includes="Stack.js"/>
@@ -79,6 +80,9 @@
 			<fileset dir="${temp.dir}" includes="satisfiers/OpenNonNestableInlineScopeSatisfier.js"/>
 			<fileset dir="${temp.dir}" includes="satisfiers/CurrentScopeMustMatchSatisfier.js"/>
 			<fileset dir="${temp.dir}" includes="satisfiers/ExactCharMatchSatisfier.js"/>
+			<fileset dir="${temp.dir}" includes="satisfiers/StartOfLineSatisfier.js"/>
+			<fileset dir="${temp.dir}" includes="satisfiers/CannotNestInsideInlineSatisfier.js"/>
+			<fileset dir="${temp.dir}" includes="satisfiers/NextCharacterIsNotTheSameSatisfier.js"/>
 			
 			<fileset dir="${temp.dir}" includes="ParseException.js"/>
 			
