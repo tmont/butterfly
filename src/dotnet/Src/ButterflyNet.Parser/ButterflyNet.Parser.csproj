@@ -138,7 +138,7 @@
     <Compile Include="Scopes\ListItemScope.cs" />
     <Compile Include="Scopes\ListScope.cs" />
     <Compile Include="Scopes\ModuleScope.cs" />
-    <Compile Include="Scopes\NoWikiScope.cs" />
+    <Compile Include="Scopes\RawScope.cs" />
     <Compile Include="Scopes\OrderedListScope.cs" />
     <Compile Include="Scopes\ParagraphScope.cs" />
     <Compile Include="Scopes\PreformattedLineScope.cs" />

@@ -4,7 +4,7 @@ namespace ButterflyNet.Parser.Strategies {
 	[TokenTransformer("]]")]
 	public class WriteEscapedBracketStrategy : WriteCharacterStrategy {
 		public WriteEscapedBracketStrategy() {
-			AddSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Link, ScopeTypeCache.Module, ScopeTypeCache.Unescaped, ScopeTypeCache.NoWiki));
+			AddSatisfier(new InScopeStackSatisfier(ScopeTypeCache.Link, ScopeTypeCache.Module, ScopeTypeCache.Unescaped, ScopeTypeCache.Raw));
 		}
 
 		protected override char GetChar(ParseContext context) {

@@ -9,7 +9,7 @@ namespace ButterflyNet.Parser.Strategies {
 		public override int Priority { get { return DefaultPriority - 1; } }
 
 		protected override void DoExecute(ParseContext context) {
-			OpenScope(new NoWikiScope(), context);
+			OpenScope(new RawScope(), context);
 
 			var match = nowikiTextRegex.Match(context.Input.PeekSubstring);
 			if (!match.Success) {
