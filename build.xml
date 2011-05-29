@@ -84,6 +84,7 @@
 			<fileset dir="${temp.dir}" includes="satisfiers/CannotNestInsideInlineSatisfier.js"/>
 			<fileset dir="${temp.dir}" includes="satisfiers/NextCharacterIsNotTheSameSatisfier.js"/>
 			<fileset dir="${temp.dir}" includes="satisfiers/CurrentScopeMustMatchOrBeParagraphSatisfier.js"/>
+			<fileset dir="${temp.dir}" includes="satisfiers/DependentSatisfier.js"/>
 			
 			<fileset dir="${temp.dir}" includes="ParseException.js"/>
 			

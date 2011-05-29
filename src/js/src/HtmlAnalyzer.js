@@ -138,7 +138,7 @@ function HtmlAnalyzer(writer) {
 	this.openDefinition = function() { this.writer.write("<dd>"); };
 	this.closeDefinition = function() { this.writer.write("</dd>\n"); };
 	
-	this.closeMultiLineDefinition = this.openDefinition;
+	this.openMultiLineDefinition = this.openDefinition;
 	this.closeMultiLineDefinition = this.closeDefinition;
 	
 	this.openLineBreak = function() { this.writer.write("<br />"); };

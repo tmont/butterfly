@@ -8,49 +8,44 @@ function getCount(nodes) {
 }
 
 function ScopeTree() {
-	var nodes = [];
+	this.nodes = [];
 	
 	this.addNode = function(node) {
-		nodes.push(node);
+		this.nodes.push(node);
 	};
 	
-	this.isEmpty = function() { return nodes.length === 0; };
-	
-	this.getNodes = function() { return nodes.slice(0); };
+	this.isEmpty = function() { return this.nodes.length === 0; };
 	this.count = function() { return getCount(nodes); };
 }
 
 function ScopeTreeNode(scope) {
-	var children = [];
-	
 	this.scope = scope;
 	this.parent = null;
-	this.getChildren = function() { return children.slice(0); };
+	this.children = [];
 	
 	this.addChild = function(node) {
 		node.parent = this;
-		children.push(node);
+		this.children.push(node);
 	};
 	
 	this.count = function() {
-		return getCount(children);
+		return getCount(this.children);
 	};
 	
 	this.depth = function() {
-		return 1 + (this.parent ? this.parent.depth : 0);
+		return 1 + (this.parent ? this.parent.depth() : 0);
 	};
 }
 
 ScopeTree.prototype = {
-	getMostRecentNodes: function() {
+	getMostRecentNode: function() {
 		function getMostRecentNode(nodes, depth, currentDepth) {
 			var node = nodes[nodes.length - 1];
-			var children = node.getChildren();
-			return currentDepth < depth && children.length > 0 ? getMostRecentNode(children, depth, ++currentDepth) : node;
+			return currentDepth < depth && node.children.length > 0 ? getMostRecentNode(node.children, depth, ++currentDepth) : node;
 		}
 		
 		return function(depth) {
-			return depth > 0 && !this.isEmpty() ? getMostRecentNode(this.getNodes(), depth, 0) : null;
+			return depth > 0 && !this.isEmpty() ? getMostRecentNode(this.nodes, depth, 0) : null;
 		};
 	}()
 };

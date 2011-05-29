@@ -52,7 +52,7 @@ function ScopeDrivenStrategy() {
 	this.beforeScopeOpens.attach(closeParagraphForBlockScopes);
 	
 	this.afterScopeOpens.attach(updateScopeTreeAfterOpen);
-	this.afterScopeOpens.attach(updateScopeTreeAfterClose);
+	this.afterScopeCloses.attach(updateScopeTreeAfterClose);
 	
 	this.openScope = function(scope, context) {
 		this.beforeScopeOpens.fire(scope, context);

@@ -98,8 +98,8 @@ ButterflyAnalyzer.prototype = {
 	openMacro: function(macro) {},
 	closeMacro: function(macro) {},
 	
-	openMultilineDefinition: EMPTY,
-	closeMultilineDefinition: EMPTY,
+	openMultiLineDefinition: EMPTY,
+	closeMultiLineDefinition: EMPTY,
 	
 	openLineBreak: EMPTY,
 	closeLineBreak: EMPTY
