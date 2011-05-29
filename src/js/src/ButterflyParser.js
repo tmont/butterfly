@@ -58,7 +58,7 @@ function ButterflyParser(options) {
 		context.analyzer.onEnd();
 		
 		if (!context.scopes.isEmpty()) {
-			console.dir(context.scopes);
+			//console.dir(context.scopes);
 			throw new ParseException("Scopes that need to be manually closed were not closed");
 		}
 		
@@ -86,6 +86,7 @@ ButterflyParser.prototype.loadDefaultStrategies = function() {
 	
 	return function() {
 		this.addStrategy(new WriteCharacterStrategy());
+		this.addStrategy(new WriteEscapedBracketStrategy());
 		this.addStrategy(new EndOfLineStrategy());
 		
 		addStrategiesForNonNestableInline.call(this, ScopeTypeCache.strong, "__", StrongScope);
@@ -100,6 +101,8 @@ ButterflyParser.prototype.loadDefaultStrategies = function() {
 		this.addStrategy(new CloseSmallStrategy());
 		
 		this.addStrategy(new HeaderStrategy());
+		this.addStrategy(new OpenLinkStrategy());
+		this.addStrategy(new CloseLinkStrategy());
 		
 		return this;
 	};

@@ -6,7 +6,7 @@ var ScopeTypeCache = {
 	teletype: "teletype",
 	small: "small",
 	big: "big",
-	nowiki: "nowiki",
+	raw: "raw",
 	unescaped: "unescaped",
 	link: "link",
 	module: "module",
