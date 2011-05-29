@@ -110,6 +110,7 @@ ButterflyParser.prototype.loadDefaultStrategies = function() {
 		this.addStrategy(new DefinitionStrategy());
 		this.addStrategy(new OpenMultiLineDefinitionStrategy());
 		this.addStrategy(new CloseMultiLineDefinitionStrategy());
+		this.addStrategy(new LineBreakStrategy());
 		
 		return this;
 	};
