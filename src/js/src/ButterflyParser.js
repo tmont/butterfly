@@ -58,7 +58,7 @@ function ButterflyParser(options) {
 		context.analyzer.onEnd();
 		
 		if (!context.scopes.isEmpty()) {
-			//console.dir(context.scopes);
+			console.dir(context.scopes);
 			throw new ParseException("Scopes that need to be manually closed were not closed");
 		}
 		
@@ -104,6 +104,8 @@ ButterflyParser.prototype.loadDefaultStrategies = function() {
 		this.addStrategy(new OpenLinkStrategy());
 		this.addStrategy(new CloseLinkStrategy());
 		this.addStrategy(new HorizontalRulerStrategy());
+		this.addStrategy(new OpenBlockquoteStrategy());
+		this.addStrategy(new CloseBlockquoteStrategy());
 		
 		return this;
 	};

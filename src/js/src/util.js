@@ -17,3 +17,17 @@ function all(haystack, predicate) {
 	
 	return true;
 }
+
+function toArray(thing) {
+	return Array.prototype.slice.call(thing);
+}
+
+function contains(haystack, needle) {
+	if (haystack.indexOf) {
+		return haystack.indexOf(needle) !== -1;
+	}
+	
+	return any(haystack, function(value) {
+		return needle === value;
+	});
+}

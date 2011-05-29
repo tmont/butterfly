@@ -22,10 +22,14 @@ function Stack() {
 		return value;
 	};
 	
-	this.containsType = function() {
-		for (var i = 0; i < arguments.length; i++) {
+	this.containsType = function(types) {
+		if (typeof(types) === "string") {
+			types = [types];
+		}
+		
+		for (var i = 0; i < types.length; i++) {
 			for (var j = 0; j < stack.length; j++) {
-				if (stack[j].type === arguments[i]) {
+				if (stack[j].type === types[i]) {
 					return true;
 				}
 			}

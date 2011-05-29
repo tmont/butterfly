@@ -42,7 +42,7 @@ function Framework_tests() {
 					
 					Assert.that(stack.containsType("foo"), Is.equalTo(true));
 					Assert.that(stack.containsType("bar"), Is.equalTo(true));
-					Assert.that(stack.containsType("lol", "bar"), Is.equalTo(true));
+					Assert.that(stack.containsType(["lol", "bar"]), Is.equalTo(true));
 					Assert.that(stack.containsType("lol"), Is.equalTo(false));
 				}
 			];
