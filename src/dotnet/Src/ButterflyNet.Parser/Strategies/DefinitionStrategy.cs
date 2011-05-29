@@ -1,5 +1,4 @@
-﻿using System;
-using ButterflyNet.Parser.Satisfiers;
+﻿using ButterflyNet.Parser.Satisfiers;
 using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
