@@ -103,6 +103,7 @@ ButterflyParser.prototype.loadDefaultStrategies = function() {
 		this.addStrategy(new HeaderStrategy());
 		this.addStrategy(new OpenLinkStrategy());
 		this.addStrategy(new CloseLinkStrategy());
+		this.addStrategy(new HorizontalRulerStrategy());
 		
 		return this;
 	};
