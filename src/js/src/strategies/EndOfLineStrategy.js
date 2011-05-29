@@ -1,6 +1,7 @@
 var EndOfLineStrategy = function() {
 	var defaultScopeClosingStrategies = [
-		new ParagraphClosingStrategy()
+		new ParagraphClosingStrategy(),
+		new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.header)
 	];
 	
 	return function(scopeClosingStrategies) {

@@ -4,7 +4,7 @@ function last(thing) {
 
 //stolen from sunlight
 function ButterflyStringReader(text) {
-	var index = -1,
+	var index = 0,
 		line = 1,
 		column = 1,
 		length,
@@ -77,6 +77,15 @@ function ButterflyStringReader(text) {
 		return value;
 	};
 
+	this.seekToNonWhitespace = function() {
+		var match = /^(\s+)/.exec(this.peekSubstring());
+		if (!match) {
+			return;
+		}
+		
+		this.read(match[1].length);
+	};
+	
 	this.value = function() { return text; };
 	this.getLine = function() { return line; };
 	this.getColumn = function() { return column; };

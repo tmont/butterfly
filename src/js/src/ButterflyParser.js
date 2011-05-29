@@ -32,7 +32,6 @@ function ButterflyParser(options) {
 		
 		do {
 			strategy = null;
-			context.advanceInput();
 			eofHandled = context.input.isEof();
 			
 			for (i = 0; i < strategies.length; i++) {
@@ -53,6 +52,7 @@ function ButterflyParser(options) {
 			}
 			
 			strategy.execute(context);
+			context.advanceInput();
 		} while (!eofHandled);
 		
 		context.analyzer.onEnd();
@@ -98,6 +98,8 @@ ButterflyParser.prototype.loadDefaultStrategies = function() {
 		this.addStrategy(new CloseBigStrategy());
 		this.addStrategy(new OpenSmallStrategy());
 		this.addStrategy(new CloseSmallStrategy());
+		
+		this.addStrategy(new HeaderStrategy());
 		
 		return this;
 	};
