@@ -6,7 +6,8 @@ var EndOfLineStrategy = function() {
 		
 		new DefinitionListScopeClosingStrategy(),
 		new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.definition),
-		new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.definitionTerm)
+		new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.definitionTerm),
+		new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.preformattedLine)
 	];
 	
 	return function(scopeClosingStrategies) {
@@ -21,8 +22,6 @@ var EndOfLineStrategy = function() {
 		for (var i = 0; i < scopeClosingStrategies.length; i++) {
 			closingStrategyMap[scopeClosingStrategies[i].scopeType] = scopeClosingStrategies[i].shouldClose;
 		}
-		
-		
 		
 		this.doExecute = function(context) {
 			while (!context.scopes.isEmpty()) {

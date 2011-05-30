@@ -7,3 +7,7 @@ function createParser() {
 function trimLf(text) {
 	return text && text.replace(/\n/g, "");
 }
+
+function trimEnd(text) {
+	return text.replace(/\n+$/, "");
+}

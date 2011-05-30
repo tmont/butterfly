@@ -112,6 +112,11 @@ ButterflyParser.prototype.loadDefaultStrategies = function() {
 		this.addStrategy(new CloseMultiLineDefinitionStrategy());
 		this.addStrategy(new LineBreakStrategy());
 		
+		this.addStrategy(new PreformattedLineStrategy());
+		this.addStrategy(new OpenPreformattedStrategy());
+		this.addStrategy(new ClosePreformattedStrategy());
+		this.addStrategy(new PreformattedCodeStrategy());
+		
 		return this;
 	};
 }();
