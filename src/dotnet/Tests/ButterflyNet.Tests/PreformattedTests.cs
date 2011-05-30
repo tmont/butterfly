@@ -18,7 +18,7 @@ lulz}}}";
 		}
 
 		[Test]
-		public void Should_keep_linebreaks_in_preformatted() {
+		public void Should_keep_linebreaks() {
 			const string text = @"{{{
 
 lulz

@@ -7,7 +7,7 @@ namespace ButterflyNet.Parser.Tests {
 
 		[Test]
 		public void Should_generate_nested_scope_tree() {
-			var parser = new ButterflyParser { ModuleFactory = new ActivatorFactory<IButterflyModule>(new NamedTypeRegistry<IButterflyModule>()) }
+			var parser = new ButterflyParser()
 				.LoadDefaultStrategies(new DefaultParseStrategyFactory());
 
 			var tree = parser.Parse("foo __bar ''baz ==lulz=='' --oh hai!--__").ScopeTree;
