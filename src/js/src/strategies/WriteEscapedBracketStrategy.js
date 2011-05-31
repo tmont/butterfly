@@ -1,7 +1,7 @@
 function WriteEscapedBracketStrategy() {
 	WriteEscapedBracketStrategy.$parent.call(this);
 	
-	this.addSatisfier(new InScopeStackSatisfier(ScopeTypeCache.link, ScopeTypeCache.module, ScopeTypeCache.Unescaped, ScopeTypeCache.raw));
+	this.addSatisfier(new InScopeStackSatisfier(ScopeTypeCache.link, ScopeTypeCache.module, ScopeTypeCache.Unescaped, ScopeTypeCache.unparsed));
 	this.setAsTokenTransformer("]]");
 	
 	this.getChar = function(context) { return "]"; };

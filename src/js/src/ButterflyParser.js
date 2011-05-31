@@ -117,6 +117,7 @@ ButterflyParser.prototype.loadDefaultStrategies = function() {
 		this.addStrategy(new ClosePreformattedStrategy());
 		this.addStrategy(new PreformattedCodeStrategy());
 		this.addStrategy(new ListStrategy());
+		this.addStrategy(new UnparsedStrategy());
 		
 		return this;
 	};

@@ -102,5 +102,8 @@ ButterflyAnalyzer.prototype = {
 	closeMultiLineDefinition: EMPTY,
 	
 	openLineBreak: EMPTY,
-	closeLineBreak: EMPTY
+	closeLineBreak: EMPTY,
+	
+	openUnparsed: EMPTY,
+	closeUnparsed: EMPTY
 };
