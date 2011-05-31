@@ -103,6 +103,10 @@
 			<fileset dir="${temp.dir}" includes="Macro.js"/>
 			<fileset dir="${temp.dir}" includes="Module.js"/>
 			<fileset dir="${temp.dir}" includes="ParseContext.js"/>
+			<fileset dir="${temp.dir}" includes="NamedFactoryBase.js"/>
+			<fileset dir="${temp.dir}" includes="DefaultModuleFactory.js"/>
+			
+			<fileset dir="${temp.dir}" includes="modules/*"/>
 			
 			<fileset dir="${temp.dir}" includes="ParseStrategy.js"/>
 			<fileset dir="${temp.dir}" includes="strategies/eol/*"/>

@@ -47,3 +47,11 @@ function filter(haystack, predicate) {
 function last(thing) {
 	return thing.charAt ? thing.charAt(thing.length - 1) : thing[thing.length - 1];
 }
+
+function trim(string) {
+	return string.replace(/^\s*|\s*$/g, "");
+}
+
+function rtrim(string) {
+	return string.replace(/\s*$/g, "");
+}

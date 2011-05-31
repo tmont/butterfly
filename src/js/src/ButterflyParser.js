@@ -4,8 +4,8 @@ function ButterflyParser(options) {
 	
 	var strategies = [];
 	
-	this.localLinkBaseUrl = options.localLinkBaseUrl;
-	this.localImageBaseUrl = options.localImageBaseUrl;
+	this.localLinkBaseUrl = options.localLinkBaseUrl || "/";
+	this.localImageBaseUrl = options.localImageBaseUrl || "/";
 	this.analyzer = options.analyzer || new HtmlAnalyzer();
 	this.moduleFactory = options.moduleFactory;
 	this.macroFactory = options.macroFactory;
@@ -58,7 +58,6 @@ function ButterflyParser(options) {
 		context.analyzer.onEnd();
 		
 		if (!context.scopes.isEmpty()) {
-			console.dir(context.scopes);
 			throw new ParseException("Scopes that need to be manually closed were not closed");
 		}
 		
@@ -118,12 +117,13 @@ ButterflyParser.prototype.loadDefaultStrategies = function() {
 		this.addStrategy(new PreformattedCodeStrategy());
 		this.addStrategy(new ListStrategy());
 		this.addStrategy(new UnparsedStrategy());
+		this.addStrategy(new ModuleStrategy());
 		
 		return this;
 	};
 }();
 
-function ParseResult(tree, value) {
-	this.scopeTree = tree;
-	this.markup = value;
-}
+var defaultModuleRegistry = {
+	image: ImageModule
+	// entity: HtmlEntityModule
+};

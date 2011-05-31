@@ -5,7 +5,7 @@ function ParseContext(reader, options) {
 	this.localLinkBaseUrl = options.localLinkBaseUrl;
 	this.localImageBaseUrl = options.localImageBaseUrl;
 	this.analyzer = options.analyzer || new HtmlAnalyzer();
-	this.moduleFactory = options.moduleFactory;
+	this.moduleFactory = options.moduleFactory || new DefaultModuleFactory(defaultModuleRegistry, this.localImageBaseUrl);
 	this.macroFactory = options.macroFactory;
 	this.scopeTree = new ScopeTree();
 	

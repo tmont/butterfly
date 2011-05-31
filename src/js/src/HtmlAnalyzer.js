@@ -70,7 +70,7 @@ function HtmlAnalyzer(writer) {
 	};
 	this.closeLink = function() { this.writer.write("</a>"); };
 	
-	this.openModule = function(module) { module.render(buffer); };
+	this.openModule = function(module) { module.render(this.writer); };
 	
 	this.openBlockquote = function() { this.writer.write("<blockquote>"); };
 	this.closeBlockquote = function() { this.writer.write("</blockquote>\n"); };
