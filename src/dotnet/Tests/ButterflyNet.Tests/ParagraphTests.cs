@@ -14,11 +14,6 @@ namespace ButterflyNet.Parser.Tests {
 		}
 
 		[Test]
-		public void Should_not_create_paragraph_inside_preformatted() {
-			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("{{{\n\n\n}}}"), "<pre></pre>");
-		}
-
-		[Test]
 		public void Should_not_create_paragraph_on_double_linebreak_if_scopes_are_not_closed() {
 			AssertWithNoRegardForLineBreaks(Parser.ParseAndReturn("__bold\n\n\nfoo__"), "<p><strong>boldfoo</strong></p>");
 		}

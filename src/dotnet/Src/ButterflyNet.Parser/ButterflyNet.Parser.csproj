@@ -64,6 +64,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultModuleFactory.cs" />
     <Compile Include="HtmlAnalyzer.cs" />
     <Compile Include="ButterflyAnalyzer.cs" />
     <Compile Include="IButterflyModule.cs" />
