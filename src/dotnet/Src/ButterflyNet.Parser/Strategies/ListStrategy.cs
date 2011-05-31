@@ -37,7 +37,7 @@ namespace ButterflyNet.Parser.Strategies {
 			var newScope = listStart.Last() == '*' ? new UnorderedListScope() : (IScope)new OrderedListScope();
 
 			//get the number of opened lists
-			var openLists = context.Scopes.Where(IsList).Count();
+			var openLists = context.Scopes.Count(IsList);
 
 			if (openLists == 0) {
 				//new list
@@ -55,20 +55,20 @@ namespace ButterflyNet.Parser.Strategies {
 					OpenScope(newScope, context);
 				} else if (difference > 1) {
 					throw new ParseException(string.Format(
-						"Nested lists cannot skip levels: expected a depth of less than or equal to {0} but got {1}", 
-						openLists + 1, 
+						"Nested lists cannot skip levels: expected a depth of less than or equal to {0} but got {1}",
+						openLists + 1,
 						depth
 					));
-				}
-
-				//verify that the list types match
-				var currentListScope = context.Scopes.First(IsList);
-				if (currentListScope.GetType() != newScope.GetType()) {
-					throw new ParseException(string.Format(
-						"Expected list of type {0} but got {1}", 
-						currentListScope.GetName(),
-						newScope.GetName()
-					));
+				} else {
+					//verify that the list types match
+					var currentListScope = context.Scopes.First(IsList);
+					if (currentListScope.GetType() != newScope.GetType()) {
+						throw new ParseException(string.Format(
+							"Expected list of type {0} but got {1}",
+							currentListScope.GetName(),
+							newScope.GetName()
+							));
+					}
 				}
 			}
 

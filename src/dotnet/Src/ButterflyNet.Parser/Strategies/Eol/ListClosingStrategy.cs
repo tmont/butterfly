@@ -40,7 +40,7 @@ namespace ButterflyNet.Parser.Strategies.Eol {
 		}
 
 		protected override ListItemScope GetListItem(ParseContext context) {
-			return context.Scopes.Peek() as ListItemScope;
+			return (ListItemScope)context.Scopes.Peek();
 		}
 	}
 

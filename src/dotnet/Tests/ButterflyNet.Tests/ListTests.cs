@@ -51,16 +51,13 @@ namespace ButterflyNet.Parser.Tests {
 		[Test]
 		[ExpectedException(typeof(ParseException), ExpectedMessage = "Expected list of type OrderedList but got UnorderedList")]
 		public void Should_not_allow_mixed_list_types_at_same_depth() {
-			Parser.Parse(@"# lol
-* lol");
+			Parser.Parse("# lol\n* lol");
 		}
 
 		[Test]
 		[ExpectedException(typeof(ParseException), ExpectedMessage = "Expected list of type OrderedList but got UnorderedList")]
 		public void Should_not_allow_mixed_list_types_at_previous_depth() {
-			Parser.Parse(@"# lol
-## lol
-* lol");
+			Parser.Parse("# lol\n## lol\n* lol");
 		}
 
 		[Test]
