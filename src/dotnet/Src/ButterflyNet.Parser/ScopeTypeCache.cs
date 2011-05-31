@@ -13,7 +13,7 @@ namespace ButterflyNet.Parser {
 		public static readonly Type Teletype = typeof(TeletypeScope);
 		public static readonly Type Small = typeof(SmallScope);
 		public static readonly Type Big = typeof(BigScope);
-		public static readonly Type Raw = typeof(RawScope);
+		public static readonly Type Raw = typeof(UnparsedScope);
 		public static readonly Type Unescaped = typeof(UnescapedScope);
 		public static readonly Type Link = typeof(LinkScope);
 		public static readonly Type Module = typeof(ModuleScope);

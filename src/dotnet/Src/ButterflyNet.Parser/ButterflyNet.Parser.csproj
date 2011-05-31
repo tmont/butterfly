@@ -138,7 +138,7 @@
     <Compile Include="Scopes\ListItemScope.cs" />
     <Compile Include="Scopes\ListScope.cs" />
     <Compile Include="Scopes\ModuleScope.cs" />
-    <Compile Include="Scopes\RawScope.cs" />
+    <Compile Include="Scopes\UnparsedScope.cs" />
     <Compile Include="Scopes\OrderedListScope.cs" />
     <Compile Include="Scopes\ParagraphScope.cs" />
     <Compile Include="Scopes\PreformattedLineScope.cs" />
@@ -168,7 +168,7 @@
     <Compile Include="Strategies\OpenBigStrategy.cs" />
     <Compile Include="Strategies\OpenBlockquoteStrategy.cs" />
     <Compile Include="Strategies\OpenLinkStrategy.cs" />
-    <Compile Include="Strategies\NoWikiStrategy.cs" />
+    <Compile Include="Strategies\UnparsedStrategy.cs" />
     <Compile Include="Strategies\OpenParagraphStrategy.cs" />
     <Compile Include="Strategies\OpenPreformattedLineStrategy.cs" />
     <Compile Include="Strategies\OpenPreformattedStrategy.cs" />

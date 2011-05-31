@@ -52,7 +52,7 @@
     <Compile Include="HorizontalRulerTests.cs" />
     <Compile Include="MacroTests.cs" />
     <Compile Include="MultiThreadedTests.cs" />
-    <Compile Include="NoWikiTests.cs" />
+    <Compile Include="UnparsedTests.cs" />
     <Compile Include="ParagraphTests.cs" />
     <Compile Include="PreformattedTests.cs" />
     <Compile Include="ScopeTreeTests.cs" />

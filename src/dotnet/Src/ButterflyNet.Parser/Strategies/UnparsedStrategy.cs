@@ -3,17 +3,17 @@ using ButterflyNet.Parser.Scopes;
 
 namespace ButterflyNet.Parser.Strategies {
 	[TokenTransformer("[!")]
-	public class NoWikiStrategy : ScopeDrivenStrategy {
-		private static readonly Regex nowikiTextRegex = new Regex(@"(.*?)](?!])", RegexOptions.Singleline);
+	public class UnparsedStrategy : ScopeDrivenStrategy {
+		private static readonly Regex unparsedRegex = new Regex(@"(.*?)](?!])", RegexOptions.Singleline);
 		
 		public override int Priority { get { return DefaultPriority - 1; } }
 
 		protected override void DoExecute(ParseContext context) {
-			OpenScope(new RawScope(), context);
+			OpenScope(new UnparsedScope(), context);
 
-			var match = nowikiTextRegex.Match(context.Input.PeekSubstring);
+			var match = unparsedRegex.Match(context.Input.PeekSubstring);
 			if (!match.Success) {
-				throw new ParseException("NoWiki scope never closes");
+				throw new ParseException("Unparsed scope never closes");
 			}
 
 			var text = match.Groups[1].Value.Replace("]]", "]");
