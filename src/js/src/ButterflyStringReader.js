@@ -1,7 +1,3 @@
-function last(thing) {
-	return thing.charAt ? thing.charAt(thing.length - 1) : thing[thing.length - 1];
-}
-
 //stolen from sunlight
 function ButterflyStringReader(text) {
 	var index = 0,

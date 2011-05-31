@@ -31,3 +31,19 @@ function contains(haystack, needle) {
 		return needle === value;
 	});
 }
+
+function filter(haystack, predicate) {
+	var newHaystack = [];
+	
+	for (var i = 0; i < haystack.length; i++) {
+		if (predicate(haystack[i])) {
+			newHaystack.push(haystack[i]);
+		}
+	}
+	
+	return newHaystack;
+}
+
+function last(thing) {
+	return thing.charAt ? thing.charAt(thing.length - 1) : thing[thing.length - 1];
+}

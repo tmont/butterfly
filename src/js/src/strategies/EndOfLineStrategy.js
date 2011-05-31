@@ -7,7 +7,11 @@ var EndOfLineStrategy = function() {
 		new DefinitionListScopeClosingStrategy(),
 		new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.definition),
 		new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.definitionTerm),
-		new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.preformattedLine)
+		new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.preformattedLine),
+		
+		new ListItemClosingStrategy(),
+		new ListClosingStrategy(ScopeTypeCache.orderedList),
+		new ListClosingStrategy(ScopeTypeCache.unorderedList)
 	];
 	
 	return function(scopeClosingStrategies) {
@@ -20,13 +24,13 @@ var EndOfLineStrategy = function() {
 		
 		scopeClosingStrategies = scopeClosingStrategies || defaultScopeClosingStrategies;
 		for (var i = 0; i < scopeClosingStrategies.length; i++) {
-			closingStrategyMap[scopeClosingStrategies[i].scopeType] = scopeClosingStrategies[i].shouldClose;
+			closingStrategyMap[scopeClosingStrategies[i].scopeType] = scopeClosingStrategies[i];
 		}
 		
 		this.doExecute = function(context) {
 			while (!context.scopes.isEmpty()) {
-				var shouldCloseScope = closingStrategyMap[context.scopes.peek().type];
-				if (!shouldCloseScope || !shouldCloseScope(context)) {
+				var strategy = closingStrategyMap[context.scopes.peek().type];
+				if (!strategy || !strategy.shouldClose(context)) {
 					break;
 				}
 				
