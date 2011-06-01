@@ -124,6 +124,6 @@ ButterflyParser.prototype.loadDefaultStrategies = function() {
 }();
 
 var defaultModuleRegistry = {
-	image: ImageModule
-	// entity: HtmlEntityModule
+	image: ImageModule,
+	entity: HtmlEntityModule
 };
