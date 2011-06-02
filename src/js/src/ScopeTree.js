@@ -15,7 +15,7 @@ function ScopeTree() {
 	};
 	
 	this.isEmpty = function() { return this.nodes.length === 0; };
-	this.count = function() { return getCount(nodes); };
+	this.count = function() { return getCount(this.nodes); };
 }
 
 function ScopeTreeNode(scope) {
