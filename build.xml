@@ -108,13 +108,15 @@
 			<fileset dir="${temp.dir}" includes="DefaultModuleFactory.js"/>
 			<fileset dir="${temp.dir}" includes="DefaultMacroFactory.js"/>
 			
-			<fileset dir="${temp.dir}" includes="modules/*"/>
-			<fileset dir="${temp.dir}" includes="macros/*"/>
+			<fileset dir="${temp.dir}" includes="modules/*.js"/>
+			<fileset dir="${temp.dir}" includes="macros/*.js"/>
 			
 			<fileset dir="${temp.dir}" includes="ParseStrategy.js"/>
 			<fileset dir="${temp.dir}" includes="strategies/eol/*"/>
-			<fileset dir="${temp.dir}" includes="strategies/*"/>
+			<fileset dir="${temp.dir}" includes="strategies/ScopeDrivenStrategy.js"/>
+			<fileset dir="${temp.dir}" includes="strategies/*.js" excludes="strategies/ScopeDrivenStrategy.js"/>
 			
+			<fileset dir="${temp.dir}" includes="ParseResult.js"/>
 			<fileset dir="${temp.dir}" includes="ButterflyParser.js"/>
 			
 			<fileset dir="${temp.dir}" includes="export.js"/>
@@ -125,6 +127,7 @@
 		</yui-compressor>
 		
 		<move file="${build.dir}/js/butterfly-combined-min.js" tofile="${build.dir}/js/butterfly-min.js" />
+		<copy file="${temp.dir}/butterfly-combined.js" todir="${build.dir}/js" />
 		
 		<!-- delete temporary files -->
 		<delete dir="${temp.dir}"/>
@@ -145,7 +148,7 @@
 	<target name="copy-uncompressed">
 		<mkdir dir="${temp.dir}"/>
 		<copy todir="${temp.dir}">
-			<fileset dir="${jssrc.dir}" includes="*.js"/>
+			<fileset dir="${jssrc.dir}" includes="**/*.js"/>
 		</copy>
 	</target>
 	

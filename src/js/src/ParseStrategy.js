@@ -44,6 +44,17 @@ function ParseStrategy() {
 		this.addSatisfier(new ExactCharMatchSatisfier(token));
 		this.beforeExecute.attach(advanceInputForToken(token));
 	};
+	
+	this.isSatisfiedBy = function(context) {
+		var satisfiers = this.getSatisfiers();
+		for (var i = 0; i < satisfiers.length; i++) {
+			if (!satisfiers[i].isSatisfiedBy(context)) {
+				return false;
+			}
+		}
+		
+		return true;
+	};
 }
 
 extend(Satisfier, ParseStrategy);
@@ -54,16 +65,5 @@ ParseStrategy.prototype.executeIfSatisfied = function(context) {
 		this.execute(context);
 	}
 };
-
-ParseStrategy.$override("isSatisfiedBy", function(context) {
-	var satisfiers = this.getSatisfiers();
-	for (var i = 0; i < satisfiers.length; i++) {
-		if (!satisfiers[i].isSatisfiedBy(context)) {
-			return false;
-		}
-	}
-	
-	return true;
-});
 
 ParseStrategy.defaultPriority = 100;

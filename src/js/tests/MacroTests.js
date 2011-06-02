@@ -22,7 +22,7 @@ var macroTests = function() {
 	
 	return {
 		setup: function() {
-			parser = new ButterflyParser();
+			parser = new Butterfly.Parser();
 			parser.loadDefaultStrategies();
 		},
 		
