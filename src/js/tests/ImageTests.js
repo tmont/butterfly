@@ -76,7 +76,7 @@ var iamgeTests = function() {
 				},
 				
 				function Should_require_url() {
-					Assert.willThrow(new ModuleException("For images, the URL must be specified"));
+					Assert.willThrow(new Butterfly.ModuleException("For images, the URL must be specified"));
 					parser.parse("[:image]");
 				},
 				

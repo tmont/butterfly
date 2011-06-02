@@ -53,22 +53,22 @@ var listTests = function() {
 				},
 				
 				function Should_not_allow_mixed_list_types_at_same_depth() {
-					Assert.willThrow(new ParseException("Expected list of type orderedList but got unorderedList"));
+					Assert.willThrow(new Butterfly.ParseException("Expected list of type orderedList but got unorderedList"));
 					parser.parse("# lol\n* lol");
 				},
 				
 				function Should_not_allow_mixed_list_types_at_previous_depth() {
-					Assert.willThrow(new ParseException("Expected list of type orderedList but got unorderedList"));
+					Assert.willThrow(new Butterfly.ParseException("Expected list of type orderedList but got unorderedList"));
 					parser.parse("# lol\n## lol\n* lol");
 				},
 				
 				function Should_catch_invalid_nesting_levels() {
-					Assert.willThrow(new ParseException("Nested lists cannot skip levels: expected a depth of less than or equal to 2 but got 3"));
+					Assert.willThrow(new Butterfly.ParseException("Nested lists cannot skip levels: expected a depth of less than or equal to 2 but got 3"));
 					parser.parse("# lol\n### lol");
 				},
 				
 				function Should_not_allow_starting_a_list_with_a_depth_greater_than_one() {
-					Assert.willThrow(new ParseException("Cannot start a list with a depth greater than one"));
+					Assert.willThrow(new Butterfly.ParseException("Cannot start a list with a depth greater than one"));
 					parser.parse("** lol");
 				},
 				

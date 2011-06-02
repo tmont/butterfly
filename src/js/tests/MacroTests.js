@@ -17,8 +17,8 @@ var macroTests = function() {
 		};
 	}
 	
-	extend(Macro, FooMacro);
-	extend(Macro, BarMacro);
+	extend(Butterfly.Macro, FooMacro);
+	extend(Butterfly.Macro, BarMacro);
 	
 	return {
 		setup: function() {
@@ -33,7 +33,7 @@ var macroTests = function() {
 		test: function Macro_tests() {
 			return [
 				function Should_update_input_with_macro_value() {
-					parser.macroFactory = new DefaultMacroFactory({ foo: FooMacro });
+					parser.macroFactory = new Butterfly.DefaultMacroFactory({ foo: FooMacro });
 					
 					var result = parser.parse("[::foo] foo [::foo]");
 					var text = parser.flushAndReturn();
@@ -43,7 +43,7 @@ var macroTests = function() {
 				},
 				
 				function Should_parse_markup_in_macros() {
-					parser.macroFactory = new DefaultMacroFactory({ bar: BarMacro });
+					parser.macroFactory = new Butterfly.DefaultMacroFactory({ bar: BarMacro });
 					
 					var result = parser.parse("[::bar] lol [::bar]");
 					var text = parser.flushAndReturn();
@@ -59,8 +59,6 @@ var macroTests = function() {
 				function Should_show_local_timestamp() {
 					Assert.that(trimLf(parser.parseAndReturn("[::timestamp|format=local]")), Is.regexMatch(/^<p>\d{4}-\d\d-\d\d \d\d:\d\d:\d\d<\/p>$/));
 				}
-				
-				
 			];
 		}
 	};

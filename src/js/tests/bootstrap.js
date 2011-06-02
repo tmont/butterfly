@@ -35,9 +35,3 @@ if (typeof(extend) === "undefined") {
 		};
 	};
 }
-
-if (typeof(window.Butterfly) !== "undefined") {
-	for (var i in window.Butterfly) {
-		window[i] = window.Butterfly[i];
-	}
-}

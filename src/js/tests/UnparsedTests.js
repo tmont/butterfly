@@ -38,7 +38,7 @@ var unparsedTests = function() {
 				},
 				
 				function Should_throw_when_nowiki_never_closes() {
-					Assert.willThrow(new ParseException("Unparsed scope never closes"));
+					Assert.willThrow(new Butterfly.ParseException("Unparsed scope never closes"));
 					parser.parse("[!foo");
 				}
 			];

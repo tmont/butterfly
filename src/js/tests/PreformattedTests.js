@@ -17,7 +17,7 @@ var preformattedTests = function() {
 				},
 				
 				function Should_not_get_in_infinite_loop_while_parsing_language() {
-					Assert.willThrow(new ParseException("No strategy found for <EOF> at index 3"));
+					Assert.willThrow(new Butterfly.ParseException("No strategy found for <EOF> at index 3"));
 					parser.parse("{{{");
 				},
 				
@@ -46,7 +46,7 @@ var preformattedTests = function() {
 				},
 				
 				function Should_throw_when_preformatted_code_never_closes() {
-					Assert.willThrow(new ParseException("Preformatted scope never closes"));
+					Assert.willThrow(new Butterfly.ParseException("Preformatted scope never closes"));
 					parser.parse("{{{{oh hai!");
 				},
 				
