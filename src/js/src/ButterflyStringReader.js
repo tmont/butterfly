@@ -84,7 +84,7 @@ function ButterflyStringReader(text) {
 	};
 
 	this.seekToNonWhitespace = function() {
-		var match = /^(\s+)/.exec(this.peekSubstring());
+		var match = /^([\t ]+)/.exec(this.peekSubstring());
 		if (!match) {
 			return;
 		}

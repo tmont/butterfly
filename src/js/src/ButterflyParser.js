@@ -119,6 +119,8 @@ ButterflyParser.prototype.loadDefaultStrategies = function() {
 		this.addStrategy(new UnparsedStrategy());
 		this.addStrategy(new ModuleStrategy());
 		this.addStrategy(new MacroStrategy());
+		this.addStrategy(new TableStrategy());
+		this.addStrategy(new CloseTableRowStrategy());
 		
 		return this;
 	};

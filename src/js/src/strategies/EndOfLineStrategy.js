@@ -7,11 +7,17 @@ var EndOfLineStrategy = function() {
 		new DefinitionListScopeClosingStrategy(),
 		new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.definition),
 		new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.definitionTerm),
+		
 		new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.preformattedLine),
 		
 		new ListItemClosingStrategy(),
 		new ListClosingStrategy(ScopeTypeCache.orderedList),
-		new ListClosingStrategy(ScopeTypeCache.unorderedList)
+		new ListClosingStrategy(ScopeTypeCache.unorderedList),
+		
+		new AlwaysTrueScopeClosingStrategy(ScopeTypeCache.tableRowLine),
+		new TableCellClosingStrategy(ScopeTypeCache.tableCell),
+		new TableCellClosingStrategy(ScopeTypeCache.tableHeader),
+		new TableClosingStrategy(ScopeTypeCache.table)
 	];
 	
 	return function(scopeClosingStrategies) {
@@ -37,7 +43,7 @@ var EndOfLineStrategy = function() {
 				this.closeCurrentScope(context);
 			}
 		};
-	}
+	};
 }();
 
 extend(ScopeDrivenStrategy, EndOfLineStrategy);
