@@ -19,7 +19,7 @@ namespace ButterflyNet.Parser.Tests {
 		}
 
 		[Test]
-		public void Should_parse_wiki_formatting_in_macros() {
+		public void Should_parse_markup_in_macros() {
 			var parser = new ButterflyParser();
 			parser.LoadDefaultStrategies(new DefaultParseStrategyFactory());
 			parser.MacroFactory = new ActivatorFactory<IButterflyMacro>(new NamedTypeRegistry<IButterflyMacro>().RegisterType<BarMacro>("bar"));
