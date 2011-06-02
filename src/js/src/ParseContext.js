@@ -6,7 +6,7 @@ function ParseContext(reader, options) {
 	this.localImageBaseUrl = options.localImageBaseUrl;
 	this.analyzer = options.analyzer || new HtmlAnalyzer();
 	this.moduleFactory = options.moduleFactory || new DefaultModuleFactory(defaultModuleRegistry, this.localImageBaseUrl);
-	this.macroFactory = options.macroFactory;
+	this.macroFactory = options.macroFactory || new DefaultMacroFactory(defaultMacroRegistry);
 	this.scopeTree = new ScopeTree();
 	
 	this.advanceInput = function(amount) {

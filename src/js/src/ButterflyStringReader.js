@@ -11,7 +11,15 @@ function ButterflyStringReader(text) {
 	
 	length = text.length;
 	currentChar = length > 0 ? text.charAt(0) : ButterflyStringReader.EOF;
-
+	nextReadBeginsLine = currentChar === "\n";
+	
+	function reset() {
+		index = 0;
+		line = 1;
+		column = 1;
+		nextReadBeginsLine = false;
+	}
+	
 	function getCharacters(count) {
 		var value;
 		if (count === 0) {
@@ -24,12 +32,14 @@ function ButterflyStringReader(text) {
 		return value === "" ? ButterflyStringReader.EOF : value;
 	}
 	
-	this.toString = function() {
-		return "length = " + length + "; index = " + index + "; line = " + line + "; column = " + column + "; current = [" + currentChar + "]";
-	};
 	this.peek = function(count) { return getCharacters(count);};
 	this.substring = function() { return text.substring(index); };
 	this.peekSubstring = function() { return text.substring(index + 1); };
+	
+	this.replace = function(start, end, value) {
+		text = text.substring(0, start) + value + text.substring(end);
+		length = text.length;
+	};
 
 	this.read = function (count) {
 		var value = getCharacters(count),
@@ -82,6 +92,20 @@ function ButterflyStringReader(text) {
 		this.read(match[1].length);
 	};
 	
+	this.seek = function(to) {
+		if (to < index - 1) {
+			//go back to beginning and read until to
+			reset();
+			index = -1;
+			if (to >= 0) {
+				this.read(to + 1);
+			}
+		} else {
+			//read from current index
+			this.read(index - to + 1);
+		}
+	};
+	
 	this.value = function() { return text; };
 	this.getLine = function() { return line; };
 	this.getColumn = function() { return column; };
@@ -109,7 +133,6 @@ function ButterflyStringReader(text) {
 	this.isEol = function() { return nextReadBeginsLine; };
 	this.current = function() { return currentChar; }
 	this.getIndex = function() { return index; };
-	this.value = text;
 };
 
 ButterflyStringReader.EOF = -1;

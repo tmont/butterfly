@@ -58,10 +58,10 @@ function ButterflyParser(options) {
 		context.analyzer.onEnd();
 		
 		if (!context.scopes.isEmpty()) {
-			throw new ParseException("Scopes that need to be manually closed were not closed");
+			throw new ParseException("The following scope must be manually closed: " + context.scopes.peek().type);
 		}
 		
-		return new ParseResult(context.scopeTree, context.input.value);
+		return new ParseResult(context.scopeTree, context.input.value());
 	};
 }
 
@@ -118,6 +118,7 @@ ButterflyParser.prototype.loadDefaultStrategies = function() {
 		this.addStrategy(new ListStrategy());
 		this.addStrategy(new UnparsedStrategy());
 		this.addStrategy(new ModuleStrategy());
+		this.addStrategy(new MacroStrategy());
 		
 		return this;
 	};
@@ -126,4 +127,8 @@ ButterflyParser.prototype.loadDefaultStrategies = function() {
 var defaultModuleRegistry = {
 	image: ImageModule,
 	entity: HtmlEntityModule
+};
+
+var defaultMacroRegistry = {
+	timestamp: TimestampMacro
 };
