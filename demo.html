@@ -58,13 +58,14 @@ function render() {
 	try {
 		var html = parser.parseAndReturn(text);
 		$html.html(html);
-		Sunlight.highlightAll();
 	} catch (e) {
 		$html.addClass("error").html("<p/>").text(e.toString());
 	}
 	
 	parser.analyzer.flush();
 	$("#elapsed-time").empty().text((new Date().getTime() - startTime) + "ms");
+	
+	Sunlight.highlightAll();
 }
 
 render();
@@ -106,17 +107,17 @@ Have fun!
 				try {
 					var html = parser.parseAndReturn(text);
 					$html.html(html);
-					Sunlight.highlightAll();
 				} catch (e) {
 					$html.addClass("error").html("<p/>").text(e.toString());
 				}
 				
 				parser.analyzer.flush();
 				$("#elapsed-time").empty().text((new Date().getTime() - startTime) + "ms");
+				
+				Sunlight.highlightAll();
 			}
 
 			render();
-			
 			
 		//]]></script>
 	</body>
