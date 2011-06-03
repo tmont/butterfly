@@ -38,7 +38,7 @@
 
 		<!-- uncompressed javascript, .NET source and tests -->
 		<tar destfile="${build.dist}/${package.source}.tar.gz" compression="gzip" longfile="gnu">
-			<tarfileset dir="${basedir}" includes="src/**,CHANGELOG,COPYING,README" excludes="**/bin/**,**/obj/**,**/*.user,**/*.suo" prefix="${package.source}"/>
+			<tarfileset dir="${basedir}" includes="src/**,CHANGELOG,COPYING,README,formatting.html" excludes="**/bin/**,**/obj/**,**/*.user,**/*.suo" prefix="${package.source}"/>
 		</tar>
 		
 		<!-- compressed javascript, .NET binaries -->
@@ -49,7 +49,7 @@
 		
 		<tar destfile="${build.dist}/${package.release}.tar.gz" compression="gzip" longfile="gnu">
 			<tarfileset dir="${build.dir}" includes="js/**,dotnet/**" prefix="${package.release}"/>
-			<tarfileset dir="${basedir}" includes="CHANGELOG,COPYING,README" prefix="${package.release}"/>
+			<tarfileset dir="${basedir}" includes="CHANGELOG,COPYING,README,formatting.html" prefix="${package.release}"/>
 		</tar>
 	</target>
 	
