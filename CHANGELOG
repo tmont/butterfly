@@ -1,0 +1,11 @@
+2.1 2011-06-02
+--------------
+Ported to JavaScript
+
+2.0 2011-03-xx
+--------------
+Ported to C#, refactored hardcoded parser into a "strategy"-based parser
+
+1.0 2010-xx-xx
+--------------
+Initial release

@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7581AE92-4119-46C7-8626-0158D6718302}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ButterflyNet.Parser</RootNamespace>
+    <AssemblyName>ButterflyNet.Parser</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>True</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\Lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DefaultModuleFactory.cs" />
+    <Compile Include="HtmlAnalyzer.cs" />
+    <Compile Include="ButterflyAnalyzer.cs" />
+    <Compile Include="IButterflyModule.cs" />
+    <Compile Include="INamedFactory.cs" />
+    <Compile Include="IParseStrategyFactory.cs" />
+    <Compile Include="IButterflyMacro.cs" />
+    <Compile Include="Macros\TimestampMacro.cs" />
+    <Compile Include="Modules\HtmlEntityModule.cs" />
+    <Compile Include="ModuleException.cs" />
+    <Compile Include="Modules\LinkModule.cs" />
+    <Compile Include="NonDefaultAttribute.cs" />
+    <Compile Include="ParseResult.cs" />
+    <Compile Include="PortoaExtensions.cs" />
+    <Compile Include="ScopeExtensions.cs" />
+    <Compile Include="Scopes\LineBreakScope.cs" />
+    <Compile Include="Scopes\MacroScope.cs" />
+    <Compile Include="ScopeTypeCache.cs" />
+    <Compile Include="Strategies\Eol\AlwaysTrueScopeClosingStrategy.cs" />
+    <Compile Include="Satisfiers\ExactCharMatchSatisfier.cs" />
+    <Compile Include="Satisfiers\CurrentScopeMustMatchOrBeParagraphSatisfier.cs" />
+    <Compile Include="Strategies\Eol\DefinitionListScopeClosingStrategy.cs" />
+    <Compile Include="Strategies\Eol\ListClosingStrategy.cs" />
+    <Compile Include="Strategies\Eol\TableCellClosingStrategy.cs" />
+    <Compile Include="Strategies\Eol\TableClosingStrategy.cs" />
+    <Compile Include="Strategies\ExtendedDefinitionStrategy.cs" />
+    <Compile Include="Strategies\FunctionalStrategy.cs" />
+    <Compile Include="Strategies\Eol\IEolScopeClosingStrategy.cs" />
+    <Compile Include="Strategies\InlineStrategy.cs" />
+    <Compile Include="ISatisfier.cs" />
+    <Compile Include="IScope.cs" />
+    <Compile Include="ParseContext.cs" />
+    <Compile Include="ParseContextExtensions.cs" />
+    <Compile Include="ButterflyParser.cs" />
+    <Compile Include="ParseStrategy.cs" />
+    <Compile Include="ParseStrategyExtensions.cs" />
+    <Compile Include="Satisfiers\CannotNestInsideInlineSatisfier.cs" />
+    <Compile Include="Satisfiers\CannotNestInsideModuleSatisfier.cs" />
+    <Compile Include="Satisfiers\CurrentScopeMustMatchSatisfier.cs" />
+    <Compile Include="Satisfiers\DependentSatisfier.cs" />
+    <Compile Include="Satisfiers\EofSatisfier.cs" />
+    <Compile Include="Satisfiers\InScopeStackSatisfier.cs" />
+    <Compile Include="Satisfiers\NegatingSatisfier.cs" />
+    <Compile Include="Satisfiers\NextCharacterIsNotTheSameSatisfier.cs" />
+    <Compile Include="Satisfiers\OneOfSeveralTokensSatisfier.cs" />
+    <Compile Include="Satisfiers\OpenNonNestableInlineScopeSatisfier.cs" />
+    <Compile Include="Satisfiers\StartOfLineSatisfier.cs" />
+    <Compile Include="Scopes\ScopeBase.cs" />
+    <Compile Include="Strategies\LineBreakStrategy.cs" />
+    <Compile Include="Strategies\MacroStrategy.cs" />
+    <Compile Include="Scopes\MultiLineDefinitionScope.cs" />
+    <Compile Include="Strategies\EndOfLineStrategy.cs" />
+    <Compile Include="Strategies\Eol\ParagraphClosingStrategy.cs" />
+    <Compile Include="Strategies\ScopeDrivenStrategy.cs" />
+    <Compile Include="Scopes\BigScope.cs" />
+    <Compile Include="Scopes\BlockquoteScope.cs" />
+    <Compile Include="Scopes\BlockScope.cs" />
+    <Compile Include="Scopes\DefinitionListScope.cs" />
+    <Compile Include="Scopes\DefinitionScope.cs" />
+    <Compile Include="Scopes\DefinitionTermScope.cs" />
+    <Compile Include="Scopes\EmphasisScope.cs" />
+    <Compile Include="Scopes\HeaderScope.cs" />
+    <Compile Include="Scopes\HorizontalRulerScope.cs" />
+    <Compile Include="Scopes\InlineScope.cs" />
+    <Compile Include="NamedFactoryBase.cs" />
+    <Compile Include="Modules\ImageModule.cs" />
+    <Compile Include="ButterflyStringReader.cs" />
+    <Compile Include="ModuleExtensions.cs" />
+    <Compile Include="ActivatorFactory.cs" />
+    <Compile Include="NamedTypeRegistry.cs" />
+    <Compile Include="ParseException.cs" />
+    <Compile Include="Scopes\LinkScope.cs" />
+    <Compile Include="Scopes\ListItemScope.cs" />
+    <Compile Include="Scopes\ListScope.cs" />
+    <Compile Include="Scopes\ModuleScope.cs" />
+    <Compile Include="Scopes\UnparsedScope.cs" />
+    <Compile Include="Scopes\OrderedListScope.cs" />
+    <Compile Include="Scopes\ParagraphScope.cs" />
+    <Compile Include="Scopes\PreformattedLineScope.cs" />
+    <Compile Include="Scopes\PreformattedScope.cs" />
+    <Compile Include="Scopes\SmallScope.cs" />
+    <Compile Include="Scopes\StrikeThroughScope.cs" />
+    <Compile Include="Scopes\StrongScope.cs" />
+    <Compile Include="Scopes\TableScope.cs" />
+    <Compile Include="Scopes\TeletypeScope.cs" />
+    <Compile Include="Scopes\UnderlineScope.cs" />
+    <Compile Include="Scopes\UnescapedScope.cs" />
+    <Compile Include="Scopes\UnorderedListScope.cs" />
+    <Compile Include="Strategies\CloseBigStrategy.cs" />
+    <Compile Include="Strategies\CloseBlockquoteStrategy.cs" />
+    <Compile Include="Strategies\CloseLinkStrategy.cs" />
+    <Compile Include="Strategies\ClosePreformattedStrategy.cs" />
+    <Compile Include="Strategies\CloseSmallStrategy.cs" />
+    <Compile Include="Strategies\CloseTableRowStrategy.cs" />
+    <Compile Include="Strategies\CloseUnescapedStrategy.cs" />
+    <Compile Include="Strategies\DefinitionListStrategy.cs" />
+    <Compile Include="Strategies\DefinitionStrategy.cs" />
+    <Compile Include="Strategies\EmphasisStrategy.cs" />
+    <Compile Include="Strategies\HeaderStrategy.cs" />
+    <Compile Include="Strategies\HorizontalRulerStrategy.cs" />
+    <Compile Include="Strategies\ListStrategy.cs" />
+    <Compile Include="Strategies\ModuleStrategy.cs" />
+    <Compile Include="Strategies\OpenBigStrategy.cs" />
+    <Compile Include="Strategies\OpenBlockquoteStrategy.cs" />
+    <Compile Include="Strategies\OpenLinkStrategy.cs" />
+    <Compile Include="Strategies\UnparsedStrategy.cs" />
+    <Compile Include="Strategies\OpenParagraphStrategy.cs" />
+    <Compile Include="Strategies\OpenPreformattedLineStrategy.cs" />
+    <Compile Include="Strategies\OpenPreformattedStrategy.cs" />
+    <Compile Include="Strategies\OpenSmallStrategy.cs" />
+    <Compile Include="Strategies\OpenUnescapedStrategy.cs" />
+    <Compile Include="Strategies\StrikeThroughStrategy.cs" />
+    <Compile Include="Strategies\StrongStrategy.cs" />
+    <Compile Include="Strategies\TableStrategy.cs" />
+    <Compile Include="Strategies\TeletypeStrategy.cs" />
+    <Compile Include="Strategies\WriteEscapedBracketStrategy.cs" />
+    <Compile Include="TokenTransformerAttribute.cs" />
+    <Compile Include="Strategies\UnderlineStrategy.cs" />
+    <Compile Include="Strategies\WriteCharacterStrategy.cs" />
+    <Compile Include="ParserExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScopeLevel.cs" />
+    <Compile Include="ScopeTree.cs" />
+    <Compile Include="ScopeTreeNode.cs" />
+    <Compile Include="StackExtensions.cs" />
+    <Compile Include="StringExtensions.cs" />
+    <Compile Include="SyntaxHighlightingLibrary.cs" />
+    <Compile Include="UnknownIdentifierException.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
