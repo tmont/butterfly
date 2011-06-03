@@ -127,7 +127,7 @@
 		</yui-compressor>
 		
 		<move file="${build.dir}/js/butterfly-combined-min.js" tofile="${build.dir}/js/butterfly-min.js" />
-		<copy file="${temp.dir}/butterfly-combined.js" todir="${build.dir}/js" />
+		<!--copy file="${temp.dir}/butterfly-combined.js" todir="${build.dir}/js" /-->
 		
 		<!-- delete temporary files -->
 		<delete dir="${temp.dir}"/>
