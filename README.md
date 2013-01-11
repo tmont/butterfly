@@ -1,9 +1,9 @@
 Butterfly <http://butterfly.tmont.com/>
 Version 2.1 (see CHANGELOG for details)
-(c) 2011 Tommy Montgomery <http://tommymontgomery.com/>
+
+by Tommy Montgomery <http://tmont.com/>
 
 Licensed under WTFPL: http://sam.zoy.org/wtfpl/
 
-Authors
--------
-Tommy Montgomery <http://tommymontgomery.com/>
+## Authors
+Tommy Montgomery <http://tmont.com/>
